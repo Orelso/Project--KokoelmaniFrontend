@@ -7,6 +7,7 @@ import DailyCardTable from "../components/DailyCardTable";
 import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
 import type { MTGCard } from "../types";
+import { BACKEND_URL } from "../constants";
 
 const Home: NextPage = () => {
   return (
@@ -22,13 +23,14 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+console.log("🚀 ~ file: index.tsx:26 ~ backendUrl", BACKEND_URL);
 
 function HomeView() {
   const [mtg, setMtg] = useState<MTGCard[]>([]);
 
   useEffect(() => {
     console.log("It started");
-    fetch("http://localhost:3009/api/item")
+    fetch(`${BACKEND_URL ?? ""}/item`)
       .then((res) => res.json())
       .then((response) => {
         if (isObject(response) && "data" in response) {
