@@ -36,9 +36,12 @@ const FilterCard = () => {
     fetch(`http://localhost:5051/api/v1/all/cards/name/${searchTerm}`)
       .then((res) => res.json())
       .then((res) => {
-        console.log("🚀 ~ file: SearchBar.tsx:25 ~ .then ~ data", res);
-        const cards = res.data;
-        setSearchResults(cards);
+        console.log(
+          "🚀 ~ file: SearchBar.tsx:25 ~ .then ~ data",
+          res,
+          res.data
+        );
+        setSearchResults(res);
         // TODO setstate
         // do something with the response, for example, set the filtered items to a state variable
       })
