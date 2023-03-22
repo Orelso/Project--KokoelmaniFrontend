@@ -58,10 +58,12 @@ const FilterCard = () => {
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
+            e.preventDefault(); // prevent the default behavior of the enter key
             handleSubmit();
           }
         }}
       />
+
       {searchResults.map((result, index) => {
         console.log(result);
         return (
