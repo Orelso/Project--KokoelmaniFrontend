@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import {
@@ -11,21 +7,19 @@ import {
   TextField,
 } from "@mui/material";
 import styled from "styled-components";
-// import {debounce} from 'lodash'
-// import debounce from 'lodash.debounce'
+
 import { useAtom } from "jotai";
-import { tom } from "../store";
+import { searchResultsAtom } from "../store";
 import { Table } from "@mui/material";
 import { Paper } from "@mui/material";
 
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
-  /** when the user types in the form, call to the API and populate the list of results
-   *
-   * TODO probably want to debounce/throttle the requests so we don't sent a new request with each keystroke
-   */
-  const handleOnChange = ({ target: { value } }: any) => {
+  /*when the user types in the form, call to the API and populate the list of results   */
+  const handleOnChange = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(value);
     console.log("🚀 ~ file: SearchBar.tsx:29 ~ handleOnChange ~ value", value);
   };
@@ -39,11 +33,9 @@ const FilterCard = () => {
         console.log(
           "🚀 ~ file: SearchBar.tsx:25 ~ .then ~ data",
           res,
-          res.data
+          typeof res !== "undefined" && "data" in res ? res.data : null
         );
         setSearchResults(res);
-        // TODO setstate
-        // do something with the response, for example, set the filtered items to a state variable
       })
       .catch((error: any) => {
         console.log(error);
@@ -70,10 +62,11 @@ const FilterCard = () => {
           }
         }}
       />
-      {searchResults.map((result) => {
+      {searchResults.map((result, index) => {
         console.log(result);
         return (
           <TableContainer
+            key={index}
             component={Paper}
             elevation={13}
             sx={{ overflow: "hidden" }}
@@ -84,7 +77,7 @@ const FilterCard = () => {
                   title="Image title"
                   alt="img"
                   width="47"
-                  src={result.image_url}
+                  src={result.image_uris?.small}
                 />
               </TableCell>
               <TableCell>{result.name}</TableCell>
@@ -117,32 +110,3 @@ const FilterCardStyles = styled.div`
 `;
 
 export default FilterCard;
-
-// const FilterCard = () => {
-// 	const [searchTerm, setSearchTerm] = useState('');
-// 	const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
-
-// 	const handleOnChange = ({target: {value}}: any) => {
-// 		setSearchTerm(value);
-// 		console.log('🚀 ~ file: SearchBar.tsx:29 ~ handleOnChange ~ value', value);
-// 		debouncedHandleSubmit();
-// 	};
-
-// 	const handleSubmit = () => {
-// 		debouncedHandleSubmit();
-// 		// make a GET request to the server with the searchTerm as a query parameter
-// 		// fetch(`/api/items?searchTerm=${value}`)
-// 		fetch(`https://api.scryfall.com/cards/search?q=${searchTerm}`)
-// 			.then((res) => res.json())
-// 			.then((res) => {
-// 				console.log('🚀 ~ file: SearchBar.tsx:25 ~ .then ~ data', res);
-// 				const cards = res.data;
-// 				setSearchResults(cards);
-// 				// TODO setstate
-// 				// do something with the response, for example, set the filtered items to a state variable
-// 			})
-// 			.catch((error: any) => {
-// 				console.log(error);
-// 			});
-// 	};
-// 	const debouncedHandleSubmit = debounce(handleSubmit, 500);

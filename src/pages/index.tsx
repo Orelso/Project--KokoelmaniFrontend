@@ -7,6 +7,7 @@ import DailyCardTable from "../components/DailyCardTable";
 import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
 import type { MTGCard } from "../types";
+// import type { YuGiOhCard } from "../types";
 import { BACKEND_URL } from "../constants";
 
 const Home: NextPage = () => {
@@ -27,6 +28,7 @@ console.log("🚀 ~ file: index.tsx:26 ~ backendUrl", BACKEND_URL);
 
 function HomeView() {
   const [mtg, setMtg] = useState<MTGCard[]>([]);
+  // const [yugioh, setYugioh] = useState<YuGiOhCard[]>([]);
 
   useEffect(() => {
     console.log("It started");
@@ -38,6 +40,7 @@ function HomeView() {
           console.log("promise fulfilled", response.data);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           setMtg(response.data as MTGCard[]);
+          // setYugioh(response.data as YuGiOhCard[]);
         }
       })
       .catch(console.error);
