@@ -14,7 +14,7 @@ import styled from "styled-components";
 // import {debounce} from 'lodash'
 // import debounce from 'lodash.debounce'
 import { useAtom } from "jotai";
-import { searchResultsAtom } from "../store";
+import { tom } from "../store";
 import { Table } from "@mui/material";
 import { Paper } from "@mui/material";
 
@@ -84,7 +84,7 @@ const FilterCard = () => {
                   title="Image title"
                   alt="img"
                   width="47"
-                  src={result.image_uris?.small}
+                  src={result.image_url}
                 />
               </TableCell>
               <TableCell>{result.name}</TableCell>
