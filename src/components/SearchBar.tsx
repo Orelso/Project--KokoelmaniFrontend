@@ -7,7 +7,6 @@ import {
   TextField,
 } from "@mui/material";
 import styled from "styled-components";
-
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../store";
 import { Table } from "@mui/material";
@@ -79,7 +78,12 @@ const FilterCard = () => {
                   title="Image title"
                   alt="img"
                   width="47"
-                  src={result.image_uris?.small}
+                  src={
+                    result.image_uris?.small ||
+                    result.image_url ||
+                    result.images?.small ||
+                    result.card_images[0].image_url_small
+                  }
                 />
               </TableCell>
               <TableCell>{result.name}</TableCell>
