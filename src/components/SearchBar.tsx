@@ -117,16 +117,19 @@ const FilterCard = () => {
       })}
 
       {selectedCard && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          sx={{ backgroundColor: "transparent" }}
-        >
-          <Box
+        <Modal open={open} onClose={handleClose}>
+          <Paper
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              textAlign: "center",
+              margin: "auto",
+              marginTop: "64px",
+              justifyContent: "center",
+              height: "90%",
+              width: "80%",
+              border: "2px solid black",
             }}
           >
             <img
@@ -153,7 +156,7 @@ const FilterCard = () => {
               {selectedCard.img_url}
               {selectedCard.set_name}
             </Typography>
-          </Box>
+          </Paper>
         </Modal>
       )}
     </FilterCardStyles>
