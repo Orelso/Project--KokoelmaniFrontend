@@ -1,9 +1,12 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import {
+  Box,
+  Button,
   IconButton,
   TableCell,
   TableContainer,
+  TableRow,
   TextField,
 } from "@mui/material";
 import styled from "styled-components";
@@ -11,11 +14,18 @@ import { useAtom } from "jotai";
 import { searchResultsAtom } from "../store";
 import { Table } from "@mui/material";
 import { Paper } from "@mui/material";
+import { Modal } from "@mui/material";
+import * as React from "react";
+import Typography from "@mui/material/Typography";
+import { red } from "@mui/material/colors";
+import { height } from "@mui/system";
 
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
-  /*when the user types in the form, call to the API and populate the list of results   */
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [open, setOpen] = React.useState(false);
+
   const handleOnChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,8 +34,6 @@ const FilterCard = () => {
   };
 
   const handleSubmit = () => {
-    // make a GET request to the server with the searchTerm as a query parameter
-    // fetch(`/api/items?searchTerm=${value}`)
     fetch(`http://localhost:5051/api/v1/all/cards/name/${searchTerm}`)
       .then((res) => res.json())
       .then((res) => {
@@ -39,6 +47,15 @@ const FilterCard = () => {
       .catch((error: any) => {
         console.log(error);
       });
+  };
+
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -63,8 +80,7 @@ const FilterCard = () => {
         }}
       />
 
-      {searchResults.map((result, index) => {
-        console.log(result);
+      {searchResults.slice(0, 5).map((result, index) => {
         return (
           <TableContainer
             key={index}
@@ -73,27 +89,73 @@ const FilterCard = () => {
             sx={{ overflow: "hidden" }}
           >
             <Table aria-label="simple table">
-              <TableCell>
-                <img
-                  title="Image title"
-                  alt="img"
-                  width="47"
-                  src={
-                    result.image_uris?.small ||
-                    result.image_url ||
-                    result.images?.small ||
-                    result.card_images[0].image_url_small
-                  }
-                />
-              </TableCell>
-              <TableCell>{result.name}</TableCell>
-              <TableCell>{result.mana_cost}</TableCell>
-              <TableCell>{result.lang}</TableCell>
-              <TableCell>{result.artist}</TableCell>
+              <TableRow onClick={() => handleCardClick(result)}>
+                <TableCell>{result.name}</TableCell>
+                <TableCell>{result.mana_cost}</TableCell>
+                <TableCell>{result.lang}</TableCell>
+                <TableCell>{result.artist}</TableCell>
+              </TableRow>
+              <TableRow onClick={() => handleCardClick(result)}>
+                <TableCell>
+                  <img
+                    title="Image title"
+                    alt="img"
+                    width="47"
+                    src={
+                      result.image_uris?.small ||
+                      result.image_url ||
+                      result.images?.small ||
+                      result.card_images[0].image_url_small
+                    }
+                    onClick={() => handleCardClick(result)}
+                  />
+                </TableCell>
+              </TableRow>
             </Table>
           </TableContainer>
         );
       })}
+
+      {selectedCard && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          sx={{ backgroundColor: "transparent" }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={selectedCard.image_uris?.normal || selectedCard.image_url}
+              sx={{ mb: 2 }}
+            />
+            <Typography variant="h6" sx={{ color: "red" }}>
+              {selectedCard.name}
+              {selectedCard.type}
+              {selectedCard.color}
+              {selectedCard.stage}
+              {selectedCard.digi_type}
+              {selectedCard.attribute}
+              {selectedCard.level}
+              {selectedCard.play_cost}
+              {selectedCard.evolution_cost}
+              {selectedCard.cardrarity}
+              {selectedCard.artist}
+              {selectedCard.dp}
+              {selectedCard.cardnumber}
+              {selectedCard.maineffect}
+              {selectedCard.set_name}
+              {selectedCard.card_sets}
+              {selectedCard.img_url}
+              {selectedCard.set_name}
+            </Typography>
+          </Box>
+        </Modal>
+      )}
     </FilterCardStyles>
   );
 };
