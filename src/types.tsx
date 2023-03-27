@@ -1,3 +1,42 @@
+export type DigimonCard = {
+  name: string;
+  type: string;
+  color: string;
+  stage: string;
+  digi_type: string;
+  attribute: string;
+  level: string;
+  play_cost: string;
+  evolution_cost: string;
+  cardrarity: string;
+  artist: string;
+  dp: string;
+  cardnumber: string;
+  maineffect: string;
+  set_name: string;
+  card_sets: string;
+  img_url: string;
+};
+export type PokemonCard = {
+  name: string;
+  type: string;
+  color: string;
+  stage: string;
+  digi_type: string;
+  attribute: string;
+  level: string;
+  play_cost: string;
+  evolution_cost: string;
+  cardrarity: string;
+  artist: string;
+  dp: string;
+  cardnumber: string;
+  maineffect: string;
+  set_name: string;
+  card_sets: string;
+  img_url: string;
+};
+
 const exampleMtgCard = {
   object: "card",
   id: "f1fb4d0b-fa3f-4794-9285-89ddb9ac21c3",
