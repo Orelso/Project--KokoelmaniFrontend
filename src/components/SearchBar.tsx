@@ -1,24 +1,22 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TextField,
-} from "@mui/material";
+import { Box, IconButton, TextField } from "@mui/material";
 import styled from "styled-components";
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../store";
-import { Table } from "@mui/material";
 import { Paper } from "@mui/material";
 import { Modal } from "@mui/material";
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import { height } from "@mui/system";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,7 +58,6 @@ const FilterCard = () => {
   };
 
   return (
-    <>
     <FilterCardStyles>
       <TextField
         sx={{ ml: 1, flex: 1, color: "white" }}
@@ -122,152 +119,117 @@ const FilterCard = () => {
         <Modal open={open} onClose={handleClose}>
           <Box
             sx={{
-              display: "flex",
+              display: "absolute",
               flexDirection: "column",
               alignItems: "center",
+              border: "10px solid purple",
+              height: "100%",
+              backgroundColor: "white",
+              overflow: "hidden",
             }}
           >
+            {/*-- Modal close button --*/}
+            <IconButton
+              sx={{ position: "absolute", top: 0, right: 0 }}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            {/*-- Container for image and table --*/}
             <img
               src={selectedCard.image_uris?.normal || selectedCard.image_url}
-              sx={{ mb: 2 }}
+              style={{ border: "8px solid black" }}
             />
-            <Typography variant="h6" sx={{ color: "red" }}>
-              {/* Digimon */}
-              {selectedCard.name}
-              {selectedCard.type}
-              {selectedCard.color}
-              {selectedCard.stage}
-              {selectedCard.digi_type}
-              {selectedCard.attribute}
-              {selectedCard.level}
-              {selectedCard.play_cost}
-              {selectedCard.evolution_cost}
-              {selectedCard.cardrarity}
-              {selectedCard.artist}
-              {selectedCard.dp}
-              {selectedCard.cardnumber}
-              {selectedCard.maineffect}
-              {selectedCard.set_name}
-              {selectedCard.card_sets}
-              {selectedCard.img_url}
-              {selectedCard.set_name}
-
-              {/* MTG */}
-              {selectedCard.id}
-              {selectedCard.oracle_id}
-              {selectedCard.multiverse_ids}
-              {selectedCard.mtgo_id}
-              {selectedCard.mtgo_foil_id}
-              {selectedCard.tcgplayer_id}
-              {selectedCard.cardmarket_id}
-              {selectedCard.name}
-              {selectedCard.lang}
-              {selectedCard.released_at}
-              {selectedCard.uri}
-              {selectedCard.scryfall_uri}
-              {selectedCard.layout}
-              {selectedCard.highres_image}
-              {selectedCard.image_status}
-              //TODO ask DANIEL
-              {/* {selectedCard.image_uris.small}
-              {selectedCard.image_uris.normal}
-              {selectedCard.image_uris.large}
-              {selectedCard.image_uris.png}
-              {selectedCard.image_uris.art_crop}
-              {selectedCard.image_uris.border_crop} */}
-              {selectedCard.mana_cost}
-              {selectedCard.cmc}
-              {selectedCard.type_line}
-              {selectedCard.oracle_text}
-              {selectedCard.power}
-              {selectedCard.toughness}
-              {selectedCard.colors}
-              {selectedCard.color_identity.}
-              {selectedCard.keywords}
-              // TODO
-              {/* {selectedCard.legalities.standard}
-              {selectedCard.legalities.future}
-              {selectedCard.legalities.historic}
-              {selectedCard.legalities.gladiator}
-              {selectedCard.legalities.pioneer}
-              {selectedCard.legalities.explorer}
-              {selectedCard.legalities.modern}
-              {selectedCard.legalities.legacy}
-              {selectedCard.legalities.pauper}
-              {selectedCard.legalities.vintage}
-              {selectedCard.legalities.penny}
-              {selectedCard.legalities.commander}
-              {selectedCard.legalities.brawl}
-              {selectedCard.legalities.historicbrawl}
-              {selectedCard.legalities.alchemy}
-              {selectedCard.legalities.paupercommander}
-              {selectedCard.legalities.duel}
-              {selectedCard.legalities.oldschool}
-              {selectedCard.legalities.premodern} */}
-              // TODO
-              {/* {selectedCard.games[0]}
-              {selectedCard.games[1]} */}
-              {selectedCard.reserved}
-              {selectedCard.foil}
-              {selectedCard.nonfoil}
-              {/* {selectedCard.finishes[0]}
-              {selectedCard.finishes[1]} */}
-              {selectedCard.oversized}
-              {selectedCard.promo}
-              {selectedCard.reprint}
-              {selectedCard.variation}
-              {selectedCard.set_id}
-              {selectedCard.set}
-              {selectedCard.set_name}
-              {selectedCard.set_type}
-              {selectedCard.set_uri}
-              {selectedCard.set_search_uri}
-              {selectedCard.scryfall_set_uri}
-              {selectedCard.rulings_uri}
-              {selectedCard.prints_search_uri}
-              {selectedCard.collector_number}
-              {selectedCard.digital}
-              {selectedCard.rarity}
-              {selectedCard.flavor_text}
-              {selectedCard.card_back_id}
-              {selectedCard.artist}
-              {/* {selectedCard.artist_ids} */}
-              {selectedCard.illustration_id}
-              {selectedCard.border_color}
-              {selectedCard.frame}
-              {selectedCard.full_art}
-              {selectedCard.textless}
-              {selectedCard.booster}
-              {selectedCard.story_spotlight}
-              {selectedCard.edhrec_rank}
-              {selectedCard.penny_rank}
-              {/* {selectedCard.prices.usd}
-              {selectedCard.prices.usd_foil}
-              {selectedCard.prices.usd_etched}
-              {selectedCard.prices.eur}
-              {selectedCard.prices.eur_foil}
-              {selectedCard.prices.tix} */}
-              {selectedCard.related_uris.gatherer}
-              {selectedCard.related_uris.tcgplayer_infinite.articles}
-              {selectedCard.related_uris.tcgplayer_infinite_decks}
-              {selectedCard.related_uris.edhrec}
-              {selectedCard.related_uris.tcgplayer_infinite_decks}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-              {selectedCard.foil}
-
-            </Typography>
+            <TableContainer
+              sx={{ width: "20%", height: "500px", overflow: "auto" }}
+            >
+              <Table sx={{ border: "2px solid green" }}>
+                {/* <TableHead>
+                  <TableRow>
+                    <TableCell>Field</TableCell>
+                    <TableCell>Value</TableCell>
+                  </TableRow>
+                </TableHead> */}
+                <TableBody sx={{ border: "2px solid orange" }}>
+                  <TableRow>
+                    <TableCell sx={{ border: "2px solid green" }}>
+                      Name
+                    </TableCell>
+                    <TableCell>{selectedCard.name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Type</TableCell>
+                    <TableCell>{selectedCard.type}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Color</TableCell>
+                    <TableCell>{selectedCard.color}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Stage</TableCell>
+                    <TableCell>{selectedCard.stage}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Digimon Type</TableCell>
+                    <TableCell>{selectedCard.digi_type}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Attribute</TableCell>
+                    <TableCell>{selectedCard.attribute}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Level</TableCell>
+                    <TableCell>{selectedCard.level}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Play Cost</TableCell>
+                    <TableCell>
+                      {selectedCard.play_cost || selectedCard.mana_cost}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Evolution Cost</TableCell>
+                    <TableCell>{selectedCard.evolution_cost}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Card Rarity</TableCell>
+                    <TableCell>{selectedCard.cardrarity}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Artist</TableCell>
+                    <TableCell>{selectedCard.artist}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>DP</TableCell>
+                    <TableCell>{selectedCard.dp}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Card Number</TableCell>
+                    <TableCell>{selectedCard.cardnumber}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Main Effect</TableCell>
+                    <TableCell>{selectedCard.maineffect}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Soure Effect</TableCell>
+                    <TableCell>{selectedCard.soureeffect}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Set Name</TableCell>
+                    <TableCell>{selectedCard.set_name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Card Sets</TableCell>
+                    <TableCell>{selectedCard.card_sets}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Box>
         </Modal>
       )}
     </FilterCardStyles>
-    </>
   );
 };
 
@@ -286,6 +248,13 @@ const FilterCardStyles = styled.div`
   .MuiInputBase-input {
     width: 50vw;
   }
+  // TODO DANIEL
+  /* .too {
+    border: 2px solid green;
+  }
+  .too2 {
+    border: 2px solid red;
+  } */
 `;
 
 export default FilterCard;
