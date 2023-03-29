@@ -49,7 +49,8 @@ const FilterCard = () => {
       });
   };
 
-  const handleCardClick = (card) => {
+  // TODO DANIEL
+  const handleCardClick = (card: React.SetStateAction<any>) => {
     setSelectedCard(card);
     setOpen(true);
   };
@@ -59,6 +60,7 @@ const FilterCard = () => {
   };
 
   return (
+    <>
     <FilterCardStyles>
       <TextField
         sx={{ ml: 1, flex: 1, color: "white" }}
@@ -150,12 +152,122 @@ const FilterCard = () => {
               {selectedCard.img_url}
               {selectedCard.set_name}
 
-              {/* Pokemon */}
+              {/* MTG */}
+              {selectedCard.id}
+              {selectedCard.oracle_id}
+              {selectedCard.multiverse_ids}
+              {selectedCard.mtgo_id}
+              {selectedCard.mtgo_foil_id}
+              {selectedCard.tcgplayer_id}
+              {selectedCard.cardmarket_id}
+              {selectedCard.name}
+              {selectedCard.lang}
+              {selectedCard.released_at}
+              {selectedCard.uri}
+              {selectedCard.scryfall_uri}
+              {selectedCard.layout}
+              {selectedCard.highres_image}
+              {selectedCard.image_status}
+              //TODO ask DANIEL
+              {/* {selectedCard.image_uris.small}
+              {selectedCard.image_uris.normal}
+              {selectedCard.image_uris.large}
+              {selectedCard.image_uris.png}
+              {selectedCard.image_uris.art_crop}
+              {selectedCard.image_uris.border_crop} */}
+              {selectedCard.mana_cost}
+              {selectedCard.cmc}
+              {selectedCard.type_line}
+              {selectedCard.oracle_text}
+              {selectedCard.power}
+              {selectedCard.toughness}
+              {selectedCard.colors}
+              {selectedCard.color_identity.}
+              {selectedCard.keywords}
+              // TODO
+              {/* {selectedCard.legalities.standard}
+              {selectedCard.legalities.future}
+              {selectedCard.legalities.historic}
+              {selectedCard.legalities.gladiator}
+              {selectedCard.legalities.pioneer}
+              {selectedCard.legalities.explorer}
+              {selectedCard.legalities.modern}
+              {selectedCard.legalities.legacy}
+              {selectedCard.legalities.pauper}
+              {selectedCard.legalities.vintage}
+              {selectedCard.legalities.penny}
+              {selectedCard.legalities.commander}
+              {selectedCard.legalities.brawl}
+              {selectedCard.legalities.historicbrawl}
+              {selectedCard.legalities.alchemy}
+              {selectedCard.legalities.paupercommander}
+              {selectedCard.legalities.duel}
+              {selectedCard.legalities.oldschool}
+              {selectedCard.legalities.premodern} */}
+              // TODO
+              {/* {selectedCard.games[0]}
+              {selectedCard.games[1]} */}
+              {selectedCard.reserved}
+              {selectedCard.foil}
+              {selectedCard.nonfoil}
+              {/* {selectedCard.finishes[0]}
+              {selectedCard.finishes[1]} */}
+              {selectedCard.oversized}
+              {selectedCard.promo}
+              {selectedCard.reprint}
+              {selectedCard.variation}
+              {selectedCard.set_id}
+              {selectedCard.set}
+              {selectedCard.set_name}
+              {selectedCard.set_type}
+              {selectedCard.set_uri}
+              {selectedCard.set_search_uri}
+              {selectedCard.scryfall_set_uri}
+              {selectedCard.rulings_uri}
+              {selectedCard.prints_search_uri}
+              {selectedCard.collector_number}
+              {selectedCard.digital}
+              {selectedCard.rarity}
+              {selectedCard.flavor_text}
+              {selectedCard.card_back_id}
+              {selectedCard.artist}
+              {/* {selectedCard.artist_ids} */}
+              {selectedCard.illustration_id}
+              {selectedCard.border_color}
+              {selectedCard.frame}
+              {selectedCard.full_art}
+              {selectedCard.textless}
+              {selectedCard.booster}
+              {selectedCard.story_spotlight}
+              {selectedCard.edhrec_rank}
+              {selectedCard.penny_rank}
+              {/* {selectedCard.prices.usd}
+              {selectedCard.prices.usd_foil}
+              {selectedCard.prices.usd_etched}
+              {selectedCard.prices.eur}
+              {selectedCard.prices.eur_foil}
+              {selectedCard.prices.tix} */}
+              {selectedCard.related_uris.gatherer}
+              {selectedCard.related_uris.tcgplayer_infinite.articles}
+              {selectedCard.related_uris.tcgplayer_infinite_decks}
+              {selectedCard.related_uris.edhrec}
+              {selectedCard.related_uris.tcgplayer_infinite_decks}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+              {selectedCard.foil}
+
             </Typography>
           </Box>
         </Modal>
       )}
     </FilterCardStyles>
+    </>
   );
 };
 
