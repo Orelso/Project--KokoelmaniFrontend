@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField } from "@mui/material";
 import styled from "styled-components";
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../store";
@@ -8,6 +8,7 @@ import { Paper } from "@mui/material";
 import { Modal } from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import {
   Table,
   TableBody,
@@ -79,7 +80,7 @@ const FilterCard = () => {
         }}
       />
 
-      {searchResults.slice(0, 5).map((result, index) => {
+      {searchResults.map((result, index) => {
         return (
           <TableContainer
             key={index}
@@ -103,8 +104,8 @@ const FilterCard = () => {
                     src={
                       result.image_uris?.small ||
                       result.image_url ||
-                      result.images?.small ||
-                      result.card_images[0].image_url_small
+                      result.images?.small
+                      // result.card_images[0].image_url_small
                     }
                     onClick={() => handleCardClick(result)}
                   />
@@ -135,11 +136,41 @@ const FilterCard = () => {
             >
               <CloseIcon />
             </IconButton>
-            {/*-- Container for image and table --*/}
-            <img
-              src={selectedCard.image_uris?.normal || selectedCard.image_url}
-              style={{ border: "8px solid black" }}
-            />
+            {/*-- Container for image and table and more --*/}
+            <div style={{ display: "flex" }}>
+              <div style={{ flex: 1 }}>
+                <Typography>
+                  <h1>{selectedCard.name}</h1>
+                  <h6>{selectedCard.set_name}</h6>
+                </Typography>
+                <img
+                  src={
+                    selectedCard.image_uris?.normal || selectedCard.image_url
+                  }
+                  style={{ border: "8px solid black" }}
+                  width="300"
+                  height="300"
+                />
+                <Button>
+                  <AddCircleOutlineRoundedIcon />
+                  Collection
+                </Button>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginRight: 40,
+                  }}
+                >
+                  <h3 style={{ marginRight: "20px" }}>Today's Average</h3>
+                  <h3 style={{ marginRight: "20px" }}>All Time high</h3>
+                  <h3>All Time Low</h3>
+                </div>
+              </div>
+            </div>
+
             <TableContainer
               sx={{ width: "20%", height: "500px", overflow: "auto" }}
             >
@@ -222,6 +253,12 @@ const FilterCard = () => {
                   <TableRow>
                     <TableCell>Card Sets</TableCell>
                     <TableCell>{selectedCard.card_sets}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Card f</TableCell>
+                    <TableCell>{selectedCard.legalities?.standard}</TableCell>
+                    <TableCell>{selectedCard.legalities?.future}</TableCell>
+                    <TableCell>{selectedCard.legalities?.vintage}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

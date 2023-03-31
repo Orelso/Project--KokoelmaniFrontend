@@ -15,8 +15,7 @@ import FormatListNumberedRtlOutlinedIcon from "@mui/icons-material/FormatListNum
 import MenuIcon from "@mui/icons-material/Menu";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import Link from "next/link";
-import styled from 'styled-components';
-
+import styled from "styled-components";
 
 // const useStyles = makeStyles((theme) => {
 //   return{
@@ -32,8 +31,6 @@ import styled from 'styled-components';
 //     // /* padding: theme.spacing(2) */
 //   }
 // }})
-
-
 
 const menuItems = [
   {
@@ -62,9 +59,9 @@ const menuItems = [
     path: "/lists",
   },
   {
-    text: "Other",
+    text: "Rankings",
     icon: <MoreHorizOutlinedIcon color="secondary" />,
-    path: "/other",
+    path: "/rankings",
   },
 ];
 // const logSign = [
