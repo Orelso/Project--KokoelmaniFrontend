@@ -18,11 +18,13 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import type { AnyCard } from "../types";
+import Image from "next/image";
 
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
-  const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
   const [open, setOpen] = React.useState(false);
 
   const handleOnChange = ({
@@ -48,8 +50,7 @@ const FilterCard = () => {
       });
   };
 
-  // TODO DANIEL
-  const handleCardClick = (card: React.SetStateAction<any>) => {
+  const handleCardClick = (card: null | AnyCard) => {
     setSelectedCard(card);
     setOpen(true);
   };
@@ -97,15 +98,17 @@ const FilterCard = () => {
               </TableRow>
               <TableRow onClick={() => handleCardClick(result)}>
                 <TableCell>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     title="Image title"
-                    alt="img"
+                    alt=""
                     width="47"
+                    height="0"
                     src={
                       result.image_uris?.small ||
                       result.image_url ||
-                      result.images?.small
-                      // result.card_images[0].image_url_small
+                      result.images?.small ||
+                      result.card_images?.[0]?.image_url_small
                     }
                     onClick={() => handleCardClick(result)}
                   />
@@ -143,9 +146,14 @@ const FilterCard = () => {
                   <h1>{selectedCard.name}</h1>
                   <h6>{selectedCard.set_name}</h6>
                 </Typography>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
+                  alt=""
                   src={
-                    selectedCard.image_uris?.normal || selectedCard.image_url
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    selectedCard.image_uris?.normal ||
+                    selectedCard.image_url ||
+                    selectedCard.card_images?.[0]?.image_url
                   }
                   style={{ border: "8px solid black" }}
                   width="300"
@@ -164,7 +172,7 @@ const FilterCard = () => {
                     marginRight: 40,
                   }}
                 >
-                  <h3 style={{ marginRight: "20px" }}>Today's Average</h3>
+                  <h3 style={{ marginRight: "20px" }}>Today{"'"}s Average</h3>
                   <h3 style={{ marginRight: "20px" }}>All Time high</h3>
                   <h3>All Time Low</h3>
                 </div>
@@ -188,78 +196,34 @@ const FilterCard = () => {
                     </TableCell>
                     <TableCell>{selectedCard.name}</TableCell>
                   </TableRow>
-                  <TableRow>
-                    <TableCell>Type</TableCell>
-                    <TableCell>{selectedCard.type}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Color</TableCell>
-                    <TableCell>{selectedCard.color}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Stage</TableCell>
-                    <TableCell>{selectedCard.stage}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Digimon Type</TableCell>
-                    <TableCell>{selectedCard.digi_type}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Attribute</TableCell>
-                    <TableCell>{selectedCard.attribute}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Level</TableCell>
-                    <TableCell>{selectedCard.level}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Play Cost</TableCell>
-                    <TableCell>
-                      {selectedCard.play_cost || selectedCard.mana_cost}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Evolution Cost</TableCell>
-                    <TableCell>{selectedCard.evolution_cost}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Card Rarity</TableCell>
-                    <TableCell>{selectedCard.cardrarity}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Artist</TableCell>
-                    <TableCell>{selectedCard.artist}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>DP</TableCell>
-                    <TableCell>{selectedCard.dp}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Card Number</TableCell>
-                    <TableCell>{selectedCard.cardnumber}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Main Effect</TableCell>
-                    <TableCell>{selectedCard.maineffect}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Soure Effect</TableCell>
-                    <TableCell>{selectedCard.soureeffect}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Set Name</TableCell>
-                    <TableCell>{selectedCard.set_name}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Card Sets</TableCell>
-                    <TableCell>{selectedCard.card_sets}</TableCell>
-                  </TableRow>
-                  <TableRow>
+                  {/* map over the key/val pairs of the object */}
+                  {Object.entries(selectedCard).map(([key, val]) => {
+                    // TODO what if val is an object type
+                    if (typeof val === "object") {
+                      //  Object.entries(val)
+                      return (
+                        <TableRow key={key}>
+                          <TableCell>{startCase(key)}</TableCell>
+                          {/* TODO maybe put a new TableCell for each key/val pair using Object.entries(val).map... */}
+                          <TableCell>{JSON.stringify(val)}</TableCell>
+                        </TableRow>
+                      );
+                    }
+
+                    return (
+                      <TableRow key={key}>
+                        <TableCell>{startCase(key)}</TableCell>
+                        <TableCell>{startCase(String(val))}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+
+                  {/* <TableRow>
                     <TableCell>Card f</TableCell>
                     <TableCell>{selectedCard.legalities?.standard}</TableCell>
                     <TableCell>{selectedCard.legalities?.future}</TableCell>
                     <TableCell>{selectedCard.legalities?.vintage}</TableCell>
-                  </TableRow>
+                  </TableRow> */}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -270,12 +234,22 @@ const FilterCard = () => {
   );
 };
 
+/** title case = turn e.g. "hi how" into "Hi How" */
+function startCase(string: string) {
+  return string
+    .split(" ")
+    .map(
+      (word) => `${word[0]?.toUpperCase() ?? ""}${word.slice(1).toLowerCase()}`
+    )
+    .join(" ");
+}
+
 const FilterCardStyles = styled.div`
   max-width: 600px;
   width: 90vw;
   margin: auto;
   transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-  marginT &:hover {
+  &:hover {
     transform: scale(1.05);
   }
   .MuiTextField-root {

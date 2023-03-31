@@ -1,3 +1,4 @@
+export type AnyCard = { name: string } & Partial<DigimonCard & PokemonCard>;
 export type DigimonCard = {
   name: string;
   type: string;
@@ -16,6 +17,8 @@ export type DigimonCard = {
   set_name: string;
   card_sets: string;
   img_url: string;
+  image_uris: any;
+  // TODO add image_uris
 };
 export type PokemonCard = {
   name: string;

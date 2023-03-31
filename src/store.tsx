@@ -1,6 +1,6 @@
 import { atom } from "jotai";
-import type { MTGCard } from "./types";
+import type { AnyCard, MTGCard } from "./types";
 // import type { YuGiOhCard } from "./types";
 
-export const searchResultsAtom = atom<MTGCard[]>([]);
+export const searchResultsAtom = atom<AnyCard[]>([]);
 // export const searchResultsYuGiOh = atom<YuGiOhCard[]>([]);
