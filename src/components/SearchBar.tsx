@@ -208,6 +208,7 @@ const FilterCard = () => {
                       ru: "Russian",
                       fr: "French",
                       ph: "Phyrexian",
+                      card: "Magic The Gathering",
                     };
                     if (
                       key === "multiverse_ids" ||
@@ -225,12 +226,15 @@ const FilterCard = () => {
                       key === "artist_ids" ||
                       key === "frame" ||
                       key === "story_spotlight	" ||
-                      key === "oracle_id"
+                      key === "oracle_id" ||
+                      key === "image_uris" ||
+                      key === "card_back_id" ||
+                      key === "illustration_id"
                     ) {
                       return null; // Skip this iteration of the map loop
                     }
 
-                    if (key === "language") {
+                    if (key === "modified") {
                       val = "modified value"; // replace the value with a new one
                     } else if (
                       modifiedValues[val as keyof typeof modifiedValues]
@@ -247,7 +251,15 @@ const FilterCard = () => {
                       );
                     }
 
-                    if (key === "uri") {
+                    if (
+                      key === "uri" ||
+                      key === "scryfall_uri" ||
+                      key === "set_uri" ||
+                      key === "set_search_uri" ||
+                      key === "scryfall_set_uri" ||
+                      key === "rulings_uri" ||
+                      key === "prints_search_uri"
+                    ) {
                       return (
                         <TableRow key={key}>
                           <TableCell>{startCase(key)}</TableCell>
