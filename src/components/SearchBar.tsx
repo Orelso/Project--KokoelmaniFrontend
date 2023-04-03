@@ -19,7 +19,6 @@ import {
   Typography,
 } from "@mui/material";
 import type { AnyCard } from "../types";
-import Image from "next/image";
 
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -163,6 +162,10 @@ const FilterCard = () => {
                   <AddCircleOutlineRoundedIcon />
                   Collection
                 </Button>
+                <Button>
+                  <AddCircleOutlineRoundedIcon />
+                  Deck
+                </Button>
               </div>
               <div style={{ flex: 1 }}>
                 <div
@@ -180,15 +183,9 @@ const FilterCard = () => {
             </div>
 
             <TableContainer
-              sx={{ width: "20%", height: "500px", overflow: "auto" }}
+              sx={{ width: "20%", height: "450px", overflow: "auto" }}
             >
               <Table sx={{ border: "2px solid green" }}>
-                {/* <TableHead>
-                  <TableRow>
-                    <TableCell>Field</TableCell>
-                    <TableCell>Value</TableCell>
-                  </TableRow>
-                </TableHead> */}
                 <TableBody sx={{ border: "2px solid orange" }}>
                   <TableRow>
                     <TableCell sx={{ border: "2px solid green" }}>
@@ -196,16 +193,73 @@ const FilterCard = () => {
                     </TableCell>
                     <TableCell>{selectedCard.name}</TableCell>
                   </TableRow>
-                  {/* map over the key/val pairs of the object */}
+
                   {Object.entries(selectedCard).map(([key, val]) => {
-                    // TODO what if val is an object type
+                    const modifiedValues = {
+                      es: "Spanish",
+                      en: "English",
+                      it: "Italian",
+                      ja: "Japanese",
+                      zht: "Traditional Chinese",
+                      zhs: "Simplified Chinese",
+                      de: "German",
+                      pt: "Portuguese",
+                      ko: "Korean",
+                      ru: "Russian",
+                      fr: "French",
+                      ph: "Phyrexian",
+                    };
+                    if (
+                      key === "multiverse_ids" ||
+                      key === "id" ||
+                      key === "mtgo_id" ||
+                      key === "mtgo_foil_id" ||
+                      key === "tcgplayer_id" ||
+                      key === "cardmarket_id" ||
+                      key === "highres_image" ||
+                      key === "image_status" ||
+                      key === "produced_mana" ||
+                      key === "set_id" ||
+                      key === "set" ||
+                      key === "collector_number" ||
+                      key === "artist_ids" ||
+                      key === "frame" ||
+                      key === "story_spotlight	" ||
+                      key === "oracle_id"
+                    ) {
+                      return null; // Skip this iteration of the map loop
+                    }
+
+                    if (key === "language") {
+                      val = "modified value"; // replace the value with a new one
+                    } else if (
+                      modifiedValues[val as keyof typeof modifiedValues]
+                    ) {
+                      val = modifiedValues[val as keyof typeof modifiedValues];
+                    }
+
                     if (typeof val === "object") {
-                      //  Object.entries(val)
                       return (
                         <TableRow key={key}>
                           <TableCell>{startCase(key)}</TableCell>
-                          {/* TODO maybe put a new TableCell for each key/val pair using Object.entries(val).map... */}
                           <TableCell>{JSON.stringify(val)}</TableCell>
+                        </TableRow>
+                      );
+                    }
+
+                    if (key === "uri") {
+                      return (
+                        <TableRow key={key}>
+                          <TableCell>{startCase(key)}</TableCell>
+                          <TableCell>
+                            <a
+                              href={val}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {val}
+                            </a>
+                          </TableCell>
                         </TableRow>
                       );
                     }
@@ -217,13 +271,6 @@ const FilterCard = () => {
                       </TableRow>
                     );
                   })}
-
-                  {/* <TableRow>
-                    <TableCell>Card f</TableCell>
-                    <TableCell>{selectedCard.legalities?.standard}</TableCell>
-                    <TableCell>{selectedCard.legalities?.future}</TableCell>
-                    <TableCell>{selectedCard.legalities?.vintage}</TableCell>
-                  </TableRow> */}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -259,7 +306,6 @@ const FilterCardStyles = styled.div`
   .MuiInputBase-input {
     width: 50vw;
   }
-  // TODO DANIEL
   /* .too {
     border: 2px solid green;
   }
