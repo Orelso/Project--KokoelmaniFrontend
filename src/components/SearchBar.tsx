@@ -20,6 +20,75 @@ import {
 } from "@mui/material";
 import type { AnyCard } from "../types";
 
+const MODIFIED_VALUES = {
+  es: "Spanish",
+  en: "English",
+  it: "Italian",
+  ja: "Japanese",
+  zht: "Traditional Chinese",
+  zhs: "Simplified Chinese",
+  de: "German",
+  pt: "Portuguese",
+  ko: "Korean",
+  ru: "Russian",
+  fr: "French",
+  ph: "Phyrexian",
+  card: "Magic The Gathering",
+  // keyword: [],
+  // colors: [0],
+  // mana_cost: replace(
+  //   "{g}{g}",
+  //   /{g}/g,
+  //   '<img src="../MTGImages/mtg-forest.png" alt="Forest" />'
+  // ),
+};
+
+const HIDDEN_KEYS = [
+  "multiverse_ids",
+  "id",
+  "mtgo_id",
+  "mtgo_foil_id",
+  "tcgplayer_id",
+  "cardmarket_id",
+  "highres_image",
+  "image_status",
+  "produced_mana",
+  "set_id",
+  "set",
+  "collector_number",
+  "artist_ids",
+  "frame",
+  "story_spotlight",
+  "oracle_id",
+  "image_uris",
+  "card_back_id",
+  "illustration_id",
+  "name",
+];
+
+const RENAME_KEYS_MAP = {
+  object: "category",
+  lang: "language",
+  released_at: "released",
+  mana_cost: "mana cost",
+  type_line: "type",
+  oracle_text: "flavor text",
+  color_identity: "color identity",
+  set_name: "set name",
+  set_type: "set type",
+  border_color: "border color",
+  full_art: "full art",
+};
+
+const KEYS_FOR_SOMETHING_TODO = [
+  "uri",
+  "scryfall_uri",
+  "set_uri",
+  "set_search_uri",
+  "scryfall_set_uri",
+  "rulings_uri",
+  "prints_search_uri",
+];
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
@@ -150,7 +219,7 @@ const FilterCard = () => {
                   alt=""
                   src={
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    selectedCard.image_uris?.normal ||
+                    selectedCard.image_uris?.border_crop ||
                     selectedCard.image_url ||
                     selectedCard.card_images?.[0]?.image_url
                   }
@@ -199,82 +268,25 @@ const FilterCard = () => {
                       return str.replace(pattern, replacement);
                     }
 
-                    const modifiedValues = {
-                      es: "Spanish",
-                      en: "English",
-                      it: "Italian",
-                      ja: "Japanese",
-                      zht: "Traditional Chinese",
-                      zhs: "Simplified Chinese",
-                      de: "German",
-                      pt: "Portuguese",
-                      ko: "Korean",
-                      ru: "Russian",
-                      fr: "French",
-                      ph: "Phyrexian",
-                      card: "Magic The Gathering",
-                      keyword: ["csdbkjb"],
-                      // colors: [0],
-                      // mana_cost: replace(
-                      //   "{g}{g}",
-                      //   /{g}/g,
-                      //   '<img src="../MTGImages/mtg-forest.png" alt="Forest" />'
-                      // ),
-                    };
-
-                    if (
-                      key === "multiverse_ids" ||
-                      key === "id" ||
-                      key === "mtgo_id" ||
-                      key === "mtgo_foil_id" ||
-                      key === "tcgplayer_id" ||
-                      key === "cardmarket_id" ||
-                      key === "highres_image" ||
-                      key === "image_status" ||
-                      key === "produced_mana" ||
-                      key === "set_id" ||
-                      key === "set" ||
-                      key === "collector_number" ||
-                      key === "artist_ids" ||
-                      key === "frame" ||
-                      key === "story_spotlight	" ||
-                      key === "oracle_id" ||
-                      key === "image_uris" ||
-                      key === "card_back_id" ||
-                      key === "illustration_id" ||
-                      key === "name"
-                    ) {
+                    if (HIDDEN_KEYS.includes(key)) {
                       return null; // Skip this iteration of the map loop
-                    } else if (key === "object") {
-                      key = "category";
-                    } else if (key === "lang") {
-                      key = "language";
-                    } else if (key === "released_at") {
-                      key = "released";
-                    } else if (key === "mana_cost") {
-                      key = "mana cost";
-                    } else if (key === "type_line") {
-                      key = "type";
-                    } else if (key === "oracle_text") {
-                      key = "flavor text";
-                    } else if (key === "color_identity") {
-                      key = "color identity";
-                    } else if (key === "set_name") {
-                      key = "set name";
-                    } else if (key === "set_type") {
-                      key = "set type";
-                    } else if (key === "border_color") {
-                      key = "border color";
-                    } else if (key === "full_art") {
-                      key = "full art";
+                    } // Changing the words to more suitable constants
+                    let renamedKey = key;
+                    const shouldRenameKey =
+                      // Object.keys(RENAME_KEYS_MAP).includes(key);
+                      key in RENAME_KEYS_MAP;
+                    if (shouldRenameKey) {
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                      renamedKey = RENAME_KEYS_MAP[key];
                     }
 
                     if (key === "modified") {
                       val = "modified value"; // replace the value with a new one
                     } else if (
-                      modifiedValues[val as keyof typeof modifiedValues]
+                      MODIFIED_VALUES[val as keyof typeof MODIFIED_VALUES]
                     ) {
-                      val = modifiedValues[val as keyof typeof modifiedValues];
+                      val =
+                        MODIFIED_VALUES[val as keyof typeof MODIFIED_VALUES];
                     }
 
                     if (typeof val === "object") {
@@ -286,18 +298,10 @@ const FilterCard = () => {
                       );
                     }
 
-                    if (
-                      key === "uri" ||
-                      key === "scryfall_uri" ||
-                      key === "set_uri" ||
-                      key === "set_search_uri" ||
-                      key === "scryfall_set_uri" ||
-                      key === "rulings_uri" ||
-                      key === "prints_search_uri"
-                    ) {
+                    if (KEYS_FOR_SOMETHING_TODO.includes(key)) {
                       return (
                         <TableRow key={key}>
-                          <TableCell>{startCase(key)}</TableCell>
+                          <TableCell>{startCase(renamedKey)}</TableCell>
                           <TableCell>
                             <a
                               href={val}
@@ -313,7 +317,7 @@ const FilterCard = () => {
 
                     return (
                       <TableRow key={key}>
-                        <TableCell>{startCase(key)}</TableCell>
+                        <TableCell>{startCase(renamedKey)}</TableCell>
                         <TableCell>{startCase(String(val))}</TableCell>
                       </TableRow>
                     );
