@@ -632,6 +632,28 @@ const exampleYuGiOhCard = {
 };
 export type YuGiOhCard = typeof exampleYuGiOhCard;
 
+const exampleDigimonCard = {
+  name: "MetalGreymon",
+  type: "Digimon",
+  color: "Yellow",
+  stage: "Ultimate",
+  digi_type: "Android",
+  attribute: "Virus",
+  level: null,
+  play_cost: null,
+  evolution_cost: null,
+  cardrarity: null,
+  artist: null,
+  dp: null,
+  cardnumber: "BO-01",
+  maineffect: null,
+  soureeffect: null,
+  set_name: "Series 1 Booster Pack",
+  card_sets: ["Series 1 Booster Pack"],
+  image_url: "https://images.digimoncard.io/images/cards/BO-01.jpg",
+};
+export type DigimonCard = typeof exampleDigimonCard;
+
 export type CardCategory =
   | "Pokemon"
   | "MTG"

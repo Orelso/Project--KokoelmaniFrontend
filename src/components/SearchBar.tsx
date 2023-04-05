@@ -195,6 +195,10 @@ const FilterCard = () => {
                   </TableRow>
 
                   {Object.entries(selectedCard).map(([key, val]) => {
+                    function replace(str, pattern, replacement) {
+                      return str.replace(pattern, replacement);
+                    }
+
                     const modifiedValues = {
                       es: "Spanish",
                       en: "English",
@@ -209,7 +213,15 @@ const FilterCard = () => {
                       fr: "French",
                       ph: "Phyrexian",
                       card: "Magic The Gathering",
+                      keyword: ["csdbkjb"],
+                      // colors: [0],
+                      // mana_cost: replace(
+                      //   "{g}{g}",
+                      //   /{g}/g,
+                      //   '<img src="../MTGImages/mtg-forest.png" alt="Forest" />'
+                      // ),
                     };
+
                     if (
                       key === "multiverse_ids" ||
                       key === "id" ||
@@ -229,9 +241,32 @@ const FilterCard = () => {
                       key === "oracle_id" ||
                       key === "image_uris" ||
                       key === "card_back_id" ||
-                      key === "illustration_id"
+                      key === "illustration_id" ||
+                      key === "name"
                     ) {
                       return null; // Skip this iteration of the map loop
+                    } else if (key === "object") {
+                      key = "category";
+                    } else if (key === "lang") {
+                      key = "language";
+                    } else if (key === "released_at") {
+                      key = "released";
+                    } else if (key === "mana_cost") {
+                      key = "mana cost";
+                    } else if (key === "type_line") {
+                      key = "type";
+                    } else if (key === "oracle_text") {
+                      key = "flavor text";
+                    } else if (key === "color_identity") {
+                      key = "color identity";
+                    } else if (key === "set_name") {
+                      key = "set name";
+                    } else if (key === "set_type") {
+                      key = "set type";
+                    } else if (key === "border_color") {
+                      key = "border color";
+                    } else if (key === "full_art") {
+                      key = "full art";
                     }
 
                     if (key === "modified") {
