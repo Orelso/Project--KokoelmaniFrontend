@@ -18,11 +18,12 @@ import {
   Typography,
 } from "@mui/material";
 import type { AnyCard } from "../types";
-import forestImage from "../MTGImages/mtg-forest.jpg";
-import islandImage from "../MTGImages/mtg-island.png";
-import mountainImage from "../MTGImages/mtg-mountain.png";
-import plainsImage from "../MTGImages/mtg-plains.png";
-import swampImage from "../MTGImages/mtg-swamp.png";
+import Image from "next/image";
+import forestImage from "./MTGImages/mtg-forest.jpg";
+// import islandImage from "../MTGImages/mtg-island.png";
+// import mountainImage from "../MTGImages/mtg-mountain.png";
+// import plainsImage from "../MTGImages/mtg-plains.png";
+// import swampImage from "../MTGImages/mtg-swamp.png";
 
 const MODIFIED_VALUES = {
   es: "Spanish",
@@ -256,7 +257,7 @@ const FilterCard = () => {
             </div>
 
             <TableContainer
-              sx={{ width: "20%", height: "450px", overflow: "auto" }}
+              sx={{ minHeight: 100, height: "450px", overflow: "auto" }}
             >
               <Table sx={{ border: "2px solid green" }}>
                 <TableBody sx={{ border: "2px solid orange" }}>
@@ -332,28 +333,42 @@ const FilterCard = () => {
   );
 };
 
+const LAND_SUBSTRING_TO_COLOR_MAP = {
+  G: "forest",
+  U: "island",
+  B: "swamp",
+  R: "mountain",
+  W: "plains",
+};
+
 function getTableValue(val: any): React.ReactNode {
-  // detect if it includes a string like "{x}"
   const doesContainManacost = true; // TODO
 
-  // split the input value based on certain strings
-  const valArray = String(val).split(/{(.*?)}/g);
+  const valArray = String(val).split("{");
 
-  // map the array of substrings to corresponding React Nodes
-  const valNodes = valArray.map((substring) => {
-    if (substring === "G") {
-      return <img src={forestImage} alt="Forest" />;
-    } else if (substring === "U") {
-      return <img src={islandImage} alt="Island" />;
-    } else if (substring === "R") {
-      return <img src={mountainImage} alt="Mountain" />;
-    } else if (substring === "W") {
-      return <img src={plainsImage} alt="Plains" />;
-    } else if (substring === "B") {
-      return <img src={swampImage} alt="Swamp" />;
-    } else {
+  const valNodes = valArray.map((substring, idx) => {
+    // 1. remove any items that don't match e.g. "X}"
+    const isManaOrNumber = substring.includes("{}");
+    const isNotNumber = isNaN(parseInt(substring, 1));
+    const isManaLetter = isManaOrNumber && isNotNumber;
+
+    const manaLetter = isManaLetter ? substring.slice(0, 1) : substring;
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const landColor: string = LAND_SUBSTRING_TO_COLOR_MAP[manaLetter];
+    // if we're not looking at a G, U, etc right now, return string
+    if (!landColor) {
       return substring;
     }
+    return (
+      <Image
+        width={10}
+        height={10}
+        key={idx}
+        src={`/MTGImages/mtg-${landColor}.jpg`}
+        alt={startCase(landColor)}
+      />
+    );
   });
 
   // return the mapped array of React Nodes

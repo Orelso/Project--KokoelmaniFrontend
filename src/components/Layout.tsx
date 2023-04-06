@@ -16,14 +16,13 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 
 export default function Layout({ children }: { children: JSX.Element }) {
-  const [selectedBackground, setSelectedBackground] = React.useState(
-    "default-background.jpg"
-  );
+  const [selectedBackground, setSelectedBackground] =
+    React.useState("MarvelDC1.jpg");
 
   const handleBackgroundChange = (
-    event: React.ChangeEvent<{ value: unknown }>
+    event: React.ChangeEvent<{ value: string }>
   ) => {
-    setSelectedBackground(event.target.value as string);
+    setSelectedBackground(event.target.value);
     document.body.style.backgroundImage = `url(${event.target.value})`;
   };
 
@@ -39,7 +38,9 @@ export default function Layout({ children }: { children: JSX.Element }) {
             value={selectedBackground}
             onChange={handleBackgroundChange}
           >
-            <MenuItem value="MarvelDC1.jpg">Default Background</MenuItem>
+            <MenuItem value="src/components/MarvelDC1.jpg">
+              Default Background
+            </MenuItem>
             <MenuItem value="red-background.jpg">Red Background</MenuItem>
             <MenuItem value="blue-background.jpg">Blue Background</MenuItem>
             <MenuItem value="green-background.jpg">Green Background</MenuItem>
