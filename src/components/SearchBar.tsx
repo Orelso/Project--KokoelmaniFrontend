@@ -20,6 +20,7 @@ import {
 import type { AnyCard } from "../types";
 import Image from "next/image";
 import forestImage from "./MTGImages/mtg-forest.jpg";
+import { width } from "@mui/system";
 // import islandImage from "../MTGImages/mtg-island.png";
 // import mountainImage from "../MTGImages/mtg-mountain.png";
 // import plainsImage from "../MTGImages/mtg-plains.png";
@@ -39,6 +40,9 @@ const MODIFIED_VALUES = {
   fr: "French",
   ph: "Phyrexian",
   card: "Magic The Gathering",
+  false: "No",
+  true: "Yes",
+
   // keyword: [],
   // colors: [0],
   // mana_cost: replace(
@@ -229,8 +233,7 @@ const FilterCard = () => {
                     selectedCard.card_images?.[0]?.image_url
                   }
                   style={{ border: "8px solid black" }}
-                  width="300"
-                  height="300"
+                  width="400"
                 />
                 <Button>
                   <AddCircleOutlineRoundedIcon />
@@ -257,7 +260,12 @@ const FilterCard = () => {
             </div>
 
             <TableContainer
-              sx={{ minHeight: 100, height: "450px", overflow: "auto" }}
+              sx={{
+                minHeight: 100,
+                height: "450px",
+                overflow: "auto",
+                width: "400px",
+              }}
             >
               <Table sx={{ border: "2px solid green" }}>
                 <TableBody sx={{ border: "2px solid orange" }}>
@@ -294,7 +302,9 @@ const FilterCard = () => {
                       return (
                         <TableRow key={key}>
                           <TableCell>{startCase(key)}</TableCell>
-                          <TableCell>{JSON.stringify(val)}</TableCell>
+                          <TableCell sx={{ wordBreak: "break-word;" }}>
+                            {JSON.stringify(val)}
+                          </TableCell>
                         </TableRow>
                       );
                     }
@@ -342,15 +352,14 @@ const LAND_SUBSTRING_TO_COLOR_MAP = {
 };
 
 function getTableValue(val: any): React.ReactNode {
-  const doesContainManacost = true; // TODO
-
-  const valArray = String(val).split("{");
+  const valArray = String(val).split(/[{}]/);
 
   const valNodes = valArray.map((substring, idx) => {
     // 1. remove any items that don't match e.g. "X}"
-    const isManaOrNumber = substring.includes("{}");
+    const isManaOrNumber = substring.includes("}");
+    const isManaOrNumber1 = substring.includes("");
     const isNotNumber = isNaN(parseInt(substring, 1));
-    const isManaLetter = isManaOrNumber && isNotNumber;
+    const isManaLetter = (isManaOrNumber && isNotNumber) || isManaOrNumber1;
 
     const manaLetter = isManaLetter ? substring.slice(0, 1) : substring;
 
@@ -365,7 +374,7 @@ function getTableValue(val: any): React.ReactNode {
         width={10}
         height={10}
         key={idx}
-        src={`/MTGImages/mtg-${landColor}.jpg`}
+        src={`/MTGImagesMana/mtg-${landColor}.jpg`}
         alt={startCase(landColor)}
       />
     );
