@@ -21,6 +21,7 @@ import type { AnyCard } from "../types";
 import Image from "next/image";
 import forestImage from "./MTGImages/mtg-forest.jpg";
 import { width } from "@mui/system";
+import CommentSection from "./CommentSection";
 // import islandImage from "../MTGImages/mtg-island.png";
 // import mountainImage from "../MTGImages/mtg-mountain.png";
 // import plainsImage from "../MTGImages/mtg-plains.png";
@@ -256,6 +257,7 @@ const FilterCard = () => {
                   <h3 style={{ marginRight: "20px" }}>All Time high</h3>
                   <h3>All Time Low</h3>
                 </div>
+                <CommentSection />
               </div>
             </div>
 
@@ -359,7 +361,10 @@ function getTableValue(val: any): React.ReactNode {
     const isManaOrNumber = substring.includes("}");
     const isManaOrNumber1 = substring.includes("");
     const isNotNumber = isNaN(parseInt(substring, 1));
-    const isManaLetter = (isManaOrNumber && isNotNumber) || isManaOrNumber1;
+    const isManaLetter =
+      (isManaOrNumber && isNotNumber) ||
+      isManaOrNumber1 ||
+      /[GUWBR]/.test(substring);
 
     const manaLetter = isManaLetter ? substring.slice(0, 1) : substring;
 
@@ -380,7 +385,6 @@ function getTableValue(val: any): React.ReactNode {
     );
   });
 
-  // return the mapped array of React Nodes
   return valNodes;
 }
 
