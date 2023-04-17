@@ -49,6 +49,11 @@ const menuItems = [
     path: "/collections",
   },
   {
+    text: "Decks",
+    icon: <AddIcon color="secondary" />,
+    path: "/decks",
+  },
+  {
     text: "Wallet",
     icon: <SavingsIcon color="secondary" />,
     path: "/wallet",
