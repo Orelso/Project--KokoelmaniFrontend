@@ -13,24 +13,17 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import FormatListNumberedRtlOutlinedIcon from "@mui/icons-material/FormatListNumberedRtlOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
-
-// const useStyles = makeStyles((theme) => {
-//   return{
-//   button: {
-//       backgroundColor: 'green',
-//       width: '10px',
-//        padding: theme.spacing(1)
-//   },
-//   featured: {
-//     // /* padding: theme.spacing(8) */
-//   },
-//   tablerow: {
-//     // /* padding: theme.spacing(2) */
-//   }
-// }})
 
 const menuItems = [
   {
@@ -69,25 +62,21 @@ const menuItems = [
     path: "/rankings",
   },
 ];
-// const logSign = [
-//   {
-//     text: "Log In",
-//     icon: <LoginIcon color='secondary' />,
-//     // path: "/",
-//   },
-//   {
-//     text: "Sign Up",
-//     icon: <AssignmentIndIcon color='secondary' />,
-//     // path: "/Createcollection",
-//   },
-// ]
+
 export function ResponsiveAppBar() {
+  const [selectedBackground, setSelectedBackground] =
+    React.useState("MarvelDC1.jpg");
+
+  const handleBackgroundChange = (
+    event: React.ChangeEvent<{ value: string }>
+  ) => {
+    setSelectedBackground(event.target.value);
+    document.body.style.backgroundImage = `url(${event.target.value})`;
+  };
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  // const [anchorElUser, setAnchorElUser] = React.useState(null);
-  // const navigate = useNavigate();
-  // const classes = useStyles()
+
   const handleOpenNavMenu: React.MouseEventHandler<HTMLButtonElement> = (
     event
   ) => {
@@ -197,17 +186,26 @@ export function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
-          {/* {logSign.map((item) => (
-                <ListItem
-                sx={{marginLeft: 20}}
-                  key={item.text}
-                  button
-                  // onClick={() => navigate(item.path)}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItem>
-            ))} */}
+          <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="background-select-label">Background</InputLabel>
+              <Select
+                labelId="background-select-label"
+                id="background-select"
+                value={selectedBackground}
+                onChange={handleBackgroundChange}
+              >
+                <MenuItem value="src/components/MarvelDC1.jpg">
+                  Default Background
+                </MenuItem>
+                <MenuItem value="red-background.jpg">Red Background</MenuItem>
+                <MenuItem value="blue-background.jpg">Blue Background</MenuItem>
+                <MenuItem value="green-background.jpg">
+                  Green Background
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

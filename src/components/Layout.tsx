@@ -16,37 +16,10 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 
 export default function Layout({ children }: { children: JSX.Element }) {
-  const [selectedBackground, setSelectedBackground] =
-    React.useState("MarvelDC1.jpg");
-
-  const handleBackgroundChange = (
-    event: React.ChangeEvent<{ value: string }>
-  ) => {
-    setSelectedBackground(event.target.value);
-    document.body.style.backgroundImage = `url(${event.target.value})`;
-  };
-
   return (
     <>
       <ResponsiveAppBar />
-      <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="background-select-label">Background</InputLabel>
-          <Select
-            labelId="background-select-label"
-            id="background-select"
-            value={selectedBackground}
-            onChange={handleBackgroundChange}
-          >
-            <MenuItem value="src/components/MarvelDC1.jpg">
-              Default Background
-            </MenuItem>
-            <MenuItem value="red-background.jpg">Red Background</MenuItem>
-            <MenuItem value="blue-background.jpg">Blue Background</MenuItem>
-            <MenuItem value="green-background.jpg">Green Background</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+
       {children}
     </>
   );
