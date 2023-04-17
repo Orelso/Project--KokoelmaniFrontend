@@ -22,6 +22,7 @@ import Image from "next/image";
 import forestImage from "./MTGImages/mtg-forest.jpg";
 import { width } from "@mui/system";
 import CommentSection from "./CommentSection";
+import { CurrencyTab } from "./Currency";
 // import islandImage from "../MTGImages/mtg-island.png";
 // import mountainImage from "../MTGImages/mtg-mountain.png";
 // import plainsImage from "../MTGImages/mtg-plains.png";
@@ -221,7 +222,7 @@ const FilterCard = () => {
             <div style={{ display: "flex" }}>
               <div style={{ flex: 1 }}>
                 <Typography>
-                  <h1>{selectedCard.name}</h1>
+                  <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
                   <h6>{selectedCard.set_name}</h6>
                 </Typography>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -256,6 +257,9 @@ const FilterCard = () => {
                   <h3 style={{ marginRight: "20px" }}>Today{"'"}s Average</h3>
                   <h3 style={{ marginRight: "20px" }}>All Time high</h3>
                   <h3>All Time Low</h3>
+                  <h3>
+                    <CurrencyTab />
+                  </h3>
                 </div>
                 <CommentSection />
               </div>

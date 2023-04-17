@@ -20,6 +20,13 @@ const CommentSection: React.FC = () => {
     setNewCommentText("");
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleAddComment();
+    }
+  };
+
   return (
     <div
       style={{
@@ -45,7 +52,7 @@ const CommentSection: React.FC = () => {
           marginBottom: "2px",
         }}
       >
-        Comments
+        Comments 💬
       </h2>
       {comments.length === 0 ? (
         <p>No comments yet.</p>
@@ -68,6 +75,7 @@ const CommentSection: React.FC = () => {
         }}
         value={newCommentText}
         onChange={(e) => setNewCommentText(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       <button style={{ marginTop: "10px" }} onClick={handleAddComment}>
         Post
