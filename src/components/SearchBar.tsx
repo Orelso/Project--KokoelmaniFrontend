@@ -187,7 +187,8 @@ const FilterCard = () => {
                       result.image_uris?.small ||
                       result.image_url ||
                       result.images?.small ||
-                      result.card_images?.[0]?.image_url_small
+                      result.card_images?.[0]?.image_url_small ||
+                      result.imageName
                     }
                     onClick={() => handleCardClick(result)}
                   />
@@ -211,7 +212,6 @@ const FilterCard = () => {
               overflow: "hidden",
             }}
           >
-            {/*-- Modal close button --*/}
             <IconButton
               sx={{ position: "absolute", top: 0, right: 0 }}
               onClick={handleClose}
@@ -232,7 +232,9 @@ const FilterCard = () => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     selectedCard.image_uris?.border_crop ||
                     selectedCard.image_url ||
-                    selectedCard.card_images?.[0]?.image_url
+                    selectedCard.card_images?.[0]?.image_url ||
+                    selectedCard.imageName ||
+                    selectedCard.images.large
                   }
                   style={{ border: "8px solid black" }}
                   width="400"
@@ -283,6 +285,7 @@ const FilterCard = () => {
                   </TableRow>
 
                   {Object.entries(selectedCard).map(([key, val]) => {
+                    console.log(selectedCard);
                     if (HIDDEN_KEYS.includes(key)) {
                       return null; // Skip this iteration of the map loop
                     } // Changing the words to more suitable constants
@@ -358,6 +361,11 @@ const LAND_SUBSTRING_TO_COLOR_MAP = {
 };
 
 function getTableValue(val: any): React.ReactNode {
+  if (Array.isArray(val)) {
+    val = val.map((i: string) => `{${i}}`).join("");
+  }
+
+  console.log(val);
   const valArray = String(val).split(/[{}]/);
 
   const valNodes = valArray.map((substring, idx) => {
@@ -365,10 +373,7 @@ function getTableValue(val: any): React.ReactNode {
     const isManaOrNumber = substring.includes("}");
     const isManaOrNumber1 = substring.includes("");
     const isNotNumber = isNaN(parseInt(substring, 1));
-    const isManaLetter =
-      (isManaOrNumber && isNotNumber) ||
-      isManaOrNumber1 ||
-      /[GUWBR]/.test(substring);
+    const isManaLetter = (isManaOrNumber && isNotNumber) || isManaOrNumber1;
 
     const manaLetter = isManaLetter ? substring.slice(0, 1) : substring;
 
