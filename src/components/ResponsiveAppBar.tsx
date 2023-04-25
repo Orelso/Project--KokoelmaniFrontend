@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -24,6 +23,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import styled from "styled-components";
+import React, { useState } from "react";
 
 const menuItems = [
   {
@@ -64,14 +64,14 @@ const menuItems = [
 ];
 
 export function ResponsiveAppBar() {
-  const [selectedBackground, setSelectedBackground] =
-    React.useState("MarvelDC1.jpg");
+  const [selectedBackground, setSelectedBackground] = useState(
+    "src/components/MarvelDC1.jpg"
+  );
 
-  const handleBackgroundChange = (
-    event: React.ChangeEvent<{ value: string }>
-  ) => {
-    setSelectedBackground(event.target.value);
-    document.body.style.backgroundImage = `url(${event.target.value})`;
+  const handleBackgroundChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedBackground(selectedValue);
+    console.log("Selected Background:", selectedValue); // Add this console.log statement
   };
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -195,9 +195,7 @@ export function ResponsiveAppBar() {
                 value={selectedBackground}
                 onChange={handleBackgroundChange}
               >
-                <MenuItem value="src/components/MarvelDC1.jpg">
-                  Default Background
-                </MenuItem>
+                <MenuItem value="MarvelDC1.jpg">Marvel</MenuItem>
                 <MenuItem value="red-background.jpg">Red Background</MenuItem>
                 <MenuItem value="blue-background.jpg">Blue Background</MenuItem>
                 <MenuItem value="green-background.jpg">
