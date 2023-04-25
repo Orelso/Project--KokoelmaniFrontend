@@ -176,9 +176,13 @@ const FilterCard = () => {
             <Table aria-label="simple table">
               <TableRow onClick={() => handleCardClick(result)}>
                 <TableCell>{result.name}</TableCell>
-                <TableCell>{result.mana_cost || result.released}</TableCell>
-                <TableCell>{result.lang}</TableCell>
+                <TableCell>
+                  {result.mana_cost || result.released || result.series}
+                </TableCell>
+                <TableCell>{result.lang || "#" + result.number}</TableCell>
                 <TableCell>{result.artist}</TableCell>
+                <TableCell>{result.cardnumber}</TableCell>
+                <TableCell>{result.frame || result.rarity}</TableCell>
               </TableRow>
               <TableRow onClick={() => handleCardClick(result)}>
                 <TableCell>

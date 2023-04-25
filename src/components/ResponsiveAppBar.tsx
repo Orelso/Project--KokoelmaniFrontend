@@ -64,15 +64,12 @@ const menuItems = [
 ];
 
 export function ResponsiveAppBar() {
-  const [selectedBackground, setSelectedBackground] = useState(
-    "src/components/MarvelDC1.jpg"
-  );
+  const [selectedBackground, setSelectedBackground] = useState("");
 
   const handleBackgroundChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedBackground(selectedValue);
-    console.log("Selected Background:", selectedValue); // Add this console.log statement
+    setSelectedBackground(event.target.value);
   };
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
