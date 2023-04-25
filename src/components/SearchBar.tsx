@@ -19,14 +19,10 @@ import {
 } from "@mui/material";
 import type { AnyCard } from "../types";
 import Image from "next/image";
-import forestImage from "./MTGImages/mtg-forest.jpg";
-import { width } from "@mui/system";
+
 import CommentSection from "./CommentSection";
 import { CurrencyTab } from "./Currency";
-// import islandImage from "../MTGImages/mtg-island.png";
-// import mountainImage from "../MTGImages/mtg-mountain.png";
-// import plainsImage from "../MTGImages/mtg-plains.png";
-// import swampImage from "../MTGImages/mtg-swamp.png";
+import CreateCollection from "../pages/create-collection/components/CreateCollection";
 
 const MODIFIED_VALUES = {
   es: "Spanish",
@@ -105,6 +101,15 @@ const FilterCard = () => {
   const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
   const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
   const [open, setOpen] = React.useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleModalOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+  };
 
   const handleOnChange = ({
     target: { value },
@@ -241,10 +246,13 @@ const FilterCard = () => {
                   style={{ border: "8px solid black" }}
                   width="400"
                 />
-                <Button>
+                <Button onClick={handleModalOpen}>
                   <AddCircleOutlineRoundedIcon />
                   Collection
                 </Button>
+                <Modal open={openModal} onClose={handleModalClose}>
+                  <CreateCollection />
+                </Modal>
                 <Button>
                   <AddCircleOutlineRoundedIcon />
                   Deck

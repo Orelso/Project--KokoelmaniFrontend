@@ -35,7 +35,7 @@ const DB_KEY = "mockCreateCollectionItem:items";
 //   },
 // });
 
-export default function CreateCollection() {
+export default function CreateCollection({ selectedCardName }) {
   // const classes = useStyles();
   const router = useRouter();
 
@@ -136,7 +136,7 @@ export default function CreateCollection() {
   };
 
   return (
-    <Container>
+    <Container sx={{ backgroundColor: "pink" }}>
       <Typography
         sx={{ mt: 12 }}
         // className={classes.title}
