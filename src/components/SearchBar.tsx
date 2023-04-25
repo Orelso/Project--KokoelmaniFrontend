@@ -188,7 +188,8 @@ const FilterCard = () => {
                       result.image_url ||
                       result.images?.small ||
                       result.card_images?.[0]?.image_url_small ||
-                      result.imageName
+                      result.imageName ||
+                      result.background_image
                     }
                     onClick={() => handleCardClick(result)}
                   />
@@ -234,6 +235,7 @@ const FilterCard = () => {
                     selectedCard.image_url ||
                     selectedCard.card_images?.[0]?.image_url ||
                     selectedCard.imageName ||
+                    selectedCard.background_image ||
                     selectedCard.images.large
                   }
                   style={{ border: "8px solid black" }}
