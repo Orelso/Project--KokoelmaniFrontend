@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
     } else if (backgroundImage) {
       return {
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "contain",
+        backgroundSize: "100%",
         backgroundRepeat: "no-repeat",
       };
     } else {
