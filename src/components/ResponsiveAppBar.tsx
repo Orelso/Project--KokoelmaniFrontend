@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 import styled from "styled-components";
 import React, { useState } from "react";
+import { green, red } from "@mui/material/colors";
 
 const menuItems = [
   {
@@ -75,6 +76,14 @@ export function ResponsiveAppBar() {
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const [backgroundColor, setBackgroundColor] = React.useState("");
+
+  const handleBackgroundColorChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setBackgroundColor(event.target.value as string);
   };
 
   return (
@@ -177,24 +186,21 @@ export function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
-          {/* <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="background-select-label">Background</InputLabel>
+          <Box sx={{ m: 2 }}>
+            <FormControl sx={{ minWidth: 120 }}>
+              <InputLabel>Select Background Color</InputLabel>
               <Select
-                labelId="background-select-label"
-                id="background-select"
-                value={selectedBackground}
-                onChange={handleBackgroundChange}
+                value={backgroundColor}
+                onChange={handleBackgroundColorChange}
               >
-                <MenuItem value="MarvelDC1.jpg">Marvel</MenuItem>
-                <MenuItem value="red-background.jpg">Red Background</MenuItem>
-                <MenuItem value="blue-background.jpg">Blue Background</MenuItem>
-                <MenuItem value="green-background.jpg">
-                  Green Background
-                </MenuItem>
+                <MenuItem value="">None</MenuItem>
+                <MenuItem value={green[500]}>Green</MenuItem>
+                <MenuItem value={red[500]}>Red</MenuItem>
+                <MenuItem value="#2196f3">Blue</MenuItem>
+                {/* Add more colors as desired */}
               </Select>
             </FormControl>
-          </Box> */}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
