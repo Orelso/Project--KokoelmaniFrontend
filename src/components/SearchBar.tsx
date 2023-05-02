@@ -40,14 +40,6 @@ const MODIFIED_VALUES = {
   card: "Magic The Gathering",
   false: "No",
   true: "Yes",
-
-  // keyword: [],
-  // colors: [0],
-  // mana_cost: replace(
-  //   "{g}{g}",
-  //   /{g}/g,
-  //   '<img src="../MTGImages/mtg-forest.png" alt="Forest" />'
-  // ),
 };
 
 const HIDDEN_KEYS = [

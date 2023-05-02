@@ -64,12 +64,6 @@ const menuItems = [
 ];
 
 export function ResponsiveAppBar() {
-  const [selectedBackground, setSelectedBackground] = useState("");
-
-  const handleBackgroundChange = (event) => {
-    setSelectedBackground(event.target.value);
-  };
-
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -183,7 +177,7 @@ export function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+          {/* <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="background-select-label">Background</InputLabel>
               <Select
@@ -200,7 +194,7 @@ export function ResponsiveAppBar() {
                 </MenuItem>
               </Select>
             </FormControl>
-          </Box>
+          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>
