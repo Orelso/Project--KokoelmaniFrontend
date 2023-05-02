@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
     } else if (backgroundImage) {
       return {
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
+        backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
       };
     } else {
@@ -68,6 +68,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
             <MenuItem value={red[500]}>Red</MenuItem>
             <MenuItem value="#2196f3">Blue</MenuItem>
             <MenuItem value="/MarvelDC1.jpg">Marvel DC</MenuItem>
+            <MenuItem value="/dbz1.jpg">Marvel DC</MenuItem>
             {/* Add more colors and images as desired */}
           </Select>
         </FormControl>
