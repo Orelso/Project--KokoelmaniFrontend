@@ -24,8 +24,7 @@ import {
 import Link from "next/link";
 import styled from "styled-components";
 import React, { useState } from "react";
-import { green, red } from "@mui/material/colors";
-
+/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const menuItems = [
   {
     text: "Home",
@@ -63,7 +62,7 @@ const menuItems = [
     path: "/rankings",
   },
 ];
-
+/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 export function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -78,19 +77,25 @@ export function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const [backgroundColor, setBackgroundColor] = React.useState("");
-
-  const handleBackgroundColorChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    setBackgroundColor(event.target.value as string);
-  };
-
+  //  const handleBackgroundChange = (
+  //   event: React.ChangeEvent<{ value: unknown }>
+  // ) => {
+  //   const value = event.target.value as string;
+  //   if (value.startsWith("BackgroundImages/")) {
+  //     setBackgroundImage(value);
+  //     setBackgroundColor("");
+  //   } else {
+  //     setBackgroundColor(value);
+  //     setBackgroundImage("");
+  //   }
+  // };
+  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <StorageIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+          {/* ---------------------------------------------------------(NavBar-Text)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
           <Typography
             variant="h6"
             component="a"
@@ -108,7 +113,7 @@ export function ResponsiveAppBar() {
           >
             Kokoelmani
           </Typography>
-
+          {/* ---------------------------------------------------------(NavBar-Dropdown)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -140,7 +145,7 @@ export function ResponsiveAppBar() {
             >
               {menuItems.map((item) => (
                 <Link href={String(item.path).toLowerCase()} key={item.text}>
-                  <ListItem button>
+                  <ListItem>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.text} />
                   </ListItem>
@@ -148,6 +153,7 @@ export function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
+          {/* ---------------------------------------------------------(NavBar-Dropdown-Text)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
           <Typography
             variant="h5"
             noWrap
@@ -164,15 +170,13 @@ export function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            Kokoelmani
+            Kokoelmaniii
           </Typography>
-
+          {/* ----------------------------------------------------------(NavBar)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
             {menuItems.map((item) => (
               <Link href={String(item.path).toLowerCase()} key={item.text}>
                 <ListItem
-                  button
-                  // onClick={() => navigate(item.path)}
                   sx={{
                     display: "grid",
                     gridTemplateColumns: "repeat(5, 1fr)",
@@ -186,21 +190,7 @@ export function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
-          <Box sx={{ m: 2 }}>
-            <FormControl sx={{ minWidth: 120 }}>
-              <InputLabel>Select Background Color</InputLabel>
-              <Select
-                value={backgroundColor}
-                onChange={handleBackgroundColorChange}
-              >
-                <MenuItem value="">None</MenuItem>
-                <MenuItem value={green[500]}>Green</MenuItem>
-                <MenuItem value={red[500]}>Red</MenuItem>
-                <MenuItem value="#2196f3">Blue</MenuItem>
-                {/* Add more colors as desired */}
-              </Select>
-            </FormControl>
-          </Box>
+          {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         </Toolbar>
       </Container>
     </AppBar>
