@@ -94,10 +94,7 @@ const FilterCard = () => {
   const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
   const [open, setOpen] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [displayCount, setDisplayCount] = useState(6); // Display the first 6 items by default
-  const handleShowMore = () => {
-    setDisplayCount((prevCount) => prevCount + 8); // Add 8 more items to the display count
-  };
+  const [numResults, setNumResults] = useState(6); // Display the first 6 items by default
 
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
@@ -157,73 +154,88 @@ const FilterCard = () => {
         /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            e.preventDefault(); // prevent the default behavior of the enter key
             handleSubmit();
           }
         }}
       />
       {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-      {searchResults.slice(0, 6).map((result, index) => {
-        return (
-          <TableContainer
-            key={index}
-            component={Paper}
-            elevation={13}
-            sx={{ overflow: "hidden" }}
+      <>
+        {searchResults.slice(0, numResults).map((result, index) => {
+          return (
+            <TableContainer
+              key={index}
+              component={Paper}
+              elevation={13}
+              sx={{ overflow: "hidden" }}
+            >
+              {/* --------------------------------------------------------------(Search Bar data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+              <Table aria-label="simple table">
+                <TableRow onClick={() => handleCardClick(result)}>
+                  <TableCell>{result.name}</TableCell>
+                  {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+                  {result.card_sets &&
+                    result.card_sets.map((set) => (
+                      <React.Fragment key={set.set_code}>
+                        <TableCell>Set: {set.set_name}</TableCell>
+                        <TableCell>Rarity: {set.set_rarity}</TableCell>
+                        <TableCell>Code: {set.set_code}</TableCell>
+                      </React.Fragment>
+                    ))}
+                  <TableCell>
+                    {result.mana_cost && getTableValue(result.mana_cost)}
+                    {result.released && result.released}
+                    {result.series && result.series}
+                  </TableCell>
+                  <TableCell>
+                    {result.lang &&
+                      (MODIFIED_VALUES[result.lang] || "#" + result.number)}
+                  </TableCell>
+                  <TableCell>{result.artist && result.artist}</TableCell>
+                  <TableCell>
+                    {result.cardnumber && result.cardnumber}
+                  </TableCell>
+                  <TableCell>
+                    {result.frame &&
+                      (MODIFIED_VALUES[result.frame] || result.rarity)}
+                  </TableCell>
+                </TableRow>
+                <TableRow onClick={() => handleCardClick(result)}>
+                  <TableCell>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      title="Image title"
+                      alt=""
+                      width="47"
+                      height="0"
+                      src={
+                        result.image_uris?.small ||
+                        result.image_url ||
+                        result.images?.small ||
+                        result.card_images?.[0]?.image_url_small ||
+                        result.imageName ||
+                        result.background_image
+                      }
+                      onClick={() => handleCardClick(result)}
+                    />
+                  </TableCell>
+                </TableRow>
+              </Table>
+            </TableContainer>
+          );
+        })}
+        {/* --------------------------------------------------------------(Search Bar - Load More Button)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+
+        {searchResults.length > numResults && (
+          <Button
+            variant="contained"
+            onClick={() => setNumResults(numResults + 6)}
+            style={{ backgroundColor: "red", color: "white" }}
           >
-            {/* --------------------------------------------------------------(Search Bar data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-            <Table aria-label="simple table">
-              <TableRow onClick={() => handleCardClick(result)}>
-                <TableCell>{result.name}</TableCell>
-                {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                {result.card_sets &&
-                  result.card_sets.map((set) => (
-                    <React.Fragment key={set.set_code}>
-                      <TableCell>Set: {set.set_name}</TableCell>
-                      <TableCell>Rarity: {set.set_rarity}</TableCell>
-                      <TableCell>Code: {set.set_code}</TableCell>
-                    </React.Fragment>
-                  ))}
-                <TableCell>
-                  {result.mana_cost && getTableValue(result.mana_cost)}
-                  {result.released && result.released}
-                  {result.series && result.series}
-                </TableCell>
-                <TableCell>
-                  {result.lang &&
-                    (MODIFIED_VALUES[result.lang] || "#" + result.number)}
-                </TableCell>
-                <TableCell>{result.artist && result.artist}</TableCell>
-                <TableCell>{result.cardnumber && result.cardnumber}</TableCell>
-                <TableCell>
-                  {result.frame &&
-                    (MODIFIED_VALUES[result.frame] || result.rarity)}
-                </TableCell>
-              </TableRow>
-              <TableRow onClick={() => handleCardClick(result)}>
-                <TableCell>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    title="Image title"
-                    alt=""
-                    width="47"
-                    height="0"
-                    src={
-                      result.image_uris?.small ||
-                      result.image_url ||
-                      result.images?.small ||
-                      result.card_images?.[0]?.image_url_small ||
-                      result.imageName ||
-                      result.background_image
-                    }
-                    onClick={() => handleCardClick(result)}
-                  />
-                </TableCell>
-              </TableRow>
-            </Table>
-          </TableContainer>
-        );
-      })}
+            Load More
+          </Button>
+        )}
+      </>
+
       {/* --------------------------------------------------------------(Search Bar MODAL data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
       {selectedCard && (
         <Modal open={open} onClose={handleClose}>
