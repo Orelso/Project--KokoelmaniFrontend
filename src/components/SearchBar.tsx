@@ -170,13 +170,30 @@ const FilterCard = () => {
             <Table aria-label="simple table">
               <TableRow onClick={() => handleCardClick(result)}>
                 <TableCell>{result.name}</TableCell>
+                {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+                {result.card_sets &&
+                  result.card_sets.map((set) => (
+                    <React.Fragment key={set.set_code}>
+                      <TableCell>Set: {set.set_name}</TableCell>
+                      <TableCell>Rarity: {set.set_rarity}</TableCell>
+                      <TableCell>Code: {set.set_code}</TableCell>
+                    </React.Fragment>
+                  ))}
                 <TableCell>
-                  {result.mana_cost || result.released || result.series}
+                  {result.mana_cost && getTableValue(result.mana_cost)}
+                  {result.released && result.released}
+                  {result.series && result.series}
                 </TableCell>
-                <TableCell>{result.lang || "#" + result.number}</TableCell>
-                <TableCell>{result.artist}</TableCell>
-                <TableCell>{result.cardnumber}</TableCell>
-                <TableCell>{result.frame || result.rarity}</TableCell>
+                <TableCell>
+                  {result.lang &&
+                    (MODIFIED_VALUES[result.lang] || "#" + result.number)}
+                </TableCell>
+                <TableCell>{result.artist && result.artist}</TableCell>
+                <TableCell>{result.cardnumber && result.cardnumber}</TableCell>
+                <TableCell>
+                  {result.frame &&
+                    (MODIFIED_VALUES[result.frame] || result.rarity)}
+                </TableCell>
               </TableRow>
               <TableRow onClick={() => handleCardClick(result)}>
                 <TableCell>
@@ -396,8 +413,8 @@ function getTableValue(val: any): React.ReactNode {
     }
     return (
       <Image
-        width={10}
-        height={10}
+        width={20}
+        height={1}
         key={idx}
         src={`/MTGImagesMana/mtg-${landColor}.jpg`}
         alt={startCase(landColor)}
@@ -405,10 +422,9 @@ function getTableValue(val: any): React.ReactNode {
     );
   });
 
-  return valNodes;
+  return <Box display="flex">{valNodes}</Box>;
 }
 /* ---------------------------------------------------------(Title case = turn "hi how" into "Hi How")----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-/** title case = turn e.g. "hi how" into "Hi How" */
 function startCase(string: string) {
   return string
     .split(" ")
