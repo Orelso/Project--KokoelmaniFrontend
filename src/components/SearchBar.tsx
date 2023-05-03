@@ -170,17 +170,25 @@ const FilterCard = () => {
             >
               {/* --------------------------------------------------------------(Search Bar data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
               <Table aria-label="simple table">
-                <TableRow onClick={() => handleCardClick(result)}>
+                <TableRow
+                  onClick={() => handleCardClick(result)}
+                  sx={{ display: "flex", flexWrap: "nowrap" }}
+                >
                   <TableCell>{result.name}</TableCell>
                   {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                  {result.card_sets &&
-                    result.card_sets.map((set) => (
-                      <React.Fragment key={set.set_code}>
-                        <TableCell>Set: {set.set_name}</TableCell>
-                        <TableCell>Rarity: {set.set_rarity}</TableCell>
-                        <TableCell>Code: {set.set_code}</TableCell>
-                      </React.Fragment>
-                    ))}
+                  {result.card_sets && result.card_sets[0] && (
+                    <React.Fragment>
+                      <TableCell>Set: {result.card_sets[0].set_name}</TableCell>
+                      <TableCell>
+                        Rarity: {result.card_sets[0].set_rarity}
+                      </TableCell>
+                      <TableCell>
+                        Code: {result.card_sets[0].set_code}
+                      </TableCell>
+                    </React.Fragment>
+                  )}
+                  {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+
                   <TableCell>
                     {result.mana_cost && getTableValue(result.mana_cost)}
                     {result.released && result.released}
