@@ -14,7 +14,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import marvelDCImage from "/MarvelDC1.jpg";
 
 export default function Layout({ children }: { children: JSX.Element }) {
   const [backgroundColor, setBackgroundColor] = React.useState("");
@@ -63,13 +62,38 @@ export default function Layout({ children }: { children: JSX.Element }) {
                 : handleBackgroundImageChange
             }
           >
-            <MenuItem value="">None</MenuItem>
-            <MenuItem value={green[500]}>Green</MenuItem>
-            <MenuItem value={red[500]}>Red</MenuItem>
-            <MenuItem value="#2196f3">Blue</MenuItem>
-            <MenuItem value="/MarvelDC1.jpg">Marvel DC</MenuItem>
-            <MenuItem value="/dbz1.jpg">Marvel DC</MenuItem>
-            {/* Add more colors and images as desired */}
+            <MenuItem value="">Basic Bitch</MenuItem>
+            <MenuItem value="BackgroundImages/AttackOnTitan.jpg">
+              Attack On Titan
+            </MenuItem>
+            <MenuItem value="BackgroundImages/AttackOnTitan2.jpg">
+              Attack On Titan 2
+            </MenuItem>
+            <MenuItem value="BackgroundImages/dbz1.jpg">Dragon Ball</MenuItem>
+            <MenuItem value="BackgroundImages/Digimon-Angemon.jpg">
+              Digimon-Angemon
+            </MenuItem>
+            <MenuItem value="BackgroundImages/Digimon-Characters.jpg">
+              Digimon-Characters
+            </MenuItem>
+            <MenuItem value="BackgroundImages/Digimon.jpg">Digimon</MenuItem>
+            <MenuItem value="BackgroundImages/Digimon2.jpg">Digimon2</MenuItem>
+            <MenuItem value="BackgroundImages/Dragonball-Goku.jpg">
+              Dragon Ball-Goku
+            </MenuItem>
+            <MenuItem value="BackgroundImages/Dragonball-JoyRide.jpg">
+              Dragon Ball-Joy ride
+            </MenuItem>
+            <MenuItem value="BackgroundImages/DragonBall-Kamehouse.jpg">
+              Dragon Ball-Kame house
+            </MenuItem>
+            <MenuItem value="BackgroundImages/Funko-BatgirlHarley.jpg">
+              Funko
+            </MenuItem>
+            <MenuItem value="BackgroundImages/Funko-Robin.jpg">Funko2</MenuItem>
+            <MenuItem value="BackgroundImages/MTG-AllWillBeOne.jpg">
+              MTG All Will Be One
+            </MenuItem>
           </Select>
         </FormControl>
       </Box>
