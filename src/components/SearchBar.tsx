@@ -94,6 +94,11 @@ const FilterCard = () => {
   const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
   const [open, setOpen] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [displayCount, setDisplayCount] = useState(6); // Display the first 6 items by default
+  const handleShowMore = () => {
+    setDisplayCount((prevCount) => prevCount + 8); // Add 8 more items to the display count
+  };
+
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -158,7 +163,7 @@ const FilterCard = () => {
         }}
       />
       {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-      {searchResults.map((result, index) => {
+      {searchResults.slice(0, 6).map((result, index) => {
         return (
           <TableContainer
             key={index}
