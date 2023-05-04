@@ -411,6 +411,9 @@ const LAND_SUBSTRING_TO_COLOR_MAP = {
   B: "swamp",
   R: "mountain",
   W: "plains",
+  S: "snow-mana",
+  X: "x-generic-mana",
+  C: "colorless-mana",
   1: "colorless-mana1",
   2: "colorless-mana2",
   3: "colorless-mana3",
@@ -446,8 +449,12 @@ const LAND_SUBSTRING_TO_COLOR_MAP = {
   "R/W": "red-or-white-mana",
   "G/U": "green-or-blue-mana",
   "W/B": "white-or-black-mana",
-  // "G/U/P": "GUP",
+  "G/U/P": "GUP",
   "B/P": "blackmana-or-2life",
+  "U/P": "bluemana-or-2life",
+  "G/P": "greenmana-or-2life",
+  "W/P": "whitemana-or-2life",
+  "R/P": "redmana-or-2life",
 };
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 function getTableValue(val: any): React.ReactNode {
