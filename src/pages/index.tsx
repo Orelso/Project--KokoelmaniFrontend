@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import DailyCardTable from "../components/DailyCardTable";
 import Footer from "../components/Footer";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/SearchBar/SearchBar";
 import type { MTGCard } from "../types";
 // import type { YuGiOhCard } from "../types";
 import { BACKEND_URL } from "../constants";
@@ -27,25 +27,6 @@ export default Home;
 console.log("🚀 ~ file: index.tsx:26 ~ backendUrl", BACKEND_URL);
 
 function HomeView() {
-  const [mtg, setMtg] = useState<MTGCard[]>([]);
-  // const [yugioh, setYugioh] = useState<YuGiOhCard[]>([]);
-
-  useEffect(() => {
-    console.log("It started");
-    fetch(`${BACKEND_URL ?? ""}/item`)
-      .then((res) => res.json())
-      .then((response) => {
-        if (isObject(response) && "data" in response) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          console.log("promise fulfilled", response.data);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          setMtg(response.data as MTGCard[]);
-          // setYugioh(response.data as YuGiOhCard[]);
-        }
-      })
-      .catch(console.error);
-  }, []);
-
   return (
     <div>
       <Typography sx={{ mt: 1 }} variant="h1" color="#ff7961" align="center">

@@ -1,0 +1,16 @@
+.filter_card {
+  max-width: 600px;
+  width: 90vw;
+  margin: auto;
+  transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.filter_card:hover {
+  transform: scale(1.05);
+}
+.MuiTextField-root {
+  align-items: center;
+  width: 100%;
+}
+.MuiInputBase-input {
+  width: 50vw;
+}

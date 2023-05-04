@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-enum Currency {
+export enum Currency {
   USD = "USD",
   EUR = "EUR",
   GBP = "GBP",
@@ -19,7 +20,7 @@ export const CurrencyTab = ({
 }: Props) => {
   const [currency, setCurrency] = useState<Currency>(defaultCurrency);
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChange = (event: SelectChangeEvent<Currency>): void => {
     const selectedCurrency = event.target.value as Currency;
     setCurrency(selectedCurrency);
     onChange(selectedCurrency);

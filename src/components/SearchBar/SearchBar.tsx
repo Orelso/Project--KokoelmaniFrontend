@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { Box, Button, IconButton, TextField } from "@mui/material";
-import styled from "styled-components";
+import {
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  Paper,
+  Modal,
+} from "@mui/material";
 import { useAtom } from "jotai";
-import { searchResultsAtom } from "../store";
-import { Paper } from "@mui/material";
-import { Modal } from "@mui/material";
+import { searchResultsAtom } from "../../store";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
@@ -17,80 +23,27 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import type { AnyCard } from "../types";
-import Image from "next/image";
-import CommentSection from "./CommentSection";
-import { CurrencyTab } from "./Currency";
-import CreateCollection from "../pages/create-collection/components/CreateCollection";
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const MODIFIED_VALUES = {
-  es: "Spanish",
-  en: "English",
-  it: "Italian",
-  ja: "Japanese",
-  zht: "Traditional Chinese",
-  zhs: "Simplified Chinese",
-  de: "German",
-  pt: "Portuguese",
-  ko: "Korean",
-  ru: "Russian",
-  fr: "French",
-  ph: "Phyrexian",
-  card: "Magic The Gathering",
-  false: "No",
-  true: "Yes",
-};
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const HIDDEN_KEYS = [
-  "multiverse_ids",
-  "id",
-  "mtgo_id",
-  "mtgo_foil_id",
-  "tcgplayer_id",
-  "cardmarket_id",
-  "highres_image",
-  "image_status",
-  "produced_mana",
-  "set_id",
-  "set",
-  "collector_number",
-  "artist_ids",
-  "frame",
-  "story_spotlight",
-  "oracle_id",
-  "image_uris",
-  "card_back_id",
-  "illustration_id",
-  "name",
-];
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const RENAME_KEYS_MAP = {
-  object: "category",
-  lang: "language",
-  released_at: "released",
-  mana_cost: "mana cost",
-  type_line: "type",
-  oracle_text: "flavor text",
-  color_identity: "color identity",
-  set_name: "set name",
-  set_type: "set type",
-  border_color: "border color",
-  full_art: "full art",
-};
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const KEYS_WITH_CLICKABLE_LINKS = [
-  "uri",
-  "scryfall_uri",
-  "set_uri",
-  "set_search_uri",
-  "scryfall_set_uri",
-  "rulings_uri",
-  "prints_search_uri",
-];
+import type { AnyCard } from "../../types";
+import CommentSection from "../CommentSection";
+import { Currency, CurrencyTab } from "../Currency";
+import CreateCollection from "../../pages/create-collection/components/CreateCollection";
+// import styles from "../styles/SearchBar.module.css"; className={styles.filter_card}
+import { BACKEND_URL } from "../../constants";
+import {
+  MODIFIED_VALUES,
+  HIDDEN_KEYS,
+  RENAME_KEYS_MAP,
+  KEYS_WITH_CLICKABLE_LINKS,
+  getTableValue,
+  startCase,
+} from "./searchBarUtils";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const FilterCard = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [searchResults, setSearchResults] = useAtom<AnyCard[]>(
+    searchResultsAtom
+  ) as any;
   const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
   const [open, setOpen] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -113,7 +66,7 @@ const FilterCard = () => {
   };
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleSubmit = () => {
-    fetch(`http://localhost:5051/api/v1/all/cards/name/${searchTerm}`)
+    fetch(`${BACKEND_URL}/cards/name/${searchTerm}`)
       .then((res) => res.json())
       .then((res) => {
         console.log(
@@ -121,6 +74,7 @@ const FilterCard = () => {
           res,
           typeof res !== "undefined" && "data" in res ? res.data : null
         );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         setSearchResults(res);
       })
       .catch((error: any) => {
@@ -138,7 +92,7 @@ const FilterCard = () => {
   };
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   return (
-    <FilterCardStyles>
+    <div>
       <TextField
         sx={{ ml: 1, flex: 1, color: "white" }}
         placeholder="Search..."
@@ -160,80 +114,15 @@ const FilterCard = () => {
       />
       {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
       <>
-        {searchResults.slice(0, numResults).map((result, index) => {
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
+        {searchResults.slice(0, numResults).map((result) => {
           return (
-            <TableContainer
-              key={index}
-              component={Paper}
-              elevation={13}
-              sx={{ overflow: "hidden" }}
-            >
-              {/* --------------------------------------------------------------(Search Bar data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-              <Table aria-label="simple table">
-                <TableRow
-                  onClick={() => handleCardClick(result)}
-                  sx={{ display: "flex", flexWrap: "nowrap" }}
-                >
-                  <TableCell>{result.name}</TableCell>
-                  {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                  {/* {result.card_sets && result.card_sets[0] && (
-                    <React.Fragment>
-                      <TableCell>Set: {result.card_sets[0].set_name}</TableCell>
-                      <TableCell>
-                        Rarity: {result.card_sets[0].set_rarity}
-                      </TableCell>
-                      <TableCell>
-                        Code: {result.card_sets[0].set_code}
-                      </TableCell>
-                    </React.Fragment>
-                  )} */}
-                  {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-
-                  <TableCell>
-                    {/* Mana Cost */}
-                    {result.mana_cost && getTableValue(result.mana_cost)}
-                    {/* Games */}
-                    {result.released && result.released}
-                    {/* Funko Pop */}
-                    {result.title && result.title}{" "}
-                    {result.series && result.series}
-                  </TableCell>
-                  <TableCell>
-                    {result.lang && MODIFIED_VALUES[result.lang]}
-                  </TableCell>
-                  {/* MTG POKEMON */}
-                  <TableCell>{result.artist}</TableCell>
-                  <TableCell>{result.rarity}</TableCell>
-                  <TableCell>{result.types}</TableCell>
-                  {/* YUGIOH */}
-                  <TableCell>{result.type}</TableCell>
-                  <TableCell>{result.attribute}</TableCell>
-                  {/* DIGIMON */}
-                  <TableCell>{result.color}</TableCell>
-                  <TableCell>{result.set_name}</TableCell>
-                </TableRow>
-                <TableRow onClick={() => handleCardClick(result)}>
-                  <TableCell>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      title="Click Me"
-                      alt=""
-                      width="47"
-                      height="0"
-                      src={
-                        result.image_uris?.small ||
-                        result.image_url ||
-                        result.images?.small ||
-                        result.card_images?.[0]?.image_url_small ||
-                        result.imageName ||
-                        result.background_image
-                      }
-                      onClick={() => handleCardClick(result)}
-                    />
-                  </TableCell>
-                </TableRow>
-              </Table>
-            </TableContainer>
+            <SearchResult
+              key={result.name}
+              handleCardClick={handleCardClick}
+              result={result}
+              getTableValue={getTableValue}
+            />
           );
         })}
         {/* --------------------------------------------------------------(Search Bar - Load More Button)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
@@ -298,7 +187,7 @@ const FilterCard = () => {
                   Collection
                 </Button>
                 <Modal open={openModal} onClose={handleModalClose}>
-                  <CreateCollection />
+                  <CreateCollection selectedCardName={selectedCard.name} />
                 </Modal>
                 <Button>
                   <AddCircleOutlineRoundedIcon />
@@ -318,7 +207,12 @@ const FilterCard = () => {
                   <h3 style={{ marginRight: "20px" }}>All Time high</h3>
                   <h3>All Time Low</h3>
                   <h3>
-                    <CurrencyTab />
+                    <CurrencyTab
+                      defaultCurrency={Currency.USD}
+                      onChange={(event) => {
+                        console.log("TODO Currency changed", event);
+                      }}
+                    />
                   </h3>
                 </div>
                 <CommentSection />
@@ -406,11 +300,11 @@ const FilterCard = () => {
           </Box>
         </Modal>
       )}
-    </FilterCardStyles>
+    </div>
   );
 };
 /* -----------------------------------------------------(MTG Mana Logo)--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const LAND_SUBSTRING_TO_COLOR_MAP = {
+export const LAND_SUBSTRING_TO_COLOR_MAP = {
   G: "forest",
   U: "island",
   B: "swamp",
@@ -462,65 +356,91 @@ const LAND_SUBSTRING_TO_COLOR_MAP = {
   "R/P": "redmana-or-2life",
 };
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-function getTableValue(val: any): React.ReactNode {
-  if (Array.isArray(val)) {
-    val = val.map((i: string) => `{${i}}`).join("");
-  }
-
-  console.log(val);
-  const valArray = String(val).split(/[{}]/);
-
-  const valNodes = valArray.map((substring, idx) => {
-    //This pattern is designed to match different types of mana symbols or numbers.
-    const isManaSymbolOrNumberMTG =
-      /^(\d+|[A-Z\d]+\/[A-Z]+\/[A-Z]|[A-Z\d]+\/[A-Z]|[A-Z][A-Z/]*)$/.test(
-        substring
-      );
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const landColor: string = LAND_SUBSTRING_TO_COLOR_MAP[`${substring}`];
-    // if we're not looking at a G, U, etc right now, return string
-    if (!isManaSymbolOrNumberMTG || !landColor) {
-      return substring;
-    }
-    return (
-      <Image
-        width={20}
-        height={20}
-        key={idx}
-        src={`/MTGImagesMana/mtg-${landColor}.jpg`}
-        alt={startCase(landColor)}
-      />
-    );
-  });
-
-  return <Box display="flex">{valNodes}</Box>;
-}
-/* ---------------------------------------------------------(Title case = turn "hi how" into "Hi How")----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-function startCase(string: string) {
-  return string
-    .split(" ")
-    .map(
-      (word) => `${word[0]?.toUpperCase() ?? ""}${word.slice(1).toLowerCase()}`
-    )
-    .join(" ");
-}
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const FilterCardStyles = styled.div`
-  max-width: 600px;
-  width: 90vw;
-  margin: auto;
-  transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-  &:hover {
-    transform: scale(1.05);
-  }
-  .MuiTextField-root {
-    align-items: center;
-    width: 100%;
-  }
-  .MuiInputBase-input {
-    width: 50vw;
-  }
-`;
 
 export default FilterCard;
+
+function SearchResult({
+  handleCardClick,
+  result,
+  getTableValue,
+}: {
+  result: AnyCard;
+  handleCardClick: (event) => void;
+  getTableValue: (mana_cost: string) => any;
+}) {
+  return (
+    <TableContainer
+      component={Paper}
+      elevation={13}
+      sx={{
+        overflow: "hidden",
+      }}
+    >
+      {/* --------------------------------------------------------------(Search Bar data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+      <Table aria-label="simple table">
+        <TableRow
+          onClick={() => handleCardClick(result)}
+          sx={{
+            display: "flex",
+            flexWrap: "nowrap",
+          }}
+        >
+          <TableCell>{result.name}</TableCell>
+          {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+          {/* {result.card_sets && result.card_sets[0] && (
+         <React.Fragment>
+           <TableCell>Set: {result.card_sets[0].set_name}</TableCell>
+           <TableCell>
+             Rarity: {result.card_sets[0].set_rarity}
+           </TableCell>
+           <TableCell>
+             Code: {result.card_sets[0].set_code}
+           </TableCell>
+         </React.Fragment>
+        )} */}
+          {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+
+          <TableCell>
+            {/* Mana Cost */}
+            {result.mana_cost && getTableValue(String(result.mana_cost))}
+            {/* Games */}
+            {result.released}
+            {/* Funko Pop */}
+            {result.title} {result.series}
+          </TableCell>
+          <TableCell>{result.lang && MODIFIED_VALUES[result.lang]}</TableCell>
+          {/* MTG POKEMON */}
+          <TableCell>{result.artist}</TableCell>
+          <TableCell>{result.rarity}</TableCell>
+          <TableCell>{result.types}</TableCell>
+          {/* YUGIOH */}
+          <TableCell>{result.type}</TableCell>
+          <TableCell>{result.attribute}</TableCell>
+          {/* DIGIMON */}
+          <TableCell>{result.color}</TableCell>
+          <TableCell>{result.set_name}</TableCell>
+        </TableRow>
+        <TableRow onClick={() => handleCardClick(result)}>
+          <TableCell>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              title="Click Me"
+              alt=""
+              width="47"
+              height="0"
+              src={
+                result.image_uris?.small ||
+                result.image_url ||
+                result.images?.small ||
+                result.card_images?.[0]?.image_url_small ||
+                result.imageName ||
+                result.background_image
+              }
+              onClick={() => handleCardClick(result)}
+            />
+          </TableCell>
+        </TableRow>
+      </Table>
+    </TableContainer>
+  );
+}

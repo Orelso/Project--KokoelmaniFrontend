@@ -12,6 +12,7 @@ export default function Collections() {
   // const [collections, setCollections] = useState<AnyCardCollection[]>([])
   const [collections, setCollections] = useState<Collection[]>([]);
 
+  // pull all data and store in collections state
   useEffect(() => {
     fetch("http://localhost:3009/api/item/")
       .then((res) => res.json())
