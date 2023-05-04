@@ -176,7 +176,7 @@ const FilterCard = () => {
                 >
                   <TableCell>{result.name}</TableCell>
                   {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                  {result.card_sets && result.card_sets[0] && (
+                  {/* {result.card_sets && result.card_sets[0] && (
                     <React.Fragment>
                       <TableCell>Set: {result.card_sets[0].set_name}</TableCell>
                       <TableCell>
@@ -186,32 +186,37 @@ const FilterCard = () => {
                         Code: {result.card_sets[0].set_code}
                       </TableCell>
                     </React.Fragment>
-                  )}
+                  )} */}
                   {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
 
                   <TableCell>
+                    {/* Mana Cost */}
                     {result.mana_cost && getTableValue(result.mana_cost)}
+                    {/* Games */}
                     {result.released && result.released}
+                    {/* Funko Pop */}
+                    {result.title && result.title}{" "}
                     {result.series && result.series}
                   </TableCell>
                   <TableCell>
-                    {result.lang &&
-                      (MODIFIED_VALUES[result.lang] || "#" + result.number)}
+                    {result.lang && MODIFIED_VALUES[result.lang]}
                   </TableCell>
-                  <TableCell>{result.artist && result.artist}</TableCell>
-                  <TableCell>
-                    {result.cardnumber && result.cardnumber}
-                  </TableCell>
-                  <TableCell>
-                    {result.frame &&
-                      (MODIFIED_VALUES[result.frame] || result.rarity)}
-                  </TableCell>
+                  {/* MTG POKEMON */}
+                  <TableCell>{result.artist}</TableCell>
+                  <TableCell>{result.rarity}</TableCell>
+                  <TableCell>{result.types}</TableCell>
+                  {/* YUGIOH */}
+                  <TableCell>{result.type}</TableCell>
+                  <TableCell>{result.attribute}</TableCell>
+                  {/* DIGIMON */}
+                  <TableCell>{result.color}</TableCell>
+                  <TableCell>{result.set_name}</TableCell>
                 </TableRow>
                 <TableRow onClick={() => handleCardClick(result)}>
                   <TableCell>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      title="Image title"
+                      title="Click Me"
                       alt=""
                       width="47"
                       height="0"
@@ -467,7 +472,7 @@ function getTableValue(val: any): React.ReactNode {
 
   const valNodes = valArray.map((substring, idx) => {
     //This pattern is designed to match different types of mana symbols or numbers.
-    const isManaSymbolOrNumber =
+    const isManaSymbolOrNumberMTG =
       /^(\d+|[A-Z\d]+\/[A-Z]+\/[A-Z]|[A-Z\d]+\/[A-Z]|[A-Z][A-Z/]*)$/.test(
         substring
       );
@@ -475,7 +480,7 @@ function getTableValue(val: any): React.ReactNode {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const landColor: string = LAND_SUBSTRING_TO_COLOR_MAP[`${substring}`];
     // if we're not looking at a G, U, etc right now, return string
-    if (!isManaSymbolOrNumber || !landColor) {
+    if (!isManaSymbolOrNumberMTG || !landColor) {
       return substring;
     }
     return (

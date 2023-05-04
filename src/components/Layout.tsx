@@ -53,7 +53,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
               Digimon-Characters
             </MenuItem>
             <MenuItem value="BackgroundImages/Digimon.jpg">Digimon</MenuItem>
-            <MenuItem value="BackgroundImages/Digimon2.jpg">Digimon2</MenuItem>
+            <MenuItem value="BackgroundImages/Digimon3.jpg">Digimon2</MenuItem>
             <MenuItem value="BackgroundImages/Dragonball-Goku.jpg">
               Dragon Ball-Goku
             </MenuItem>
