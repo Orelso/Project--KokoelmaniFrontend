@@ -355,6 +355,20 @@ export const LAND_SUBSTRING_TO_COLOR_MAP = {
   "W/P": "whitemana-or-2life",
   "R/P": "redmana-or-2life",
 };
+
+export const LAND_SUBSTRING_TO_COLOR_MAP_POKEMON = {
+  Psychic: "Pokemon-psychic-energy",
+  Grass: "Pokemon-grass-energy",
+  Fire: "Pokemon-fire-energy",
+  Water: "Pokemon-water-energy",
+  Electric: "Pokemon-electric-energy",
+  Fighting: "Pokemon-fighting-energy",
+  Dark: "Pokemon-dark-energy",
+  Metal: "Pokemon-metal-energy",
+  Fairy: "Pokemon-fairy-energy",
+  Dragon: "Pokemon-dragon-energy",
+  Colorless: "Pokemon-colorless-energy",
+};
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 export default FilterCard;
