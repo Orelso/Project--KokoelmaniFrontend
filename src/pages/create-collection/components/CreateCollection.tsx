@@ -40,10 +40,13 @@ export default function CreateCollection({ selectedCardName }) {
   // const classes = useStyles();
   const router = useRouter();
 
-  const [newItem, setNewItem] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const [newItem, setNewItem] = useState(selectedCardName.name);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [cost, setCost] = useState(selectedCardName.mana_cost);
-  const [language, setLanguage] = useState("");
-  const [set, setSet] = useState("");
+  const [language, setLanguage] = useState(selectedCardName.lang);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const [set, setSet] = useState(selectedCardName.set_name);
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("MTG");
   const [condition, setCondition] = useState("");
@@ -180,6 +183,7 @@ export default function CreateCollection({ selectedCardName }) {
           </RadioGroup>
         </FormControl>
         <TextField
+          value={newItem}
           onChange={(e) => setNewItem(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Card Name"
@@ -190,6 +194,7 @@ export default function CreateCollection({ selectedCardName }) {
           error={newItemError}
         />
         <TextField
+          value={set}
           onChange={(e) => setSet(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Set"
@@ -200,6 +205,7 @@ export default function CreateCollection({ selectedCardName }) {
           error={setError}
         />
         <TextField
+          value={cost} // Add this line
           onChange={(e) => setCost(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Cost"
@@ -208,8 +214,10 @@ export default function CreateCollection({ selectedCardName }) {
           fullWidth
           required // adds astrik
           error={costError}
-        ></TextField>
+        />
+
         <TextField
+          value={language}
           onChange={(e) => setLanguage(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Language"
