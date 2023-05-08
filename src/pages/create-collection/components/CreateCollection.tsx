@@ -19,6 +19,7 @@ import FormGroup from "@mui/material/FormGroup";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useLocalStorage } from "react-use";
 const DB_KEY = "mockCreateCollectionItem:items";
+import { getTableValue } from "../../../components/SearchBar/searchBarUtils";
 
 // const useStyles = makeStyles({
 //   // field: {
@@ -40,7 +41,7 @@ export default function CreateCollection({ selectedCardName }) {
   const router = useRouter();
 
   const [newItem, setNewItem] = useState("");
-  const [cost, setCost] = useState("");
+  const [cost, setCost] = useState(selectedCardName.mana_cost);
   const [language, setLanguage] = useState("");
   const [set, setSet] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -204,7 +205,7 @@ export default function CreateCollection({ selectedCardName }) {
           label="Cost"
           variant="outlined"
           color="secondary"
-          fullWidth // makes form the length of page
+          fullWidth
           required // adds astrik
           error={costError}
         ></TextField>

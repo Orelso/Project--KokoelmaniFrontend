@@ -187,7 +187,7 @@ const FilterCard = () => {
                   Collection
                 </Button>
                 <Modal open={openModal} onClose={handleModalClose}>
-                  <CreateCollection selectedCardName={selectedCard.name} />
+                  <CreateCollection selectedCardName={selectedCard} />
                 </Modal>
                 <Button>
                   <AddCircleOutlineRoundedIcon />
