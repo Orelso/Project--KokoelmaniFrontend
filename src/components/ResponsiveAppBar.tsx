@@ -27,16 +27,6 @@ import React, { useState } from "react";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const menuItems = [
   {
-    text: "Home",
-    icon: <HomeIcon color="secondary" />,
-    path: "/",
-  },
-  {
-    text: "CreateCollection",
-    icon: <AddIcon color="secondary" />,
-    path: "/create-collection",
-  },
-  {
     text: "Collection",
     icon: <ShoppingBagOutlinedIcon color="secondary" />,
     path: "/collections",
