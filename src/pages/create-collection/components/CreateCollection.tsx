@@ -41,12 +41,16 @@ export default function CreateCollection({ selectedCardName }) {
   const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const [newItem, setNewItem] = useState(selectedCardName.name);
+  const [newItem, setNewItem] = useState(
+    selectedCardName.name || selectedCardName.title
+  );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const [cost, setCost] = useState(selectedCardName.mana_cost);
+  const [cost, setCost] = useState();
   const [language, setLanguage] = useState(selectedCardName.lang);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const [set, setSet] = useState(selectedCardName.set_name);
+  const [set, setSet] = useState(
+    selectedCardName.set_name || selectedCardName.series
+  );
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("MTG");
   const [condition, setCondition] = useState("");
@@ -176,10 +180,26 @@ export default function CreateCollection({ selectedCardName }) {
               label="Yu-gi-oh"
             />
             <FormControlLabel
-              value="Other TCG"
+              value="FunkoPop"
               control={<Radio />}
-              label="Other TCG"
+              label="FunkoPop"
             />
+            <FormControlLabel
+              value="Video Games"
+              control={<Radio />}
+              label="Video Games"
+            />
+            <FormControlLabel
+              value="Flesh & Blood"
+              control={<Radio />}
+              label="Flesh & Blood"
+            />
+            <FormControlLabel
+              value="Comic Book"
+              control={<Radio />}
+              label="Comic Book"
+            />
+            <FormControlLabel value="NFT" control={<Radio />} label="NFT" />
           </RadioGroup>
         </FormControl>
         <TextField
@@ -205,7 +225,6 @@ export default function CreateCollection({ selectedCardName }) {
           error={setError}
         />
         <TextField
-          value={cost} // Add this line
           onChange={(e) => setCost(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Cost"
