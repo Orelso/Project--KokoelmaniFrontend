@@ -49,7 +49,10 @@ export default function CreateCollection({ selectedCardName }) {
   const [language, setLanguage] = useState(selectedCardName.lang);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [set, setSet] = useState(
-    selectedCardName.set_name || selectedCardName.series
+    selectedCardName.set_name ||
+      selectedCardName.series ||
+      (selectedCardName.platforms &&
+        selectedCardName.platforms[0].platform.name)
   );
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("MTG");

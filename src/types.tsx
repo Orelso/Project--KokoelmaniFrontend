@@ -633,9 +633,13 @@ const exampleDigimonCard = {
 export type DigimonCard = typeof exampleDigimonCard;
 
 const exampleFunkoPop = {
-  {"handle":"black-panther","title":"Black Panther","imageName":"https://images.hobbydb.com/processed_uploads/catalog_item_photo/catalog_item_photo/image/897627/Black_Panther_Shirts_and_Jackets_0490e751-49fc-42a3-bf83-d59d3acd753e_large.jpg","series":["Pop! Tees & Apparel","Funko Target Exclusives"]},
-
-}
+  handle: "black-panther",
+  title: "Black Panther",
+  imageName:
+    "https://images.hobbydb.com/processed_uploads/catalog_item_photo/catalog_item_photo/image/897627/Black_Panther_Shirts_and_Jackets_0490e751-49fc-42a3-bf83-d59d3acd753e_large.jpg",
+  series: ["Pop! Tees & Apparel", "Funko Target Exclusives"],
+};
+export type FunkoPop = typeof exampleFunkoPop;
 
 export type CardCategory =
   | "Pokemon"

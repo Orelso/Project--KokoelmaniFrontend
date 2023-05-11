@@ -88,6 +88,20 @@ export const HIDDEN_KEYS = [
   "card_back_id",
   "illustration_id",
   "name",
+  "prices",
+  "edhrec_rank",
+  "textless",
+  "booster",
+  "uri",
+  "scryfall_uri",
+  "cmc",
+  "games",
+  "finishes",
+  "set_uri",
+  "set_search_uri",
+  "scryfall_set_uri",
+  "rulings_uri",
+  "prints_search_uri",
 ];
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 export const RENAME_KEYS_MAP = {
@@ -102,14 +116,6 @@ export const RENAME_KEYS_MAP = {
   set_type: "set type",
   border_color: "border color",
   full_art: "full art",
+  flavor_text: "Flavor Text",
 };
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-export const KEYS_WITH_CLICKABLE_LINKS = [
-  "uri",
-  "scryfall_uri",
-  "set_uri",
-  "set_search_uri",
-  "scryfall_set_uri",
-  "rulings_uri",
-  "prints_search_uri",
-];

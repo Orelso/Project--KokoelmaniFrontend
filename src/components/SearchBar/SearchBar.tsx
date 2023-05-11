@@ -49,6 +49,14 @@ const FilterCard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [numResults, setNumResults] = useState(6); // Display the first 6 items by default
 
+  const formatKey = (key) => {
+    return key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
+  };
+
+  const formatValue = (value) => {
+    return value.charAt(0).toUpperCase() + value.slice(1).replace(/_/g, " ");
+  };
+
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -237,21 +245,18 @@ const FilterCard = () => {
                   </TableRow>
                   {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
                   {Object.entries(selectedCard).map(([key, val]) => {
-                    console.log(selectedCard);
                     if (HIDDEN_KEYS.includes(key)) {
                       return null; // Skip this iteration of the map loop
-                    } // Changing the words to more suitable constants
+                    }
+
                     let renamedKey = key;
-                    const shouldRenameKey =
-                      // Object.keys(RENAME_KEYS_MAP).includes(key);
-                      key in RENAME_KEYS_MAP;
+                    const shouldRenameKey = key in RENAME_KEYS_MAP;
                     if (shouldRenameKey) {
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                       renamedKey = RENAME_KEYS_MAP[key];
                     }
 
                     if (key === "modified") {
-                      val = "modified value"; // replace the value with a new one
+                      val = "modified value";
                     } else if (
                       MODIFIED_VALUES[val as keyof typeof MODIFIED_VALUES]
                     ) {
@@ -259,33 +264,79 @@ const FilterCard = () => {
                         MODIFIED_VALUES[val as keyof typeof MODIFIED_VALUES];
                     }
 
-                    if (typeof val === "object") {
-                      return (
-                        <TableRow key={key}>
-                          <TableCell>{startCase(key)}</TableCell>
-                          <TableCell sx={{ wordBreak: "break-word;" }}>
-                            {JSON.stringify(val)}
-                          </TableCell>
-                        </TableRow>
-                      );
+                    if (typeof val === "object" && !Array.isArray(val)) {
+                      if (key === "legalities") {
+                        return (
+                          <TableRow key={key}>
+                            <TableCell>{startCase(key)}</TableCell>
+                            <TableCell>
+                              {Object.entries(val)
+                                .map(
+                                  ([subKey, subVal]) =>
+                                    `${startCase(subKey)}: ${subVal}`
+                                )
+                                .join(",\n")}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      } else if (key === "related_uris") {
+                        const [firstUriKey, firstUriVal] =
+                          Object.entries(val)[0];
+                        return (
+                          <TableRow key={`${key}-${firstUriKey}`}>
+                            <TableCell>{`${startCase(key)} - ${startCase(
+                              firstUriKey
+                            )}`}</TableCell>
+                            <TableCell>{firstUriVal}</TableCell>
+                          </TableRow>
+                        );
+                      } else {
+                        return Object.entries(val).map(
+                          ([subKey, subVal], index) => (
+                            <TableRow key={`${key}-${subKey}-${index}`}>
+                              <TableCell>{`${startCase(key)} - ${startCase(
+                                subKey
+                              )}`}</TableCell>
+                              <TableCell>{subVal}</TableCell>
+                            </TableRow>
+                          )
+                        );
+                      }
                     }
+
+                    if (Array.isArray(val)) {
+                      return val.flatMap((item, arrayIndex) => {
+                        if (typeof item === "object" && !Array.isArray(item)) {
+                          return Object.entries(item).map(
+                            ([subKey, subVal], itemIndex) => (
+                              <TableRow
+                                key={`${key}-${arrayIndex}-${subKey}-${itemIndex}`}
+                              >
+                                <TableCell>{`${startCase(
+                                  key
+                                )} - ${arrayIndex} - ${startCase(
+                                  subKey
+                                )}`}</TableCell>
+                                <TableCell>{subVal}</TableCell>
+                              </TableRow>
+                            )
+                          );
+                        }
+
+                        // Return a row for non-object array item
+                        return (
+                          <TableRow key={`${key}-${arrayIndex}`}>
+                            <TableCell>{`${startCase(
+                              key
+                            )} - ${arrayIndex}`}</TableCell>
+                            <TableCell>{item}</TableCell>
+                          </TableRow>
+                        );
+                      });
+                    }
+
                     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-                    if (KEYS_WITH_CLICKABLE_LINKS.includes(key)) {
-                      return (
-                        <TableRow key={key}>
-                          <TableCell>{startCase(renamedKey)}</TableCell>
-                          <TableCell>
-                            <a
-                              href={val}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {val}
-                            </a>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    }
+
                     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
                     return (
                       <TableRow key={key}>
