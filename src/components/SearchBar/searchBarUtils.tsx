@@ -1,8 +1,72 @@
 import { Box } from "@mui/material";
 import * as React from "react";
 import Image from "next/image";
-import { LAND_SUBSTRING_TO_COLOR_MAP } from "./SearchBar";
+/* -----------------------------------------------------(MTG Mana Logo)--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+const LAND_SUBSTRING_TO_COLOR_MAP = {
+  G: "forest",
+  U: "island",
+  B: "swamp",
+  R: "mountain",
+  W: "plains",
+  S: "snow-mana",
+  X: "x-generic-mana",
+  C: "colorless-mana",
+  1: "colorless-mana1",
+  2: "colorless-mana2",
+  3: "colorless-mana3",
+  4: "colorless-mana4",
+  5: "colorless-mana5",
+  6: "colorless-mana6",
+  7: "colorless-mana7",
+  8: "colorless-mana8",
+  9: "colorless-mana9",
+  10: "colorless-mana10",
+  11: "colorless-mana11",
+  12: "colorless-mana12",
+  13: "colorless-mana13",
+  14: "colorless-mana14",
+  15: "colorless-mana15",
+  16: "colorless-mana16",
+  17: "colorless-mana17",
+  18: "colorless-mana18",
+  19: "colorless-mana19",
+  20: "colorless-mana20",
+  "2/W": "2generic-or-1white-mana",
+  "2/U": "2generic-or-1blue-mana",
+  "2/B": "2generic-or-1black-mana",
+  "2/R": "2generic-or-1red-mana",
+  "2/G": "2generic-or-1green-mana",
+  "W/U": "white-or-blue-mana",
+  "U/B": "blue-or-black-mana",
+  "B/R": "black-or-red-mana",
+  "R/G": "red-or-green-mana",
+  "G/W": "green-or-white-mana",
+  "U/R": "blue-or-red-mana",
+  "B/G": "black-or-green-mana",
+  "R/W": "red-or-white-mana",
+  "G/U": "green-or-blue-mana",
+  "W/B": "white-or-black-mana",
+  "G/U/P": "GUP",
+  "B/P": "blackmana-or-2life",
+  "U/P": "bluemana-or-2life",
+  "G/P": "greenmana-or-2life",
+  "W/P": "whitemana-or-2life",
+  "R/P": "redmana-or-2life",
+};
 
+const LAND_SUBSTRING_TO_COLOR_MAP_POKEMON = {
+  Psychic: "Pokemon-psychic-energy",
+  Grass: "Pokemon-grass-energy",
+  Fire: "Pokemon-fire-energy",
+  Water: "Pokemon-water-energy",
+  Electric: "Pokemon-electric-energy",
+  Fighting: "Pokemon-fighting-energy",
+  Dark: "Pokemon-dark-energy",
+  Metal: "Pokemon-metal-energy",
+  Fairy: "Pokemon-fairy-energy",
+  Dragon: "Pokemon-dragon-energy",
+  Colorless: "Pokemon-colorless-energy",
+};
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 export function getTableValue(val: any): React.ReactNode {
   if (Array.isArray(val)) {

@@ -18,8 +18,8 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useLocalStorage } from "react-use";
-const DB_KEY = "mockCreateCollectionItem:items";
 import { getTableValue } from "../../../components/SearchBar/searchBarUtils";
+const DB_KEY = "mockCreateCollectionItem:items";
 
 // const useStyles = makeStyles({
 //   // field: {

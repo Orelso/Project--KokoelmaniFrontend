@@ -23,7 +23,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import type { AnyCard } from "../../types";
+import type { AnyCard, MTGCard } from "../../types";
 import CommentSection from "../CommentSection";
 import { Currency, CurrencyTab } from "../Currency";
 import CreateCollection from "../../pages/create-collection/components/CreateCollection";
@@ -33,34 +33,33 @@ import {
   MODIFIED_VALUES,
   HIDDEN_KEYS,
   RENAME_KEYS_MAP,
-  KEYS_WITH_CLICKABLE_LINKS,
   getTableValue,
   startCase,
 } from "./searchBarUtils";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const FilterCard = () => {
+const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [searchResults, setSearchResults] = useAtom<AnyCard[]>(
-    searchResultsAtom
-  ) as any;
+  const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
   const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
   const [open, setOpen] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [numResults, setNumResults] = useState(6); // Display the first 6 items by default
-
-  const formatKey = (key) => {
-    return key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
-  };
-
-  const formatValue = (value) => {
-    return value.charAt(0).toUpperCase() + value.slice(1).replace(/_/g, " ");
-  };
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
 
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
     setOpenModal(true);
   };
+  const handleLike = () => {
+    setLikes(likes + 1);
+  };
+
+  const handleDislike = () => {
+    setDislikes(dislikes + 1);
+  };
+
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalClose = () => {
     setOpenModal(false);
@@ -70,20 +69,19 @@ const FilterCard = () => {
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(value);
-    console.log("🚀 ~ file: SearchBar.tsx:29 ~ handleOnChange ~ value", value);
   };
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleSubmit = () => {
     fetch(`${BACKEND_URL}/cards/name/${searchTerm}`)
       .then((res) => res.json())
       .then((res) => {
-        console.log(
-          "🚀 ~ file: SearchBar.tsx:25 ~ .then ~ data",
-          res,
-          typeof res !== "undefined" && "data" in res ? res.data : null
-        );
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        setSearchResults(res);
+        // check if it's an array, if not, console.error
+        if (Array.isArray(res)) {
+          setSearchResults(res);
+        } else {
+          console.error("not an array type!", res);
+        }
       })
       .catch((error: any) => {
         console.log(error);
@@ -122,17 +120,17 @@ const FilterCard = () => {
       />
       {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
       <>
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
-        {searchResults.slice(0, numResults).map((result) => {
+        {searchResults.slice(0, numResults).map((result, index) => {
           return (
             <SearchResult
-              key={result.name}
+              key={`${result.name}-${index}`}
               handleCardClick={handleCardClick}
               result={result}
               getTableValue={getTableValue}
             />
           );
         })}
+
         {/* --------------------------------------------------------------(Search Bar - Load More Button)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
 
         {searchResults.length > numResults && (
@@ -175,6 +173,20 @@ const FilterCard = () => {
                   <h6>{selectedCard.set_name}</h6>
                 </Typography>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
+                <Typography>
+                  <div style={{ display: "flex" }}>
+                    <div style={{ marginRight: "10px" }}>
+                      <button onClick={handleLike}>👍</button>
+                      <p>{likes}</p>
+                    </div>
+
+                    <div>
+                      <button onClick={handleDislike}>👎</button>
+                      <p>{dislikes}</p>
+                    </div>
+                  </div>
+                </Typography>
+
                 <img
                   alt=""
                   src={
@@ -189,6 +201,9 @@ const FilterCard = () => {
                   style={{ border: "8px solid black" }}
                   width="400"
                 />
+
+                <p>Total Likes Rank: {likes - dislikes}</p>
+
                 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
                 <Button onClick={handleModalOpen}>
                   <AddCircleOutlineRoundedIcon />
@@ -270,18 +285,23 @@ const FilterCard = () => {
                           <TableRow key={key}>
                             <TableCell>{startCase(key)}</TableCell>
                             <TableCell>
-                              {Object.entries(val)
-                                .map(
-                                  ([subKey, subVal]) =>
-                                    `${startCase(subKey)}: ${subVal}`
+                              {Object.entries(val as MTGCard["legalities"]).map(
+                                ([subKey, subVal]) => (
+                                  <React.Fragment key={subVal}>
+                                    <span>
+                                      {startCase(subKey)}: ${subVal}
+                                    </span>
+                                    <br />
+                                  </React.Fragment>
                                 )
-                                .join(",\n")}
+                              )}
                             </TableCell>
                           </TableRow>
                         );
                       } else if (key === "related_uris") {
-                        const [firstUriKey, firstUriVal] =
-                          Object.entries(val)[0];
+                        const [firstUriKey, firstUriVal] = Object.entries(
+                          val as MTGCard["related_uris"]
+                        )[0];
                         return (
                           <TableRow key={`${key}-${firstUriKey}`}>
                             <TableCell>{`${startCase(key)} - ${startCase(
@@ -291,23 +311,26 @@ const FilterCard = () => {
                           </TableRow>
                         );
                       } else {
-                        return Object.entries(val).map(
-                          ([subKey, subVal], index) => (
-                            <TableRow key={`${key}-${subKey}-${index}`}>
-                              <TableCell>{`${startCase(key)} - ${startCase(
-                                subKey
-                              )}`}</TableCell>
-                              <TableCell>{subVal}</TableCell>
-                            </TableRow>
-                          )
-                        );
+                        return typeof val === "object" && !Array.isArray(val)
+                          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                            Object.entries(val).map(
+                              ([subKey, subVal], index) => (
+                                <TableRow key={`${key}-${subKey}-${index}`}>
+                                  <TableCell>{`${startCase(key)} - ${startCase(
+                                    subKey
+                                  )}`}</TableCell>
+                                  <TableCell>{subVal as any}</TableCell>
+                                </TableRow>
+                              )
+                            )
+                          : null;
                       }
                     }
 
                     if (Array.isArray(val)) {
                       return val.flatMap((item, arrayIndex) => {
                         if (typeof item === "object" && !Array.isArray(item)) {
-                          return Object.entries(item).map(
+                          return Object.entries(item as MTGCard).map(
                             ([subKey, subVal], itemIndex) => (
                               <TableRow
                                 key={`${key}-${arrayIndex}-${subKey}-${itemIndex}`}
@@ -317,7 +340,7 @@ const FilterCard = () => {
                                 )} - ${arrayIndex} - ${startCase(
                                   subKey
                                 )}`}</TableCell>
-                                <TableCell>{subVal}</TableCell>
+                                <TableCell>{subVal as any}</TableCell>
                               </TableRow>
                             )
                           );
@@ -336,8 +359,6 @@ const FilterCard = () => {
                     }
 
                     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-                    /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
                     return (
                       <TableRow key={key}>
                         <TableCell>{startCase(renamedKey)}</TableCell>
@@ -354,75 +375,10 @@ const FilterCard = () => {
     </div>
   );
 };
-/* -----------------------------------------------------(MTG Mana Logo)--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-export const LAND_SUBSTRING_TO_COLOR_MAP = {
-  G: "forest",
-  U: "island",
-  B: "swamp",
-  R: "mountain",
-  W: "plains",
-  S: "snow-mana",
-  X: "x-generic-mana",
-  C: "colorless-mana",
-  1: "colorless-mana1",
-  2: "colorless-mana2",
-  3: "colorless-mana3",
-  4: "colorless-mana4",
-  5: "colorless-mana5",
-  6: "colorless-mana6",
-  7: "colorless-mana7",
-  8: "colorless-mana8",
-  9: "colorless-mana9",
-  10: "colorless-mana10",
-  11: "colorless-mana11",
-  12: "colorless-mana12",
-  13: "colorless-mana13",
-  14: "colorless-mana14",
-  15: "colorless-mana15",
-  16: "colorless-mana16",
-  17: "colorless-mana17",
-  18: "colorless-mana18",
-  19: "colorless-mana19",
-  20: "colorless-mana20",
-  "2/W": "2generic-or-1white-mana",
-  "2/U": "2generic-or-1blue-mana",
-  "2/B": "2generic-or-1black-mana",
-  "2/R": "2generic-or-1red-mana",
-  "2/G": "2generic-or-1green-mana",
-  "W/U": "white-or-blue-mana",
-  "U/B": "blue-or-black-mana",
-  "B/R": "black-or-red-mana",
-  "R/G": "red-or-green-mana",
-  "G/W": "green-or-white-mana",
-  "U/R": "blue-or-red-mana",
-  "B/G": "black-or-green-mana",
-  "R/W": "red-or-white-mana",
-  "G/U": "green-or-blue-mana",
-  "W/B": "white-or-black-mana",
-  "G/U/P": "GUP",
-  "B/P": "blackmana-or-2life",
-  "U/P": "bluemana-or-2life",
-  "G/P": "greenmana-or-2life",
-  "W/P": "whitemana-or-2life",
-  "R/P": "redmana-or-2life",
-};
 
-export const LAND_SUBSTRING_TO_COLOR_MAP_POKEMON = {
-  Psychic: "Pokemon-psychic-energy",
-  Grass: "Pokemon-grass-energy",
-  Fire: "Pokemon-fire-energy",
-  Water: "Pokemon-water-energy",
-  Electric: "Pokemon-electric-energy",
-  Fighting: "Pokemon-fighting-energy",
-  Dark: "Pokemon-dark-energy",
-  Metal: "Pokemon-metal-energy",
-  Fairy: "Pokemon-fairy-energy",
-  Dragon: "Pokemon-dragon-energy",
-  Colorless: "Pokemon-colorless-energy",
-};
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-export default FilterCard;
+export default SearchBar;
 
 function SearchResult({
   handleCardClick,
