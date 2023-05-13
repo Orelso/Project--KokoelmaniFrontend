@@ -19,23 +19,23 @@ const MAP_COLOR_TO_CATEGORY = {
 };
 
 interface Props {
-  result: any; // Updated prop name
+  collection: any; // Updated prop name
   onDelete?: (id: number) => void;
 }
 
-const CollectionCard = ({ result, onDelete }: Props) => {
+const CollectionCard = ({ collection, onDelete }: Props) => {
   return (
-    <CollectionCardStyles {...{ category: result.category }}>
+    <CollectionCardStyles {...{ category: collection.category }}>
       <Card elevation={8}>
         <CardHeader
           action={
-            <IconButton onClick={() => onDelete?.(result.id)}>
+            <IconButton onClick={() => onDelete?.(collection.id)}>
               <DeleteOutlined />
             </IconButton>
           }
-          title={result.name}
+          title={collection.name}
           sx={{ color: "black", textAlign: "center" }}
-          subheader={result.category}
+          subheader={collection.category}
         />
         <CardMedia
           component="img"
@@ -46,19 +46,19 @@ const CollectionCard = ({ result, onDelete }: Props) => {
         />
         <CardContent>
           <Typography variant="body2" color="textSecondary">
-            Cost:$ {result.cost}
+            Cost:$ {collection.cost}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Language: {result.language}
+            Language: {collection.language}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Set: {result.set}
+            Set: {collection.set}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Quantity: {result.quantity}
+            Quantity: {collection.quantity}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Condition: {result.condition}
+            Condition: {collection.condition}
           </Typography>
         </CardContent>
       </Card>
@@ -69,7 +69,7 @@ const CollectionCard = ({ result, onDelete }: Props) => {
 export default CollectionCard;
 
 const CollectionCardStyles = styled.div<{ category: CardCategory }>`
-  border: 2px solid ${(props) => MAP_COLOR_TO_CATEGORY[props.category]};
+  border: 2px solid ${(props) => String(MAP_COLOR_TO_CATEGORY[props.category])};
   .MuiCard-root {
   }
 `;

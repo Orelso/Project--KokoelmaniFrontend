@@ -19,6 +19,8 @@ import FormGroup from "@mui/material/FormGroup";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useLocalStorage } from "react-use";
 import { getTableValue } from "../../../components/SearchBar/searchBarUtils";
+import { BACKEND_URL } from "../../../constants";
+import { AnyCard } from "../../../types";
 const DB_KEY = "mockCreateCollectionItem:items";
 
 // const useStyles = makeStyles({
@@ -36,23 +38,26 @@ const DB_KEY = "mockCreateCollectionItem:items";
 //   },
 // });
 
-export default function CreateCollection({ selectedCardName }) {
+export default function CreateCollection({
+  selectedCard,
+}: {
+  selectedCard: AnyCard;
+}) {
   // const classes = useStyles();
   const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [newItem, setNewItem] = useState(
-    selectedCardName.name || selectedCardName.title
+    selectedCard.name || selectedCard.title
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [cost, setCost] = useState();
-  const [language, setLanguage] = useState(selectedCardName.lang);
+  const [language, setLanguage] = useState(selectedCard.lang);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [set, setSet] = useState(
-    selectedCardName.set_name ||
-      selectedCardName.series ||
-      (selectedCardName.platforms &&
-        selectedCardName.platforms[0].platform.name)
+    selectedCard.set_name ||
+      selectedCard.series ||
+      (selectedCard.platforms && selectedCard.platforms[0].platform.name)
   );
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("MTG");
@@ -60,6 +65,7 @@ export default function CreateCollection({ selectedCardName }) {
   // const [foil, setFoil] = useState(Boolean)
   // const [autographed, setAutographed] = useState(Boolean)
 
+  // TODO combine these related states into a single object state (bc they always change together, so thgey're really the same state)
   const [newItemError, setNewItemError] = useState(false); // 103
   const [costError, setCostError] = useState(false);
   const [languageError, setLanguageError] = useState(false); // 103
@@ -70,6 +76,11 @@ export default function CreateCollection({ selectedCardName }) {
   const [dbItems, setDbItems] = useLocalStorage(DB_KEY, [] as any[]);
 
   const handleTheSubmit = (e: any) => {
+    console.log(
+      "🚀 ~ file: CreateCollection.tsx:152 ~ handleTheSubmit ~ e:",
+      e
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
 
@@ -104,46 +115,41 @@ export default function CreateCollection({ selectedCardName }) {
       setConditionError(true);
     }
 
-    if (
-      newItem &&
-      cost &&
-      set &&
-      category &&
-      quantity &&
-      language &&
-      condition
-    ) {
-      const cardItem = {
-        category,
-        newItem,
-        set,
-        quantity,
-        cost,
-        language,
-        condition,
-      };
-      const createCollectionItemFn =
-        process.env.NODE_ENV === "development"
-          ? () => {
-              return new Promise((resolve, reject) => {
-                setDbItems([...(dbItems ?? []), cardItem]);
-                resolve(true);
-              });
-            }
-          : createCollectionItem;
+    // const shouldSubmit =
+    //   newItem && cost && set && category && quantity && language && condition;
+    // console.log(
+    //   "🚀 ~ file: CreateCollection.tsx:119 ~ handleTheSubmit ~ shouldSubmit:",
+    //   shouldSubmit
+    // );
+    // if (shouldSubmit) {
+    const cardItem = {
+      category,
+      newItem,
+      set,
+      quantity,
+      cost,
+      language,
+      condition,
+    };
+    console.log(
+      "🚀 ~ file: CreateCollection.tsx:122 ~ handleTheSubmit ~ cardItem:",
+      cardItem
+    );
 
-      createCollectionItemFn(cardItem)
-        .then(() => {
-          void router.push("/collections");
-        })
-        .catch((err) => {
-          console.log(
-            "🚀 ~ file: Createcollection.tsx:114 ~ handleTheSubmit ~ err",
-            err
-          );
-          return {};
-        });
-    }
+    createCollectionItem(cardItem)
+      .then((res) => {
+        console.log("🚀 ~ file: CreateCollection.tsx:129 ~ .then ~ res:", res);
+        // TODO consider ux of adding many items at once
+        void router.push("/collections");
+      })
+      .catch((err) => {
+        console.log(
+          "🚀 ~ file: Createcollection.tsx:114 ~ handleTheSubmit ~ err",
+          err
+        );
+        return {};
+      });
+    // }
   };
 
   return (
@@ -305,7 +311,7 @@ export default function CreateCollection({ selectedCardName }) {
   );
 }
 function createCollectionItem(cardItem: any): Promise<Response> {
-  return fetch("http://localhost:3009/api/item/", {
+  return fetch(`${BACKEND_URL}/item/`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(cardItem),

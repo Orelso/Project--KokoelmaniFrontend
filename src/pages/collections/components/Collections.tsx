@@ -7,6 +7,7 @@ import { Grid } from "@mui/material";
 // import {AnyCardCollection} from 'kokoelmani-shared/dist';
 import CollectionCard from "../../../components/CollectionCard";
 import type { Collection } from "../../../types";
+import { BACKEND_URL } from "../../../constants";
 
 export default function Collections() {
   // const [collections, setCollections] = useState<AnyCardCollection[]>([])
@@ -14,7 +15,7 @@ export default function Collections() {
 
   // pull all data and store in collections state
   useEffect(() => {
-    fetch("http://localhost:3009/api/item/")
+    fetch(`${BACKEND_URL}/item/`)
       .then((res) => res.json())
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       .then((data) => setCollections(data))
@@ -23,7 +24,7 @@ export default function Collections() {
 
   const handleDelete = async (id: number) => {
     console.log("tete", collections);
-    await fetch(`http://localhost:3009/api/item/${id}`, {
+    await fetch(`${BACKEND_URL}/item/${id}`, {
       method: "DELETE",
     });
     const newCollections = collections.filter(

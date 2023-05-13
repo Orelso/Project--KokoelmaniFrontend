@@ -5,3 +5,9 @@ export const BACKEND_URL =
       ? process.env.NEXT_PUBLIC_DEV_API_URL
       : process.env.NEXT_PUBLIC_API_URL
   ) + "/v1/all";
+
+export const API_URL = String(
+  process.env.NODE_ENV === "development"
+    ? process.env.NEXT_PUBLIC_DEV_API_URL
+    : process.env.NEXT_PUBLIC_API_URL
+);

@@ -2,14 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  TextField,
-  Paper,
-  Modal,
-} from "@mui/material";
+import { Box, Button, IconButton, TextField, Modal } from "@mui/material";
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../../store";
 import * as React from "react";
@@ -36,6 +29,7 @@ import {
   getTableValue,
   startCase,
 } from "./searchBarUtils";
+import { SearchResult } from "./SearchResult";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -210,7 +204,7 @@ const SearchBar = () => {
                   Collection
                 </Button>
                 <Modal open={openModal} onClose={handleModalClose}>
-                  <CreateCollection selectedCardName={selectedCard} />
+                  <CreateCollection selectedCard={selectedCard} />
                 </Modal>
                 <Button>
                   <AddCircleOutlineRoundedIcon />
@@ -259,113 +253,129 @@ const SearchBar = () => {
                     <TableCell>{selectedCard.name}</TableCell>
                   </TableRow>
                   {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                  {Object.entries(selectedCard).map(([key, val]) => {
-                    if (HIDDEN_KEYS.includes(key)) {
-                      return null; // Skip this iteration of the map loop
-                    }
+                  {Object.entries(selectedCard).map(
+                    ([keyofAnyCard, valOfAnyCard]) => {
+                      if (HIDDEN_KEYS.includes(keyofAnyCard)) {
+                        return null; // Skip this iteration of the map loop
+                      }
 
-                    let renamedKey = key;
-                    const shouldRenameKey = key in RENAME_KEYS_MAP;
-                    if (shouldRenameKey) {
-                      renamedKey = RENAME_KEYS_MAP[key];
-                    }
+                      let renamedKey = keyofAnyCard;
+                      const shouldRenameKey = keyofAnyCard in RENAME_KEYS_MAP;
+                      if (shouldRenameKey) {
+                        renamedKey = RENAME_KEYS_MAP[keyofAnyCard];
+                      }
 
-                    if (key === "modified") {
-                      val = "modified value";
-                    } else if (
-                      MODIFIED_VALUES[val as keyof typeof MODIFIED_VALUES]
-                    ) {
-                      val =
-                        MODIFIED_VALUES[val as keyof typeof MODIFIED_VALUES];
-                    }
+                      if (keyofAnyCard === "modified") {
+                        valOfAnyCard = "modified value";
+                      } else if (
+                        MODIFIED_VALUES[
+                          valOfAnyCard as keyof typeof MODIFIED_VALUES
+                        ]
+                      ) {
+                        valOfAnyCard =
+                          MODIFIED_VALUES[
+                            valOfAnyCard as keyof typeof MODIFIED_VALUES
+                          ];
+                      }
 
-                    if (typeof val === "object" && !Array.isArray(val)) {
-                      if (key === "legalities") {
-                        return (
-                          <TableRow key={key}>
-                            <TableCell>{startCase(key)}</TableCell>
-                            <TableCell>
-                              {Object.entries(val as MTGCard["legalities"]).map(
-                                ([subKey, subVal]) => (
+                      if (
+                        typeof valOfAnyCard === "object" &&
+                        !Array.isArray(valOfAnyCard)
+                      ) {
+                        if (keyofAnyCard === "legalities") {
+                          return (
+                            <TableRow key={keyofAnyCard}>
+                              <TableCell>{startCase(keyofAnyCard)}</TableCell>
+                              <TableCell>
+                                {Object.entries(
+                                  valOfAnyCard as MTGCard["legalities"]
+                                ).map(([subKey, subVal]) => (
                                   <React.Fragment key={subVal}>
                                     <span>
                                       {startCase(subKey)}: ${subVal}
                                     </span>
                                     <br />
                                   </React.Fragment>
+                                ))}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        } else if (keyofAnyCard === "related_uris") {
+                          const [firstUriKey, firstUriVal] = Object.entries(
+                            valOfAnyCard as MTGCard["related_uris"]
+                          )[0];
+                          return (
+                            <TableRow key={`${keyofAnyCard}-${firstUriKey}`}>
+                              <TableCell>{`${startCase(
+                                keyofAnyCard
+                              )} - ${startCase(firstUriKey)}`}</TableCell>
+                              <TableCell>{firstUriVal}</TableCell>
+                            </TableRow>
+                          );
+                        } else {
+                          return typeof valOfAnyCard === "object" &&
+                            !Array.isArray(valOfAnyCard)
+                            ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                              Object.entries(valOfAnyCard).map(
+                                ([subKey, subVal], index) => (
+                                  <TableRow
+                                    key={`${keyofAnyCard}-${subKey}-${index}`}
+                                  >
+                                    <TableCell>{`${startCase(
+                                      keyofAnyCard
+                                    )} - ${startCase(subKey)}`}</TableCell>
+                                    <TableCell>{subVal as any}</TableCell>
+                                  </TableRow>
                                 )
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      } else if (key === "related_uris") {
-                        const [firstUriKey, firstUriVal] = Object.entries(
-                          val as MTGCard["related_uris"]
-                        )[0];
-                        return (
-                          <TableRow key={`${key}-${firstUriKey}`}>
-                            <TableCell>{`${startCase(key)} - ${startCase(
-                              firstUriKey
-                            )}`}</TableCell>
-                            <TableCell>{firstUriVal}</TableCell>
-                          </TableRow>
-                        );
-                      } else {
-                        return typeof val === "object" && !Array.isArray(val)
-                          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                            Object.entries(val).map(
-                              ([subKey, subVal], index) => (
-                                <TableRow key={`${key}-${subKey}-${index}`}>
-                                  <TableCell>{`${startCase(key)} - ${startCase(
+                              )
+                            : null;
+                        }
+                      }
+
+                      if (Array.isArray(valOfAnyCard)) {
+                        return valOfAnyCard.flatMap((item, arrayIndex) => {
+                          if (
+                            typeof item === "object" &&
+                            !Array.isArray(item)
+                          ) {
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                            return Object.entries(item).map(
+                              ([subKey, subVal], itemIndex) => (
+                                <TableRow
+                                  key={`${keyofAnyCard}-${arrayIndex}-${subKey}-${itemIndex}`}
+                                >
+                                  <TableCell>{`${startCase(
+                                    keyofAnyCard
+                                  )} - ${arrayIndex} - ${startCase(
                                     subKey
                                   )}`}</TableCell>
                                   <TableCell>{subVal as any}</TableCell>
                                 </TableRow>
                               )
-                            )
-                          : null;
-                      }
-                    }
+                            );
+                          }
 
-                    if (Array.isArray(val)) {
-                      return val.flatMap((item, arrayIndex) => {
-                        if (typeof item === "object" && !Array.isArray(item)) {
-                          return Object.entries(item as MTGCard).map(
-                            ([subKey, subVal], itemIndex) => (
-                              <TableRow
-                                key={`${key}-${arrayIndex}-${subKey}-${itemIndex}`}
-                              >
-                                <TableCell>{`${startCase(
-                                  key
-                                )} - ${arrayIndex} - ${startCase(
-                                  subKey
-                                )}`}</TableCell>
-                                <TableCell>{subVal as any}</TableCell>
-                              </TableRow>
-                            )
+                          // Return a row for non-object array item
+                          return (
+                            <TableRow key={`${keyofAnyCard}-${arrayIndex}`}>
+                              <TableCell>{`${startCase(
+                                keyofAnyCard
+                              )} - ${arrayIndex}`}</TableCell>
+                              <TableCell>{item}</TableCell>
+                            </TableRow>
                           );
-                        }
+                        });
+                      }
 
-                        // Return a row for non-object array item
-                        return (
-                          <TableRow key={`${key}-${arrayIndex}`}>
-                            <TableCell>{`${startCase(
-                              key
-                            )} - ${arrayIndex}`}</TableCell>
-                            <TableCell>{item}</TableCell>
-                          </TableRow>
-                        );
-                      });
+                      /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+                      return (
+                        <TableRow key={keyofAnyCard}>
+                          <TableCell>{startCase(renamedKey)}</TableCell>
+                          <TableCell>{getTableValue(valOfAnyCard)}</TableCell>
+                        </TableRow>
+                      );
                     }
-
-                    /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-                    return (
-                      <TableRow key={key}>
-                        <TableCell>{startCase(renamedKey)}</TableCell>
-                        <TableCell>{getTableValue(val)}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -379,89 +389,3 @@ const SearchBar = () => {
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 export default SearchBar;
-
-function SearchResult({
-  handleCardClick,
-  result,
-  getTableValue,
-}: {
-  result: AnyCard;
-  handleCardClick: (event) => void;
-  getTableValue: (mana_cost: string) => any;
-}) {
-  return (
-    <TableContainer
-      component={Paper}
-      elevation={13}
-      sx={{
-        overflow: "hidden",
-      }}
-    >
-      {/* --------------------------------------------------------------(Search Bar data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-      <Table aria-label="simple table">
-        <TableRow
-          onClick={() => handleCardClick(result)}
-          sx={{
-            display: "flex",
-            flexWrap: "nowrap",
-          }}
-        >
-          <TableCell>{result.name}</TableCell>
-          {/* --------------------------------------------------------------(YuGiOh Searchbar data displayed)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-          {/* {result.card_sets && result.card_sets[0] && (
-         <React.Fragment>
-           <TableCell>Set: {result.card_sets[0].set_name}</TableCell>
-           <TableCell>
-             Rarity: {result.card_sets[0].set_rarity}
-           </TableCell>
-           <TableCell>
-             Code: {result.card_sets[0].set_code}
-           </TableCell>
-         </React.Fragment>
-        )} */}
-          {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-
-          <TableCell>
-            {/* Mana Cost */}
-            {result.mana_cost && getTableValue(String(result.mana_cost))}
-            {/* Games */}
-            {result.released}
-            {/* Funko Pop */}
-            {result.title} {result.series}
-          </TableCell>
-          <TableCell>{result.lang && MODIFIED_VALUES[result.lang]}</TableCell>
-          {/* MTG POKEMON */}
-          <TableCell>{result.artist}</TableCell>
-          <TableCell>{result.rarity}</TableCell>
-          <TableCell>{result.types}</TableCell>
-          {/* YUGIOH */}
-          <TableCell>{result.type}</TableCell>
-          <TableCell>{result.attribute}</TableCell>
-          {/* DIGIMON */}
-          <TableCell>{result.color}</TableCell>
-          <TableCell>{result.set_name}</TableCell>
-        </TableRow>
-        <TableRow onClick={() => handleCardClick(result)}>
-          <TableCell>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              title="Click Me"
-              alt=""
-              width="47"
-              height="0"
-              src={
-                result.image_uris?.small ||
-                result.image_url ||
-                result.images?.small ||
-                result.card_images?.[0]?.image_url_small ||
-                result.imageName ||
-                result.background_image
-              }
-              onClick={() => handleCardClick(result)}
-            />
-          </TableCell>
-        </TableRow>
-      </Table>
-    </TableContainer>
-  );
-}
