@@ -69,23 +69,34 @@ export function SearchResult({
         <TableRow onClick={() => handleCardClick(result)}>
           <TableCell>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {result.card_faces && result.card_faces[0] && (
+            {result.card_faces && result.card_faces.length > 1 ? (
+              <div style={{ display: "flex" }}>
+                {result.card_faces.map((face, index) => (
+                  <img
+                    key={index}
+                    title="Click Me"
+                    alt=""
+                    width="47"
+                    height="0"
+                    src={face.image_uris?.small}
+                    onClick={() => handleCardClick(result)}
+                  />
+                ))}
+              </div>
+            ) : (
               <img
                 title="Click Me"
                 alt=""
                 width="47"
                 height="0"
-                src={result.card_faces[0].image_uris.small}
-                onClick={() => handleCardClick(result)}
-              />
-            )}
-            {result.card_faces && result.card_faces[1] && (
-              <img
-                title="Click Me"
-                alt=""
-                width="47"
-                height="0"
-                src={result.card_faces[1].image_uris.small}
+                src={
+                  result.image_uris?.small ||
+                  result.image_url ||
+                  result.images?.small ||
+                  result.card_images?.[0]?.image_url_small ||
+                  result.imageName ||
+                  result.background_image
+                }
                 onClick={() => handleCardClick(result)}
               />
             )}
