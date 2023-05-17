@@ -173,12 +173,12 @@ const SearchBar = () => {
                   <div style={{ display: "flex" }}>
                     <div style={{ marginRight: "10px" }}>
                       <button onClick={handleLike}>👍</button>
-                      <p>{likes}</p>
+                      <div>{likes}</div>
                     </div>
 
                     <div>
                       <button onClick={handleDislike}>👎</button>
-                      <p>{dislikes}</p>
+                      <div>{dislikes}</div>
                     </div>
                   </div>
                 </Typography>
@@ -199,7 +199,7 @@ const SearchBar = () => {
                 />
 
                 <div>
-                  <p>Total Likes Rank: {likes - dislikes}</p>
+                  <div>Total Likes Rank: {likes - dislikes}</div>
                 </div>
 
                 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
