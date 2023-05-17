@@ -182,14 +182,14 @@ const SearchBar = () => {
             {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
             <div style={{ display: "flex" }}>
               <div style={{ flex: 1 }}>
-                <Typography>
+                <Typography component="div">
                   <div>
                     <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
                     <h6>{selectedCard.set_name}</h6>
                   </div>
                 </Typography>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <Typography>
+                <Typography component="div">
                   <div style={{ display: "flex" }}>
                     <div style={{ marginRight: "10px" }}>
                       <button onClick={handleLike}>👍</button>
@@ -215,7 +215,7 @@ const SearchBar = () => {
                     selectedCard.images.large
                   }
                   style={{ border: "8px solid black" }}
-                  width="400"
+                  width="300"
                 />
 
                 <div>
@@ -277,6 +277,13 @@ const SearchBar = () => {
                       Name
                     </TableCell>
                     <TableCell>{selectedCard.name}</TableCell>
+                    {(() => {
+                      console.log(
+                        "🚀 ~ file: SearchBar.tsx:280 ~ SearchBar ~ selectedCard.name:",
+                        selectedCard.name
+                      );
+                      return null;
+                    })()}
                   </TableRow>
                   {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
                   {Object.entries(selectedCard).map(
@@ -315,14 +322,21 @@ const SearchBar = () => {
                               <TableCell>
                                 {Object.entries(
                                   valOfAnyCard as MTGCard["legalities"]
-                                ).map(([subKey, subVal]) => (
-                                  <React.Fragment key={subVal}>
-                                    <span>
-                                      {startCase(subKey)}: ${subVal}
-                                    </span>
-                                    <br />
-                                  </React.Fragment>
-                                ))}
+                                ).map(([subKey, subVal]) => {
+                                  console.log(
+                                    "🚀 ~ file: SearchBar.tsx:326 ~ ).map ~ subVal:",
+                                    subVal
+                                  );
+
+                                  return (
+                                    <React.Fragment key={subVal}>
+                                      <span>
+                                        {startCase(subKey)}: ${subVal}
+                                      </span>
+                                      <br />
+                                    </React.Fragment>
+                                  );
+                                })}
                               </TableCell>
                             </TableRow>
                           );
@@ -330,6 +344,10 @@ const SearchBar = () => {
                           const [firstUriKey, firstUriVal] = Object.entries(
                             valOfAnyCard as MTGCard["related_uris"]
                           )[0];
+                          console.log(
+                            "🚀 ~ file: SearchBar.tsx:341 ~ ).map ~ firstUriVal:",
+                            firstUriVal
+                          );
                           return (
                             <TableRow key={`${keyofAnyCard}-${firstUriKey}`}>
                               <TableCell>{`${startCase(
@@ -342,8 +360,17 @@ const SearchBar = () => {
                           return typeof valOfAnyCard === "object" &&
                             !Array.isArray(valOfAnyCard)
                             ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                              Object.entries(valOfAnyCard).map(
-                                ([subKey, subVal], index) => (
+                              (valOfAnyCard
+                                ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                                  Object.entries(valOfAnyCard)
+                                : []
+                              ).map(([subKey, subVal], index) => {
+                                console.log(
+                                  "🚀 ~ file: SearchBar.tsx:361 ~ ).map ~ subVal:",
+                                  subVal
+                                );
+
+                                return (
                                   <TableRow
                                     key={`${keyofAnyCard}-${subKey}-${index}`}
                                   >
@@ -352,8 +379,8 @@ const SearchBar = () => {
                                     )} - ${startCase(subKey)}`}</TableCell>
                                     <TableCell>{subVal as any}</TableCell>
                                   </TableRow>
-                                )
-                              )
+                                );
+                              })
                             : null;
                         }
                       }
@@ -366,21 +393,36 @@ const SearchBar = () => {
                           ) {
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                             return Object.entries(item).map(
-                              ([subKey, subVal], itemIndex) => (
-                                <TableRow
-                                  key={`${keyofAnyCard}-${arrayIndex}-${subKey}-${itemIndex}`}
-                                >
-                                  <TableCell>{`${startCase(
-                                    keyofAnyCard
-                                  )} - ${arrayIndex} - ${startCase(
-                                    subKey
-                                  )}`}</TableCell>
-                                  <TableCell>{subVal as any}</TableCell>
-                                </TableRow>
-                              )
+                              ([subKey, subVal], itemIndex) => {
+                                console.log(
+                                  "🚀 ~ file: SearchBar.tsx:401 ~ returnvalOfAnyCard.flatMap ~ subVal:",
+                                  subVal
+                                );
+
+                                return (
+                                  <TableRow
+                                    key={`${keyofAnyCard}-${arrayIndex}-${subKey}-${itemIndex}`}
+                                  >
+                                    <TableCell>{`${startCase(
+                                      keyofAnyCard
+                                    )} - ${arrayIndex} - ${startCase(
+                                      subKey
+                                    )}`}</TableCell>
+                                    <TableCell>
+                                      {typeof subVal === "object"
+                                        ? JSON.stringify(subVal)
+                                        : (subVal as any)}
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              }
                             );
                           }
 
+                          console.log(
+                            "🚀 ~ file: SearchBar.tsx:410 ~ returnvalOfAnyCard.flatMap ~ item:",
+                            item
+                          );
                           // Return a row for non-object array item
                           return (
                             <TableRow key={`${keyofAnyCard}-${arrayIndex}`}>
@@ -393,6 +435,10 @@ const SearchBar = () => {
                         });
                       }
 
+                      console.log(
+                        "🚀 ~ file: SearchBar.tsx:439 ~ SearchBar ~ getTableValue(valOfAnyCard):",
+                        getTableValue(valOfAnyCard)
+                      );
                       /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
                       return (
                         <TableRow key={keyofAnyCard}>

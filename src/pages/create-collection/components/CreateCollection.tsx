@@ -21,6 +21,7 @@ import { useLocalStorage } from "react-use";
 import { getTableValue } from "../../../components/SearchBar/searchBarUtils";
 import { BACKEND_URL } from "../../../constants";
 import { AnyCard } from "../../../types";
+
 const DB_KEY = "mockCreateCollectionItem:items";
 
 // const useStyles = makeStyles({
@@ -64,8 +65,6 @@ export default function CreateCollection({
   const [condition, setCondition] = useState("");
   // const [foil, setFoil] = useState(Boolean)
   // const [autographed, setAutographed] = useState(Boolean)
-
-  // TODO combine these related states into a single object state (bc they always change together, so thgey're really the same state)
   const [newItemError, setNewItemError] = useState(false); // 103
   const [costError, setCostError] = useState(false);
   const [languageError, setLanguageError] = useState(false); // 103
