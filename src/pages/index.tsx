@@ -45,8 +45,9 @@ function HomeView() {
           flexWrap: "wrap",
           "& > :not(style)": {
             m: 1,
-            width: 340,
-            height: 410,
+            width: "100%", // Set initial width to 100%
+            maxWidth: "340px", // Set maximum width
+            height: "410px",
             backgroundColor: "#efe4e2",
           },
         }}
@@ -67,8 +68,9 @@ function HomeView() {
           flexWrap: "wrap",
           "& > :not(style)": {
             m: 1,
-            width: 340,
-            height: 410,
+            width: "100%", // Set initial width to 100%
+            maxWidth: "340px", // Set maximum width
+            height: "410px",
             backgroundColor: "#efe4e2",
           },
         }}

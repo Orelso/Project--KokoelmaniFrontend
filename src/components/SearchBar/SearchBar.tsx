@@ -41,6 +41,8 @@ const SearchBar = () => {
   const [numResults, setNumResults] = useState(6); // Display the first 6 items by default
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [lastSearchResultCount, setLastSearchResultCount] = useState(0);
 
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
@@ -69,10 +71,9 @@ const SearchBar = () => {
     fetch(`${BACKEND_URL}/cards/name/${searchTerm}`)
       .then((res) => res.json())
       .then((res) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        // check if it's an array, if not, console.error
         if (Array.isArray(res)) {
           setSearchResults(res);
+          setLastSearchResultCount(res.length); // Set the last search result count here
         } else {
           console.error("not an array type!", res);
         }
@@ -93,27 +94,46 @@ const SearchBar = () => {
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   return (
     <div>
-      <TextField
-        sx={{ ml: 1, flex: 1, color: "white" }}
-        placeholder="Search..."
-        onChange={handleOnChange}
-        value={searchTerm}
-        InputProps={{
-          endAdornment: (
-            <IconButton onClick={handleSubmit}>
-              <SearchIcon />
-            </IconButton>
-          ),
-        }}
-        /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSubmit();
-          }
-        }}
-      />
+      <div>
+        <div style={{ width: "15%", margin: "0 auto" }}>
+          <TextField
+            sx={{
+              flex: 1,
+              color: "white",
+              transform: isHovered ? "scale(1.5)" : "scale(1)",
+              transition: "transform 0.3s",
+              backgroundColor: isHovered ? "white" : "transparent",
+              borderRadius: "20px",
+              boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+            }}
+            placeholder={`Results: ${lastSearchResultCount}`}
+            onChange={handleOnChange}
+            value={searchTerm}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={handleSubmit}>
+                  <SearchIcon />
+                </IconButton>
+              ),
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit();
+              }
+            }}
+          />
+        </div>
+        <span
+          style={{ display: "block", textAlign: "center", marginTop: "10px" }}
+        >
+          Total Results: {lastSearchResultCount}
+        </span>
+      </div>
+
       {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-      <>
+      <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
         {searchResults.slice(0, numResults).map((result, index) => {
           return (
             <SearchResult
@@ -136,7 +156,10 @@ const SearchBar = () => {
             Load More
           </Button>
         )}
-      </>
+
+        {/* Display the total */}
+        <p>Total Results: {searchResults.length}</p>
+      </div>
 
       {/* --------------------------------------------------------------(Search Bar MODAL data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
       {selectedCard && (

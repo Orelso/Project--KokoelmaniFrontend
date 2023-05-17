@@ -43,7 +43,7 @@ export function SearchResult({
               {result.title} {result.series}
             </TableCell>
             <TableCell>{result.lang && MODIFIED_VALUES[result.lang]}</TableCell>
-            <TableCell>{result.set}</TableCell>
+            {/* <TableCell>{result.set}</TableCell> */}
             {/* MTG POKEMON */}
             <TableCell>{result.artist}</TableCell>
             <TableCell>{result.rarity}</TableCell>
