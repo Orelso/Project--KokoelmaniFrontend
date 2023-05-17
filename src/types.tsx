@@ -660,4 +660,5 @@ export type AnyCard = {
   title?: string;
   series?: string;
   types?: string;
+  token_name?: string;
 } & Partial<DigimonCard & PokemonCard & MTGCard>;

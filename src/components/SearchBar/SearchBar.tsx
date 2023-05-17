@@ -163,8 +163,10 @@ const SearchBar = () => {
             <div style={{ display: "flex" }}>
               <div style={{ flex: 1 }}>
                 <Typography>
-                  <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
-                  <h6>{selectedCard.set_name}</h6>
+                  <div>
+                    <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
+                    <h6>{selectedCard.set_name}</h6>
+                  </div>
                 </Typography>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <Typography>
@@ -196,16 +198,20 @@ const SearchBar = () => {
                   width="400"
                 />
 
-                <p>Total Likes Rank: {likes - dislikes}</p>
+                <div>
+                  <p>Total Likes Rank: {likes - dislikes}</p>
+                </div>
 
                 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
                 <Button onClick={handleModalOpen}>
                   <AddCircleOutlineRoundedIcon />
                   Collection
                 </Button>
-                <Modal open={openModal} onClose={handleModalClose}>
-                  <CreateCollection selectedCard={selectedCard} />
-                </Modal>
+                {openModal && (
+                  <Modal open={openModal} onClose={handleModalClose}>
+                    <CreateCollection selectedCard={selectedCard} />
+                  </Modal>
+                )}
                 <Button>
                   <AddCircleOutlineRoundedIcon />
                   Deck
