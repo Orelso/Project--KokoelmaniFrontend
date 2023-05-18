@@ -4,6 +4,7 @@ import { Table, TableCell, TableContainer, TableRow } from "@mui/material";
 import type { AnyCard } from "../../types";
 import { MODIFIED_VALUES } from "./searchBarUtils";
 
+
 export function SearchResult({
   handleCardClick,
   result,
@@ -31,7 +32,7 @@ export function SearchResult({
             }}
           >
             <TableCell>
-              {result.name} {result.token_name}
+              {result.name} {result.token_name} {result.title}
             </TableCell>
 
             <TableCell>
@@ -40,7 +41,7 @@ export function SearchResult({
               {/* Games */}
               {result.released}
               {/* Funko Pop */}
-              {result.title} {result.series}
+              {result.title} {typeof result.series === 'object' ? '' : result.series}
             </TableCell>
             <TableCell>{result.lang && MODIFIED_VALUES[result.lang]}</TableCell>
             {/* <TableCell>{result.set}</TableCell> */}

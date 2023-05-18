@@ -137,7 +137,7 @@ const SearchBar = () => {
         {searchResults.slice(0, numResults).map((result, index) => {
           return (
             <SearchResult
-              key={`${result.name}-${index}`}
+              key={`${result.name || result.title}-${index}`}
               handleCardClick={handleCardClick}
               result={result}
               getTableValue={getTableValue}
