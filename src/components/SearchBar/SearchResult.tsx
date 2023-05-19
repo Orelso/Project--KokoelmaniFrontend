@@ -44,8 +44,12 @@ export function SearchResult({
               {typeof result.series === "object" ? "" : result.series}
             </TableCell>
             <TableCell>{result.lang && MODIFIED_VALUES[result.lang]}</TableCell>
-            <TableCell>{result.set.name}</TableCell>
-            <TableCell>({result.set.series})</TableCell>
+            <TableCell style={{ border: result.set ? "" : "none" }}>
+              {result.set ? result.set.name : null}
+            </TableCell>
+            <TableCell style={{ border: result.set ? "" : "none" }}>
+              {result.set ? result.set.series : null}
+            </TableCell>
 
             {/* MTG POKEMON */}
             <TableCell>{result.artist}</TableCell>
