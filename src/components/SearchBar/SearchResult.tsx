@@ -4,7 +4,6 @@ import { Table, TableCell, TableContainer, TableRow } from "@mui/material";
 import type { AnyCard } from "../../types";
 import { MODIFIED_VALUES } from "./searchBarUtils";
 
-
 export function SearchResult({
   handleCardClick,
   result,
@@ -41,10 +40,16 @@ export function SearchResult({
               {/* Games */}
               {result.released}
               {/* Funko Pop */}
-              {result.title} {typeof result.series === 'object' ? '' : result.series}
+              {result.title}{" "}
+              {typeof result.series === "object" ? "" : result.series}
             </TableCell>
             <TableCell>{result.lang && MODIFIED_VALUES[result.lang]}</TableCell>
-            {/* <TableCell>{result.set}</TableCell> */}
+            <TableCell>
+              {result.set && result.set.name && result.set.series
+                ? `${result.set.name} ${result.set.series}`
+                : "N/A"}
+            </TableCell>
+
             {/* MTG POKEMON */}
             <TableCell>{result.artist}</TableCell>
             <TableCell>{result.rarity}</TableCell>
@@ -86,7 +91,10 @@ export function SearchResult({
                     result.card_images?.[0]?.image_url_small ||
                     result.imageName ||
                     result.background_image ||
-                    result.token_name
+                    result.token_name ||
+                    result.images[0] ||
+                    (result.images && result.images[0]?.path) || // Add this line
+                    result.resourceURI
                   }
                   onClick={() => handleCardClick(result)}
                 />
