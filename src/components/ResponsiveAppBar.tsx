@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 import styled from "styled-components";
 import React, { useState } from "react";
+import BackgroundDropdown from "./BackgroundDropdown";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const menuItems = [
   {
@@ -53,7 +54,7 @@ const menuItems = [
   },
 ];
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-export function ResponsiveAppBar() {
+export function ResponsiveAppBar({ setBackgroundImage, backgroundImage }) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -67,18 +68,6 @@ export function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  //  const handleBackgroundChange = (
-  //   event: React.ChangeEvent<{ value: unknown }>
-  // ) => {
-  //   const value = event.target.value as string;
-  //   if (value.startsWith("BackgroundImages/")) {
-  //     setBackgroundImage(value);
-  //     setBackgroundColor("");
-  //   } else {
-  //     setBackgroundColor(value);
-  //     setBackgroundImage("");
-  //   }
-  // };
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   return (
     <AppBar position="static">
@@ -180,6 +169,11 @@ export function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
+          <BackgroundDropdown
+            setBackgroundImage={setBackgroundImage}
+            backgroundImage={backgroundImage}
+          />
+
           {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
         </Toolbar>
       </Container>

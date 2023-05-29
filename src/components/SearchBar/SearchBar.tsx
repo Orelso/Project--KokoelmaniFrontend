@@ -44,6 +44,12 @@ const SearchBar = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [lastSearchResultCount, setLastSearchResultCount] = useState(0);
 
+  const toStartCase = (str) => {
+    return str
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -91,6 +97,7 @@ const SearchBar = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   return (
     <div>
@@ -331,7 +338,7 @@ const SearchBar = () => {
                                   return (
                                     <React.Fragment key={subVal}>
                                       <span>
-                                        {startCase(subKey)}: ${subVal}
+                                        {toStartCase(subKey)}: {subVal}
                                       </span>
                                       <br />
                                     </React.Fragment>
@@ -353,7 +360,15 @@ const SearchBar = () => {
                               <TableCell>{`${startCase(
                                 keyofAnyCard
                               )} - ${startCase(firstUriKey)}`}</TableCell>
-                              <TableCell>{firstUriVal}</TableCell>
+                              <TableCell>
+                                <a
+                                  href={firstUriVal}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {firstUriVal}
+                                </a>
+                              </TableCell>
                             </TableRow>
                           );
                         } else {

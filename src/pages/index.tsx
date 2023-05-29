@@ -40,13 +40,12 @@ function HomeView() {
       </Typography>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
+          display: "grid",
+          gridTemplateColumns: ["repeat(1, 1fr)", "repeat(5, 1fr)"], // 1 column for xs screens, 5 columns for sm screens and larger
+          gap: 1, // Equivalent to m: 1, but used for grid gaps
           "& > :not(style)": {
-            m: 1,
-            width: "100%", // Set initial width to 100%
-            maxWidth: "340px", // Set maximum width
+            width: "100%", // Take up full width of grid column
+            maxWidth: "340px", // Keep maximum width
             height: "410px",
             backgroundColor: "#efe4e2",
           },
@@ -63,13 +62,12 @@ function HomeView() {
       </Typography>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
+          display: "grid",
+          gridTemplateColumns: ["repeat(1, 1fr)", "repeat(5, 1fr)"], // 1 column for xs screens, 5 columns for sm screens and larger
+          gap: 1, // Equivalent to m: 1, but used for grid gaps
           "& > :not(style)": {
-            m: 1,
-            width: "100%", // Set initial width to 100%
-            maxWidth: "340px", // Set maximum width
+            width: "100%", // Take up full width of grid column
+            maxWidth: "340px", // Keep maximum width
             height: "410px",
             backgroundColor: "#efe4e2",
           },

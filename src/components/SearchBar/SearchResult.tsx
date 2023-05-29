@@ -93,8 +93,10 @@ export function SearchResult({
                     result.imageName ||
                     result.background_image ||
                     result.token_name ||
-                    result.images[0] ||
-                    (result.images && result.images[0]?.path) || // Add this line
+                    (result.images &&
+                      result.images[0]?.path +
+                        "." +
+                        result.images[0].extension) ||
                     result.resourceURI
                   }
                   onClick={() => handleCardClick(result)}

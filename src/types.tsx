@@ -632,6 +632,56 @@ const exampleDigimonCard = {
 };
 export type DigimonCard = typeof exampleDigimonCard;
 
+const exampleFleshBlood = {
+  unique_id: "WDJgQgDCwjbKRTJ8BTz8C",
+  name: "Shitty Xmas Present",
+  pitch: "2",
+  cost: "0",
+  power: "",
+  defense: "2",
+  health: "",
+  intelligence: "",
+  types: ["Generic", "Action"],
+  card_keywords: [],
+  abilities_and_effects: [],
+  ability_and_effect_keywords: [],
+  granted_keywords: [],
+  removed_keywords: [],
+  interacts_with_keywords: [],
+  functional_text:
+    "Put a Cracked Bauble from outside the game on top of target hero's deck.",
+  functional_text_plain:
+    "Put a Cracked Bauble from outside the game on top of target hero's deck.",
+  flavor_text: "Socks. Again?!",
+  flavor_text_plain: "Socks. Again?!",
+  type_text: "Generic Action",
+  played_horizontally: false,
+  blitz_legal: false,
+  cc_legal: false,
+  commoner_legal: false,
+  blitz_living_legend: false,
+  cc_living_legend: false,
+  blitz_banned: false,
+  cc_banned: false,
+  commoner_banned: false,
+  upf_banned: false,
+  blitz_suspended: false,
+  cc_suspended: false,
+  commoner_suspended: false,
+  variation_unique_id: "9phnJ7RdKkgqGnzC7nwgR",
+  set_edition_unique_id: "Cbc6mFhKFNdqtCTJ9wwGJ",
+  id: "LGS099",
+  set_id: "LGS",
+  edition: "N",
+  foilings: ["R"],
+  rarity: "P",
+  artist: "Sam Yang",
+  art_variation: null,
+  image_url:
+    "https://storage.googleapis.com/fabmaster/cardfaces/promos/LGS099.png",
+};
+export type FleshBlood = typeof exampleFleshBlood;
+
 const exampleFunkoPop = {
   handle: "black-panther",
   title: "Black Panther",
