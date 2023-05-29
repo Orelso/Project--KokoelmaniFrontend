@@ -170,7 +170,8 @@ const SearchBar = () => {
         <Modal open={open} onClose={handleClose}>
           <Box
             sx={{
-              display: "absolute",
+              position: "absolute",
+              display: "flex",
               flexDirection: "column",
               alignItems: "center",
               border: "10px solid purple",
@@ -179,96 +180,90 @@ const SearchBar = () => {
               overflow: "hidden",
             }}
           >
-            {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
             <IconButton
               sx={{ position: "absolute", top: 0, right: 0 }}
               onClick={handleClose}
             >
               <CloseIcon />
             </IconButton>
-            {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-            <div style={{ display: "flex" }}>
-              <div style={{ flex: 1 }}>
-                <Typography component="div">
-                  <div>
-                    <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
-                    <h6>{selectedCard.set_name}</h6>
-                  </div>
-                </Typography>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <Typography component="div">
-                  <div style={{ display: "flex" }}>
-                    <div style={{ marginRight: "10px" }}>
-                      <button onClick={handleLike}>👍</button>
-                      <div>{likes}</div>
-                    </div>
 
-                    <div>
-                      <button onClick={handleDislike}>👎</button>
-                      <div>{dislikes}</div>
-                    </div>
-                  </div>
-                </Typography>
-
-                <img
-                  alt=""
-                  src={
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    selectedCard.image_uris?.border_crop ||
-                    selectedCard.image_url ||
-                    selectedCard.card_images?.[0]?.image_url ||
-                    selectedCard.imageName ||
-                    selectedCard.background_image ||
-                    selectedCard.images.large
-                  }
-                  style={{ border: "8px solid black" }}
-                  width="300"
-                />
-
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Typography component="div">
                 <div>
-                  <div>Total Likes Rank: {likes - dislikes}</div>
+                  <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
+                  <h6>{selectedCard.set_name}</h6>
                 </div>
+              </Typography>
 
-                {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                <Button onClick={handleModalOpen}>
-                  <AddCircleOutlineRoundedIcon />
-                  Collection
-                </Button>
-                {openModal && (
-                  <Modal open={openModal} onClose={handleModalClose}>
-                    <CreateCollection selectedCard={selectedCard} />
-                  </Modal>
-                )}
-                <Button>
-                  <AddCircleOutlineRoundedIcon />
-                  Deck
-                </Button>
-                {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginRight: 40,
-                  }}
-                >
-                  <h3 style={{ marginRight: "20px" }}>Today{"'"}s Average</h3>
-                  <h3 style={{ marginRight: "20px" }}>All Time high</h3>
-                  <h3>All Time Low</h3>
-                  <h3>
-                    <CurrencyTab
-                      defaultCurrency={Currency.USD}
-                      onChange={(event) => {
-                        console.log("TODO Currency changed", event);
-                      }}
-                    />
-                  </h3>
+              <Typography component="div">
+                <div style={{ display: "flex" }}>
+                  <div style={{ marginRight: "10px" }}>
+                    <button onClick={handleLike}>👍</button>
+                    <div>{likes}</div>
+                  </div>
+
+                  <div>
+                    <button onClick={handleDislike}>👎</button>
+                    <div>{dislikes}</div>
+                  </div>
                 </div>
-                <CommentSection />
+              </Typography>
+
+              <img
+                alt=""
+                src={
+                  selectedCard.image_uris?.border_crop ||
+                  selectedCard.image_url ||
+                  selectedCard.card_images?.[0]?.image_url ||
+                  selectedCard.imageName ||
+                  selectedCard.background_image ||
+                  selectedCard.images.large
+                }
+                style={{ border: "8px solid black" }}
+                width="300"
+              />
+
+              <div>
+                <div>Total Likes Rank: {likes - dislikes}</div>
               </div>
+
+              <Button onClick={handleModalOpen}>
+                <AddCircleOutlineRoundedIcon />
+                Collection
+              </Button>
+              {openModal && (
+                <Modal open={openModal} onClose={handleModalClose}>
+                  <CreateCollection selectedCard={selectedCard} />
+                </Modal>
+              )}
+              <Button>
+                <AddCircleOutlineRoundedIcon />
+                Deck
+              </Button>
             </div>
-            {/* -------------------------------------------------------------------(Card/Item Data)------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginRight: 40,
+              }}
+            >
+              <h3 style={{ marginRight: "20px" }}>Today's Average</h3>
+              <h3 style={{ marginRight: "20px" }}>All-Time High</h3>
+              <h3>All-Time Low</h3>
+              <h3>
+                <CurrencyTab
+                  defaultCurrency={Currency.USD}
+                  onChange={(event) => {
+                    console.log("TODO Currency changed", event);
+                  }}
+                />
+              </h3>
+            </div>
+
+            <CommentSection />
+
             <TableContainer
               sx={{
                 minHeight: 100,
@@ -284,185 +279,93 @@ const SearchBar = () => {
                       Name
                     </TableCell>
                     <TableCell>{selectedCard.name}</TableCell>
-                    {(() => {
-                      console.log(
-                        "🚀 ~ file: SearchBar.tsx:280 ~ SearchBar ~ selectedCard.name:",
-                        selectedCard.name
-                      );
-                      return null;
-                    })()}
                   </TableRow>
-                  {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                  {Object.entries(selectedCard).map(
-                    ([keyofAnyCard, valOfAnyCard]) => {
-                      if (HIDDEN_KEYS.includes(keyofAnyCard)) {
-                        return null; // Skip this iteration of the map loop
-                      }
 
-                      let renamedKey = keyofAnyCard;
-                      const shouldRenameKey = keyofAnyCard in RENAME_KEYS_MAP;
-                      if (shouldRenameKey) {
-                        renamedKey = RENAME_KEYS_MAP[keyofAnyCard];
-                      }
+                  {Object.entries(selectedCard).map(([key, value]) => {
+                    if (HIDDEN_KEYS.includes(key)) {
+                      return null;
+                    }
 
-                      if (keyofAnyCard === "modified") {
-                        valOfAnyCard = "modified value";
-                      } else if (
-                        MODIFIED_VALUES[
-                          valOfAnyCard as keyof typeof MODIFIED_VALUES
-                        ]
-                      ) {
-                        valOfAnyCard =
-                          MODIFIED_VALUES[
-                            valOfAnyCard as keyof typeof MODIFIED_VALUES
-                          ];
-                      }
+                    let renamedKey = key;
+                    if (RENAME_KEYS_MAP[key]) {
+                      renamedKey = RENAME_KEYS_MAP[key];
+                    }
 
-                      if (
-                        typeof valOfAnyCard === "object" &&
-                        !Array.isArray(valOfAnyCard)
-                      ) {
-                        if (keyofAnyCard === "legalities") {
-                          return (
-                            <TableRow key={keyofAnyCard}>
-                              <TableCell>{startCase(keyofAnyCard)}</TableCell>
+                    if (key === "modified") {
+                      value = "modified value";
+                    } else if (MODIFIED_VALUES[value]) {
+                      value = MODIFIED_VALUES[value];
+                    }
+
+                    if (typeof value === "object" && !Array.isArray(value)) {
+                      if (key === "legalities") {
+                        return (
+                          <TableRow key={key}>
+                            <TableCell>{startCase(key)}</TableCell>
+                            <TableCell>
+                              {Object.entries(value).map(
+                                ([subKey, subValue]) => (
+                                  <div key={subKey}>
+                                    <span>
+                                      {toStartCase(subKey)}: {subValue}
+                                    </span>
+                                  </div>
+                                )
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      } else if (key === "related_uris") {
+                        return Object.entries(value).map(
+                          ([uriKey, uriValue]) => (
+                            <TableRow key={uriKey}>
                               <TableCell>
-                                {Object.entries(
-                                  valOfAnyCard as MTGCard["legalities"]
-                                ).map(([subKey, subVal]) => {
-                                  console.log(
-                                    "🚀 ~ file: SearchBar.tsx:326 ~ ).map ~ subVal:",
-                                    subVal
-                                  );
-
-                                  return (
-                                    <React.Fragment key={subVal}>
-                                      <span>
-                                        {toStartCase(subKey)}: {subVal}
-                                      </span>
-                                      <br />
-                                    </React.Fragment>
-                                  );
-                                })}
+                                {`${startCase(key)} - ${startCase(uriKey)}`}
                               </TableCell>
-                            </TableRow>
-                          );
-                        } else if (keyofAnyCard === "related_uris") {
-                          const [firstUriKey, firstUriVal] = Object.entries(
-                            valOfAnyCard as MTGCard["related_uris"]
-                          )[0];
-                          console.log(
-                            "🚀 ~ file: SearchBar.tsx:341 ~ ).map ~ firstUriVal:",
-                            firstUriVal
-                          );
-                          return (
-                            <TableRow key={`${keyofAnyCard}-${firstUriKey}`}>
-                              <TableCell>{`${startCase(
-                                keyofAnyCard
-                              )} - ${startCase(firstUriKey)}`}</TableCell>
                               <TableCell>
                                 <a
-                                  href={firstUriVal}
+                                  href={uriValue}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
-                                  {firstUriVal}
+                                  {uriValue}
                                 </a>
                               </TableCell>
                             </TableRow>
-                          );
-                        } else {
-                          return typeof valOfAnyCard === "object" &&
-                            !Array.isArray(valOfAnyCard)
-                            ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                              (valOfAnyCard
-                                ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                                  Object.entries(valOfAnyCard)
-                                : []
-                              ).map(([subKey, subVal], index) => {
-                                console.log(
-                                  "🚀 ~ file: SearchBar.tsx:361 ~ ).map ~ subVal:",
-                                  subVal
-                                );
-
-                                return (
-                                  <TableRow
-                                    key={`${keyofAnyCard}-${subKey}-${index}`}
-                                  >
-                                    <TableCell>{`${startCase(
-                                      keyofAnyCard
-                                    )} - ${startCase(subKey)}`}</TableCell>
-                                    <TableCell>{subVal as any}</TableCell>
-                                  </TableRow>
-                                );
-                              })
-                            : null;
-                        }
-                      }
-
-                      if (Array.isArray(valOfAnyCard)) {
-                        return valOfAnyCard.flatMap((item, arrayIndex) => {
-                          if (
-                            typeof item === "object" &&
-                            !Array.isArray(item)
-                          ) {
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                            return Object.entries(item).map(
-                              ([subKey, subVal], itemIndex) => {
-                                console.log(
-                                  "🚀 ~ file: SearchBar.tsx:401 ~ returnvalOfAnyCard.flatMap ~ subVal:",
-                                  subVal
-                                );
-
-                                return (
-                                  <TableRow
-                                    key={`${keyofAnyCard}-${arrayIndex}-${subKey}-${itemIndex}`}
-                                  >
-                                    <TableCell>{`${startCase(
-                                      keyofAnyCard
-                                    )} - ${arrayIndex} - ${startCase(
-                                      subKey
-                                    )}`}</TableCell>
-                                    <TableCell>
-                                      {typeof subVal === "object"
-                                        ? JSON.stringify(subVal)
-                                        : (subVal as any)}
-                                    </TableCell>
-                                  </TableRow>
-                                );
-                              }
-                            );
-                          }
-
-                          console.log(
-                            "🚀 ~ file: SearchBar.tsx:410 ~ returnvalOfAnyCard.flatMap ~ item:",
-                            item
-                          );
-                          // Return a row for non-object array item
-                          return (
-                            <TableRow key={`${keyofAnyCard}-${arrayIndex}`}>
-                              <TableCell>{`${startCase(
-                                keyofAnyCard
-                              )} - ${arrayIndex}`}</TableCell>
-                              <TableCell>{item}</TableCell>
+                          )
+                        );
+                      } else {
+                        return Object.entries(value).map(
+                          ([subKey, subValue]) => (
+                            <TableRow key={`${key}-${subKey}`}>
+                              <TableCell>{`${startCase(key)} - ${startCase(
+                                subKey
+                              )}`}</TableCell>
+                              <TableCell>{subValue}</TableCell>
                             </TableRow>
-                          );
-                        });
+                          )
+                        );
                       }
-
-                      console.log(
-                        "🚀 ~ file: SearchBar.tsx:439 ~ SearchBar ~ getTableValue(valOfAnyCard):",
-                        getTableValue(valOfAnyCard)
-                      );
-                      /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-                      return (
-                        <TableRow key={keyofAnyCard}>
-                          <TableCell>{startCase(renamedKey)}</TableCell>
-                          <TableCell>{getTableValue(valOfAnyCard)}</TableCell>
-                        </TableRow>
-                      );
                     }
-                  )}
+
+                    if (Array.isArray(value)) {
+                      return value.flatMap((item, index) => (
+                        <TableRow key={`${key}-${index}`}>
+                          <TableCell>{`${startCase(
+                            key
+                          )} - ${index}`}</TableCell>
+                          <TableCell>{item}</TableCell>
+                        </TableRow>
+                      ));
+                    }
+
+                    return (
+                      <TableRow key={key}>
+                        <TableCell>{startCase(renamedKey)}</TableCell>
+                        <TableCell>{value}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
