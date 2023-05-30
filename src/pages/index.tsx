@@ -29,9 +29,99 @@ console.log("🚀 ~ file: index.tsx:26 ~ backendUrl", BACKEND_URL);
 function HomeView() {
   return (
     <div>
-      <Typography sx={{ mt: 1 }} variant="h1" color="#ff7961" align="center">
-        Kokoelmani
-      </Typography>
+      <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto" }}>
+        <img
+          src="./CategoryLogos/marvelcomics.png"
+          alt="Marvel Comics"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/magicthegathering.png"
+          alt="Magic: The Gathering"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/pokemon.png"
+          alt="Pokemon"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/digimon.png"
+          alt="Digimon"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/yugioh.png"
+          alt="Yu-Gi-Oh"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/fleshandblood.png"
+          alt="Flesh and Blood"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/funkopop.jpeg"
+          alt="Funko Pop"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/nft.png"
+          alt="NFT"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+        <img
+          src="./CategoryLogos/videogames.png"
+          alt="Video Games"
+          style={{
+            flexShrink: 0,
+            width: "auto",
+            height: "100px",
+            marginRight: "10px",
+          }}
+        />
+      </div>
+
       <SearchBar />
 
       {/* <Banner /> */}
