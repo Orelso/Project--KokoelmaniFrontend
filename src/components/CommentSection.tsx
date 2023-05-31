@@ -30,9 +30,8 @@ const CommentSection: React.FC = () => {
   return (
     <div
       style={{
-        border: "solid 5px hsla(0, 95%, 35%, 1)",
-        borderRadius: "255px 15px 225px 15px/15px 225px 15px 255px",
-        borderColor: "linear-gradient(to right, #fc5c7d, #6a82fb)",
+        border: "2px solid black",
+        borderRadius: "15px", // Modify the value to adjust the roundness
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -71,7 +70,7 @@ const CommentSection: React.FC = () => {
         style={{
           width: "100%",
           marginBottom: "10px",
-          border: "2px solid blue",
+          border: "2px solid gray",
         }}
         value={newCommentText}
         onChange={(e) => setNewCommentText(e.target.value)}

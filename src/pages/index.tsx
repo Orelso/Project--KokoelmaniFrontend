@@ -91,7 +91,7 @@ function HomeView() {
           }}
         />
         <img
-          src="./CategoryLogos/funkopop.jpeg"
+          src="./CategoryLogos/funkopop.png"
           alt="Funko Pop"
           style={{
             flexShrink: 0,
@@ -121,10 +121,24 @@ function HomeView() {
           }}
         />
       </div>
-
+      <Box
+        sx={{
+          textAlign: "center",
+          color: "black",
+          backgroundColor: "rgba(211, 211, 211, 0.5)",
+          padding: "20px",
+          backdropFilter: "blur(5px)",
+        }}
+      >
+        <h1>
+          Kokoelmani: Where Your Collections Come Alive: Store, Analyze, and
+          Delight! All in one place
+        </h1>
+      </Box>
       <SearchBar />
 
       {/* <Banner /> */}
+
       <Typography sx={{ color: "green", mt: 6 }} variant="h4" align="center">
         Featured Highs of the Day
       </Typography>

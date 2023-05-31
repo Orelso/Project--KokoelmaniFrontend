@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { ResponsiveAppBar } from "./ResponsiveAppBar";
@@ -26,9 +25,7 @@ export default function BackgroundDropdown({
     <Box sx={{ m: 2 }}>
       <FormControl sx={{ minWidth: 120, fontSize: "1px" }}>
         <InputLabel>Background</InputLabel>
-        <Select
-          value={backgroundImage} /*onChange={handleBackgroundImageChange}*/
-        >
+        <Select value={backgroundImage} onChange={handleBackgroundImageChange}>
           <MenuItem value="">Basic Bitch</MenuItem>
           <MenuItem value="BackgroundImages/AttackOnTitan.jpg">
             Attack On Titan
