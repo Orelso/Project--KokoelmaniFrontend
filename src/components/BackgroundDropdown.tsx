@@ -7,14 +7,14 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 
 type BackgroundImageProps = {
-  setBackgroundImage: () => void;
+  setBackgroundImage: (bgImage: string) => void;
   backgroundImage: string;
 };
 
 export default function BackgroundDropdown({
   setBackgroundImage,
   backgroundImage,
-}) {
+}: BackgroundImageProps) {
   const handleBackgroundImageChange = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
@@ -24,7 +24,7 @@ export default function BackgroundDropdown({
   return (
     <Box sx={{ m: 2 }}>
       <FormControl sx={{ minWidth: 120, fontSize: "1px" }}>
-        <InputLabel>Background</InputLabel>
+        q<InputLabel>Background</InputLabel>
         <Select value={backgroundImage} onChange={handleBackgroundImageChange}>
           <MenuItem value="">Basic Bitch</MenuItem>
           <MenuItem value="BackgroundImages/AttackOnTitan.jpg">

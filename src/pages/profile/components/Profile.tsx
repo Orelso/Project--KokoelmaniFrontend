@@ -18,6 +18,8 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { Link } from "react-router-dom";
+import CommentSection from "./Interaction";
+import { Tab, Tabs, AppBar } from "@mui/material";
 
 const ProfileImage = styled(Avatar)(({ theme }) => ({
   width: theme.spacing(15),
@@ -45,6 +47,7 @@ const CategoryCard = ({ value, titleImage, totalValue }) => {
     >
       <CardContent sx={{ display: "flex", alignItems: "center" }}>
         <div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={titleImage}
             alt="category"
@@ -141,6 +144,11 @@ const ProfilePage = () => {
         titleImage: "/CategoryLogos/videogames.png",
       },
     },
+  };
+  const [tabIndex, setTabIndex] = React.useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
   };
 
   const getTotalCategoryValue = () => {
@@ -278,16 +286,29 @@ const ProfilePage = () => {
       </Grid>
 
       <Grid item xs={12} md={8}>
-        {Object.entries(profile.categories).map(
-          ([key, { count, titleImage }]) => (
-            <CategoryCard
-              key={key}
-              titleImage={titleImage}
-              value={count}
-              totalValue={`$${(count * 10000).toLocaleString()}`}
-            />
-          )
-        )}
+        <AppBar
+          position="static"
+          sx={{ color: "black", backgroundColor: "rgba(211, 211, 211, 0.5)" }}
+        >
+          <Tabs value={tabIndex} onChange={handleTabChange}>
+            <Tab label="Comments" />
+            <Tab label="Collectible" />
+          </Tabs>
+        </AppBar>
+
+        {tabIndex === 0 && <CommentSection />}
+
+        {tabIndex === 1 &&
+          Object.entries(profile.categories).map(
+            ([key, { count, titleImage }]) => (
+              <CategoryCard
+                key={key}
+                titleImage={titleImage}
+                value={count}
+                totalValue={`$${(count * 10000).toLocaleString()}`}
+              />
+            )
+          )}
       </Grid>
     </Grid>
   );

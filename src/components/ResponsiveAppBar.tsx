@@ -5,25 +5,15 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
-import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import SavingsIcon from "@mui/icons-material/Savings";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import FormatListNumberedRtlOutlinedIcon from "@mui/icons-material/FormatListNumberedRtlOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  FormControl,
-  InputLabel,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import Link from "next/link";
-import styled from "styled-components";
-import React, { useState } from "react";
+import React from "react";
 import BackgroundDropdown from "./BackgroundDropdown";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const menuItems = [
@@ -54,7 +44,13 @@ const menuItems = [
   },
 ];
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-export function ResponsiveAppBar({ setBackgroundImage, backgroundImage }) {
+export function ResponsiveAppBar({
+  setBackgroundImage,
+  backgroundImage,
+}: {
+  setBackgroundImage: (nextBgImage: string) => void;
+  backgroundImage: string;
+}) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );

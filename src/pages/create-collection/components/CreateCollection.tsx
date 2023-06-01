@@ -39,26 +39,31 @@ const DB_KEY = "mockCreateCollectionItem:items";
 //   },
 // });
 
+// export default function CreateCollection({
+//   selectedCard,
+// }: {
+//   selectedCard: AnyCard | undefined;
+// }) {
 export default function CreateCollection({
   selectedCard,
 }: {
-  selectedCard: AnyCard;
+  selectedCard: AnyCard | undefined;
 }) {
   // const classes = useStyles();
   const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [newItem, setNewItem] = useState(
-    selectedCard.name || selectedCard.title
+    selectedCard?.name || selectedCard?.title
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const [cost, setCost] = useState();
-  const [language, setLanguage] = useState(selectedCard.lang);
+  const [cost, setCost] = useState("");
+  const [language, setLanguage] = useState(selectedCard?.lang);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [set, setSet] = useState(
-    selectedCard.set_name ||
-      selectedCard.series ||
-      (selectedCard.platforms && selectedCard.platforms[0].platform.name)
+    selectedCard?.set_name ||
+      selectedCard?.series ||
+      selectedCard?.platforms?.[0]?.platform?.name
   );
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("MTG");

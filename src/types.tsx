@@ -702,6 +702,7 @@ export type Collection = { category: CardCategory } & any;
 
 export type AnyCard = {
   name: string;
+  platforms: { platform: { name: string } }[];
   card_images?: { image_url: string; image_url_small: string }[];
   imageName: string;
   background_image: string;
