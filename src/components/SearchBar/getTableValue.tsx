@@ -1,8 +1,7 @@
 import { Box } from "@mui/material";
 import * as React from "react";
 import Image from "next/image";
-import { LAND_SUBSTRING_TO_COLOR_MAP } from "./SearchBar";
-
+import LAND_SUBSTRING_TO_COLOR_MAP from "./SearchBar";
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 export function getTableValue(val: any): React.ReactNode {
   if (Array.isArray(val)) {
@@ -19,7 +18,7 @@ export function getTableValue(val: any): React.ReactNode {
         substring
       );
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const landColor: string = LAND_SUBSTRING_TO_COLOR_MAP[`${substring}`];
     // if we're not looking at a G, U, etc right now, return string
     if (!isManaSymbolOrNumberMTG || !landColor) {
