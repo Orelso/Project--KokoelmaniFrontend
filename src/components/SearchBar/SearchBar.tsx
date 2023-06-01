@@ -206,6 +206,7 @@ const SearchBar = () => {
 
                 <div style={{ display: "flex" }}>
                   <div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       alt=""
                       src={
@@ -221,6 +222,7 @@ const SearchBar = () => {
                     />
                   </div>
                   <div>
+                    {/*  eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       alt=""
                       src="https://images.squarespace-cdn.com/content/v1/55b6a6dce4b089e11621d3ed/1585087896250-R3GZ6OFWYQRZUJRCJU3D/produce_monthly.png"
@@ -265,6 +267,7 @@ const SearchBar = () => {
                       alignItems: "center",
                     }}
                   >
+                    {/*eslint-disable-next-line react/no-unescaped-entities*/}
                     <h3 style={{ marginRight: "20px" }}>Today's Average</h3>
                     <span style={{ background: "orange" }}>10,000</span>
                   </div>
