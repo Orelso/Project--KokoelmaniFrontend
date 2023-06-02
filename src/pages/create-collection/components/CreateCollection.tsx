@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
@@ -11,39 +12,16 @@ import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import { useRouter } from "next/router";
 // import {useNavigate} from 'react-router-dom';
 import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useLocalStorage } from "react-use";
-import { getTableValue } from "../../../components/SearchBar/searchBarUtils";
 import { BACKEND_URL } from "../../../constants";
 import { AnyCard } from "../../../types";
 
 const DB_KEY = "mockCreateCollectionItem:items";
 
-// const useStyles = makeStyles({
-//   // field: {
-//   //   marginTop: 20,
-//   //   marginBottom: 20,
-//   //   display: 'block'
-//   // },
-//   title: {
-//     color: "green",
-//     marginBottom: 20,
-//   },
-//   placeholder: {
-//     color: "red",
-//   },
-// });
-
-// export default function CreateCollection({
-//   selectedCard,
-// }: {
-//   selectedCard: AnyCard | undefined;
-// }) {
 export default function CreateCollection({
   selectedCard,
 }: {

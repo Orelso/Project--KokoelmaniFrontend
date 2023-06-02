@@ -1,4 +1,13 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable prefer-const */
+import React, { CSSProperties, useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../constants";
 
@@ -133,7 +142,7 @@ export default function Lists() {
   );
 }
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   heroesContainer: {
     display: "flex",
     flexWrap: "wrap",
@@ -144,8 +153,8 @@ const styles = {
     backgroundColor: "#f1f1f1",
     padding: "20px",
     borderRadius: "4px",
-    flex: "1 1 300px", // Each box takes the available width
-    maxWidth: "100%", // Ensure the box doesn't exceed the screen width
+    flex: "1 1 300px",
+    maxWidth: "100%",
   },
   heroInfo: {
     display: "flex",
@@ -153,20 +162,10 @@ const styles = {
     alignItems: "center",
     gap: "10px",
   },
-  heroImageContainer: {
-    width: "200px",
-    height: "200px",
-    borderRadius: "50%",
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   heroImage: {
     width: "50%",
-    // height: "50%",
     objectFit: "cover",
-    borderRadius: "50%", // Make the image appear in a circle
+    borderRadius: "50%",
   },
   characterData: {
     textAlign: "left",

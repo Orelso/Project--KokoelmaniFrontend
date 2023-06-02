@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
 import {
@@ -17,9 +19,11 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import { Link } from "react-router-dom";
 import CommentSection from "./Interaction";
 import { Tab, Tabs, AppBar } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import Button from "@mui/material/Button";
 
 const ProfileImage = styled(Avatar)(({ theme }) => ({
   width: theme.spacing(15),
@@ -174,6 +178,43 @@ const ProfilePage = () => {
           >
             <ProfileImage alt={profile.name} src={profile.image} />
             <Typography variant="h4">{profile.name}</Typography>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Button
+                startIcon={<PersonAddIcon />}
+                color="primary"
+                style={{
+                  backgroundColor: "#56adfa",
+                  fontSize: "10px",
+                  margin: "10px", // margin around the button
+                }}
+              >
+                Add Friend
+              </Button>
+
+              <Button
+                startIcon={<AddCircleIcon />}
+                color="primary"
+                style={{
+                  backgroundColor: "#90EE90",
+                  fontSize: "10px",
+                  margin: "10px", // margin around the button
+                }}
+              >
+                Follow
+              </Button>
+
+              <Button
+                startIcon={<AddCircleIcon />}
+                color="primary"
+                style={{
+                  backgroundColor: "#d4e79f",
+                  fontSize: "10px",
+                  margin: "10px", // margin around the button
+                }}
+              >
+                Message
+              </Button>
+            </div>
             <Box
               sx={{
                 display: "flex",

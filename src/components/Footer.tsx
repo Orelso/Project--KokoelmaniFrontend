@@ -10,8 +10,6 @@ import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { green } from "@mui/material/colors";
-import { FaDiscord } from "react-icons/fa";
 
 export default function Footer() {
   return (

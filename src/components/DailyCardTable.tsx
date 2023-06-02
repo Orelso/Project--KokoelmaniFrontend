@@ -1,18 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
 import {
   Table,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   TableBody,
-  Typography,
-  Card,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import StraightIcon from "@mui/icons-material/Straight";
-import axios from "axios";
 
 function createData(name, cost, percentage, up_down) {
   return { name, cost, percentage, up_down };

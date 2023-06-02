@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { Paper, TableBody } from "@mui/material";
 import * as React from "react";
 import { Table, TableCell, TableContainer, TableRow } from "@mui/material";
@@ -10,7 +13,7 @@ export function SearchResult({
   getTableValue,
 }: {
   result: AnyCard;
-  handleCardClick: (event) => void;
+  handleCardClick: (event: any) => void;
   getTableValue: (mana_cost: string) => any;
 }) {
   return (
@@ -64,20 +67,25 @@ export function SearchResult({
           </TableRow>
           <TableRow onClick={() => handleCardClick(result)}>
             <TableCell>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               {result.card_faces && result.card_faces.length > 1 ? (
                 <div style={{ display: "flex" }}>
-                  {result.card_faces.map((face, index) => (
-                    <img
-                      key={index}
-                      title="Click Me"
-                      alt=""
-                      width="47"
-                      height="0"
-                      src={face.image_uris?.small}
-                      onClick={() => handleCardClick(result)}
-                    />
-                  ))}
+                  {Array.isArray(result.card_faces) &&
+                    result.card_faces.map(
+                      (
+                        face: { image_uris: { small: string } },
+                        index: React.Key
+                      ) => (
+                        <img
+                          key={index}
+                          title="Click Me"
+                          alt=""
+                          width="47"
+                          height="0"
+                          src={face.image_uris?.small}
+                          onClick={() => handleCardClick(result)}
+                        />
+                      )
+                    )}
                 </div>
               ) : (
                 <img

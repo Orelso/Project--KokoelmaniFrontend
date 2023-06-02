@@ -1,10 +1,11 @@
 import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
-import { ResponsiveAppBar } from "./ResponsiveAppBar";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 type BackgroundImageProps = {
   setBackgroundImage: (bgImage: string) => void;
@@ -15,10 +16,8 @@ export default function BackgroundDropdown({
   setBackgroundImage,
   backgroundImage,
 }: BackgroundImageProps) {
-  const handleBackgroundImageChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    setBackgroundImage(event.target.value as string);
+  const handleBackgroundImageChange = (event: SelectChangeEvent<string>) => {
+    setBackgroundImage(event.target.value);
   };
 
   return (

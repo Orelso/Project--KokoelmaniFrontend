@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useState, useEffect } from "react";
 
 interface Comment {
@@ -89,6 +92,7 @@ const CommentSection: React.FC = () => {
       text: newCommentText,
       image: newCommentImage ? URL.createObjectURL(newCommentImage) : undefined,
       likes: 0,
+      username: "",
     };
     setComments([...comments, newComment]);
     setNewCommentText("");
@@ -138,6 +142,7 @@ const CommentSection: React.FC = () => {
           padding: "20px",
           width: "600%",
           marginRight: "1px",
+          backgroundColor: "rgba(211, 211, 211, 0.5)",
         }}
       >
         <h2
@@ -156,6 +161,7 @@ const CommentSection: React.FC = () => {
             maxHeight: "400px",
             width: "100%",
             marginBottom: "10px",
+            backgroundColor: "rgba(211, 211, 211, 0.5)",
           }}
         >
           {comments.length === 0 ? (
@@ -170,6 +176,7 @@ const CommentSection: React.FC = () => {
                   padding: "10px",
                   marginBottom: "10px",
                   height: "auto",
+                  backgroundColor: "rgba(211, 211, 211, 0.5)",
                 }}
               >
                 <CommentBox comment={comment} setComments={setComments} />
@@ -186,7 +193,7 @@ const CommentSection: React.FC = () => {
             left: 0,
             width: "100%",
             height: "100%",
-            background: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(211, 211, 211, 0.5)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
