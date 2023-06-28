@@ -24,7 +24,6 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-console.log("🚀 ~ file: index.tsx:26 ~ backendUrl", BACKEND_URL);
 
 function HomeView() {
   return (

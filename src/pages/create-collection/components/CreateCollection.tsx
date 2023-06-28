@@ -293,7 +293,7 @@ export default function CreateCollection({
   );
 }
 function createCollectionItem(cardItem: any): Promise<Response> {
-  return fetch(`${BACKEND_URL}`, {
+  return fetch(`${BACKEND_URL}/collections`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(cardItem),

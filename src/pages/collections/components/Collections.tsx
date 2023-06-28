@@ -15,16 +15,19 @@ export default function Collections() {
 
   // pull all data and store in collections state
   useEffect(() => {
-    fetch(`${BACKEND_URL}/item/`)
+    fetch(`${BACKEND_URL}/collections`)
       .then((res) => res.json())
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      .then((data) => setCollections(data))
+      .then((data) => {
+        console.log(data);
+        setCollections(data);
+      }) // data => { console.log(data); setCollection(data)}
       .catch(console.error);
   }, []); // [] tells the serever to run it once
 
   const handleDelete = async (id: number) => {
     console.log("tete", collections);
-    await fetch(`${BACKEND_URL}/item/${id}`, {
+    await fetch(`${BACKEND_URL}/collections/${id}`, {
       method: "DELETE",
     });
     const newCollections = collections.filter(
