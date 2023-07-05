@@ -24,6 +24,7 @@ interface Props {
 }
 
 const CollectionCard = ({ collection, onDelete }: Props) => {
+  console.log(collection);
   return (
     <CollectionCardStyles {...{ category: collection.category }}>
       <Card elevation={8}>
@@ -33,15 +34,18 @@ const CollectionCard = ({ collection, onDelete }: Props) => {
               <DeleteOutlined />
             </IconButton>
           }
-          title={collection.name}
+          title={collection.newItem}
           sx={{ color: "black", textAlign: "center" }}
           subheader={collection.category}
         />
         <CardMedia
           component="img"
-          image="https://static.cardmarket.com/img/7ead308998113a46a384918072ac0416/items/1/OS69/21308.jpg"
-          alt="Black"
-          sx={{ objectFit: "contain", height: 200, maxWidth: 0 }}
+          image={
+            collection.image ||
+            "https://static.cardmarket.com/img/7ead308998113a46a384918072ac0416/items/1/OS69/21308.jpg" // Ensure to provide a default image URL
+          }
+          alt="Card image"
+          sx={{ objectFit: "contain", height: 200, maxWidth: "100%" }}
         />
 
         <CardContent>
