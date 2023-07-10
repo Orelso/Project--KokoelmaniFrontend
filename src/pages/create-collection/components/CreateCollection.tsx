@@ -234,15 +234,14 @@ export default function CreateCollection({
           error={setError}
         />
         <TextField
-          onChange={(e) => setCost(Number(e.target.value))}
+          onChange={(e) => setCost(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Cost"
           variant="outlined"
           color="secondary"
           fullWidth
-          required // adds asterisk
+          required // adds astrik
           error={costError}
-          type="number" // set input type to "number"
         />
 
         <TextField
@@ -270,177 +269,34 @@ export default function CreateCollection({
             native: true,
           }}
         >
-          <option value="" disabled>
-            Select an option
-          </option>
-          <option
-            value="Gem Mint 10"
-            title="The highest grade assigned. The collectible must have no evidence of any manufacturing or handling defects."
-          >
-            Gem Mint 10
-          </option>
-          <option
-            value="Mint 9.9"
-            title="The collectible is nearly indistinguishable from a 10.0 but will have a very minor manufacturing defect. It will not have any evidence of handling defects."
-          >
-            Mint 9.9
-          </option>
-          <option
-            value="NM/M 9.8"
-            title="A nearly perfect collectible with negligible handling or manufacturing defects."
-          >
-            NM/M 9.8
-          </option>
-          <option
-            value="NM+ 9.6"
-            title="A very well-preserved collectible with several minor manufacturing or handling defects."
-          >
-            NM+ 9.6
-          </option>
-          <option
-            value="NM 9.4"
-            title="A very well-preserved collectible with minor wear and small manufacturing or handling defects."
-          >
-            NM 9.4
-          </option>
-          <option
-            value="NM- 9.2"
-            title="A very well-preserved collectible with some wear and small manufacturing or handling defects."
-          >
-            NM- 9.2
-          </option>
-          <option
-            value="VF/NM 9.0"
-            title="A very well-preserved collectible with good eye appeal. There will be a number of minor handling and/or manufacturing defects."
-          >
-            VF/NM 9.0
-          </option>
-          <option
-            value="VF+ 8.5"
-            title="An attractive collectible with a moderate defect or a number of small defects."
-          >
-            VF+ 8.5
-          </option>
-          <option
-            value="VF 8.0"
-            title="An attractive collectible with a moderate defect or an accumulation of small defects."
-          >
-            VF 8.0
-          </option>
-          <option
-            value="VF- 7.5"
-            title="An above-average collectible with a moderate defect or an accumulation of small defects."
-          >
-            VF- 7.5
-          </option>
-          <option
-            value="FN/VF 7.0"
-            title="An above-average collectible with a major defect or an accumulation of small defects."
-          >
-            FN/VF 7.0
-          </option>
-          <option
-            value="FN+ 6.5"
-            title="An above-average collectible with a major defect and some smaller defects, or a significant accumulation of small defects."
-          >
-            FN+ 6.5
-          </option>
-          <option
-            value="FN 6.0"
-            title="A slightly above-average collectible with a major defect and some smaller defects, or a significant accumulation of small defects."
-          >
-            FN 6.0
-          </option>
-          <option
-            value="FN- 5.5"
-            title="A slightly above-average collectible with several moderate defects."
-          >
-            FN- 5.5
-          </option>
-          <option
-            value="VG/FN 5.0"
-            title="An average collectible with several moderate defects."
-          >
-            VG/FN 5.0
-          </option>
-          <option
-            value="VG+ 4.5"
-            title="A slightly below-average collectible with multiple moderate defects."
-          >
-            VG+ 4.5
-          </option>
-          <option
-            value="VG 4.0"
-            title="A below-average collectible with multiple moderate defects."
-          >
-            VG 4.0
-          </option>
-          <option
-            value="VG- 3.5"
-            title="A below-average collectible with several major defects or an accumulation of multiple moderate defects."
-          >
-            VG- 3.5
-          </option>
-          <option
-            value="G/VG 3.0"
-            title="A collectible that shows significant evidence of handling with several moderate-to-major defects."
-          >
-            G/VG 3.0
-          </option>
-          <option
-            value="G 2.5"
-            title="A collectible that shows extensive evidence of handling with multiple moderate-to-major defects."
-          >
-            G 2.5
-          </option>
-          <option
-            value="G 2.0"
-            title="A collectible that shows extensive evidence of handling with numerous moderate-to-major defects."
-          >
-            G 2.0
-          </option>
-          <option
-            value="G- 1.8"
-            title="A collectible that shows extensive evidence of handling with numerous major defects."
-          >
-            G- 1.8
-          </option>
-          <option
-            value="Fa/G 1.5"
-            title="A collectible that shows extensive evidence of handling with a heavy accumulation of major defects."
-          >
-            Fa/G 1.5
-          </option>
-          <option
-            value="Fa 1.0"
-            title="A very poorly handled collectible with a heavy accumulation of major defects."
-          >
-            Fa 1.0
-          </option>
-          <option
-            value="Poor 0.5"
-            title="A heavily defaced collectible with a number of major defects. Some pieces will also be missing."
-          >
-            Poor 0.5
-          </option>
+          <option value="">Select an option</option>
+          <select>
+            <option value="option1">Poor (PR)</option>
+            <option value="option2">Fair (FR)</option>
+            <option value="option3">Good (GD)</option>
+            <option value="option4">Very Good (VG)</option>
+            <option value="option5">Fine (FN)</option>
+            <option value="option6">Very Fine (VF)</option>
+            <option value="option7">Near Mint (NM)</option>
+            <option value="option8">Mint (MT)</option>
+            <option value="option9">Gem Mint (GM)</option>
+          </select>
         </TextField>
 
         <TextField
-          onChange={(e) => setQuantity(Number(e.target.value))}
+          onChange={(e) => setQuantity(e.target.value)}
           sx={{ marginTop: 3, marginBottom: 2, display: "block" }}
           label="Quantity"
           variant="outlined"
           color="secondary"
           fullWidth
-          required // adds asterisk
+          required // adds astrik
           error={quantityError}
-          type="number" // set input type to "number"
         ></TextField>
 
         <FormControl sx={{ marginTop: -1, marginBottom: 5, display: "block" }}>
           <FormControlLabel control={<Checkbox />} label="Foil" />
           <FormControlLabel control={<Checkbox />} label="Autographed" />
-          <FormControlLabel control={<Checkbox />} label="Graded" />
         </FormControl>
 
         <Button

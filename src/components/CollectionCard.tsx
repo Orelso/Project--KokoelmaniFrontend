@@ -9,6 +9,7 @@ import { CardMedia, IconButton, Typography } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
 import styled from "styled-components";
 import type { CardCategory } from "../types";
+import { MODIFIED_VALUES } from "../components/SearchBar/searchBarUtils";
 
 const MAP_COLOR_TO_CATEGORY = {
   Pokemon: "blue",
@@ -53,7 +54,8 @@ const CollectionCard = ({ collection, onDelete }: Props) => {
             Cost:$ {collection.cost}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Language: {collection.language}
+            Language:{" "}
+            {MODIFIED_VALUES[collection.language] || collection.language}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             Set: {collection.set}
