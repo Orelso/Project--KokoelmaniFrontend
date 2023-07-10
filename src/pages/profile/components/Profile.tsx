@@ -90,7 +90,7 @@ const KeyValueRow = ({ label, value, icon }) => {
   );
 };
 
-const ProfilePage = () => {
+const ProfilePage = ({ name }) => {
   const profile = {
     image: "/DB.jpg",
     name: "Orelso",
