@@ -4,7 +4,7 @@
 import { Paper, TableBody } from "@mui/material";
 import * as React from "react";
 import { Table, TableCell, TableContainer, TableRow } from "@mui/material";
-import type { AnyCard } from "../../types";
+import type { AnyCard } from "../../../../types";
 import { MODIFIED_VALUES } from "./searchBarUtils";
 
 export function SearchResult({
@@ -82,7 +82,6 @@ export function SearchResult({
                           width="47"
                           height="0"
                           src={face.image_uris?.small}
-                          onClick={() => handleCardClick(result)}
                         />
                       )
                     )}
@@ -107,7 +106,6 @@ export function SearchResult({
                         result.images[0].extension) ||
                     result.resourceURI
                   }
-                  onClick={() => handleCardClick(result)}
                 />
               )}
             </TableCell>

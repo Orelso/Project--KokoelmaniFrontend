@@ -1,77 +1,43 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-import { Box, Button, IconButton, TextField, Modal } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../../../../store";
 import * as React from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import type { AnyCard, MTGCard } from "../../../../types";
-import CreateCollection from "../../../../pages/create-collection/components/CreateCollection";
-// import styles from "../styles/SearchBar.module.css"; className={styles.filter_card}
+import { AnyCard } from "../../../../types";
 import { BACKEND_URL } from "../../../../constants";
-import {
-  MODIFIED_VALUES,
-  HIDDEN_KEYS,
-  RENAME_KEYS_MAP,
-  getTableValue,
-  startCase,
-} from "./searchBarUtils";
 import { SearchResult } from "./SearchResult";
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const SearchBar = () => {
+import { getTableValue } from "./searchBarUtils";
+
+interface SearchBarProps {
+  addCardToDeck: (card: AnyCard, deckIndex: number) => void;
+  deckIndex: number;
+  deckName: string; // Pass the deck name as a prop
+}
+
+const SearchBar = ({ addCardToDeck, deckIndex, deckName }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [searchResults, setSearchResults] = useAtom(searchResultsAtom);
   const [selectedCard, setSelectedCard] = useState<null | AnyCard>(null);
-  const [open, setOpen] = React.useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [numResults, setNumResults] = useState(6); // Display the first 6 items by default
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
+  const [numResults, setNumResults] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const [lastSearchResultCount, setLastSearchResultCount] = useState(0);
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(true);
 
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-  const handleModalOpen = () => {
-    setOpenModal(true);
-  };
-  const handleLike = () => {
-    setLikes(likes + 1);
-  };
-
-  const handleDislike = () => {
-    setDislikes(dislikes + 1);
-  };
-
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-  const handleModalClose = () => {
-    setOpenModal(false);
-  };
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleOnChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(value);
   };
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
   const handleSubmit = () => {
     fetch(`${BACKEND_URL}/cards/name/${searchTerm}`)
       .then((res) => res.json())
       .then((res) => {
         if (Array.isArray(res)) {
           setSearchResults(res);
-          setLastSearchResultCount(res.length); // Set the last search result count here
+          setLastSearchResultCount(res.length);
         } else {
           console.error("not an array type!", res);
         }
@@ -80,59 +46,79 @@ const SearchBar = () => {
         console.log(error);
       });
   };
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-  const handleCardClick = (card: null | AnyCard) => {
-    setSelectedCard(card);
-    console.log(selectedCard); // <--- Add this line
 
-    setOpen(true);
+  const handleCardClick = (card: AnyCard) => {
+    console.log("handleCardClick triggered");
+    addCardToDeck(card, deckIndex);
   };
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-  const handleClose = () => {
-    setOpen(false);
+
+  const handleClearResults = () => {
+    setSearchResults([]);
+    setSearchTerm("");
   };
-  /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+  const toggleSearchBar = () => {
+    setIsSearchBarOpen((prevState) => !prevState);
+    if (!isSearchBarOpen) {
+      setSearchResults([]);
+      setNumResults(1);
+      setSearchTerm("");
+    }
+  };
+
   return (
     <div>
       <div>
-        <div style={{ width: "15%", margin: "0 auto" }}>
-          <TextField
-            sx={{
-              flex: 1,
-              color: "white",
-              transform: isHovered ? "scale(1.5)" : "scale(1)",
-              transition: "transform 0.3s",
-              backgroundColor: isHovered ? "white" : "transparent",
-              borderRadius: "20px",
-              boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-            }}
-            placeholder={`Results: ${lastSearchResultCount}`}
-            onChange={handleOnChange}
-            value={searchTerm}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={handleSubmit}>
-                  <SearchIcon />
-                </IconButton>
-              ),
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSubmit();
-              }
-            }}
-          />
+        <div style={{ width: "20%", margin: "0 auto" }}>
+          {isSearchBarOpen && ( // Only render if the search bar is open
+            <TextField
+              sx={{
+                flex: 1,
+                color: "white",
+                transform: isHovered ? "scale(1.5)" : "scale(1)",
+                transition: "transform 0.3s",
+                backgroundColor: isHovered ? "white" : "transparent",
+                borderRadius: "20px",
+                boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+                width: "100%", // Adjust the width as desired
+                height: "30px", // Adjust the height as desired
+              }}
+              placeholder={`Results: ${lastSearchResultCount}`}
+              onChange={handleOnChange}
+              value={searchTerm}
+              InputProps={{
+                endAdornment: (
+                  <>
+                    <IconButton onClick={handleSubmit}>
+                      <SearchIcon />
+                    </IconButton>
+                    <IconButton onClick={handleClearResults}>
+                      <CloseIcon />
+                    </IconButton>
+                  </>
+                ),
+              }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmit();
+                }
+              }}
+            />
+          )}
         </div>
-        <span
-          style={{ display: "block", textAlign: "center", marginTop: "10px" }}
-        >
-          Total Results: {lastSearchResultCount}
-        </span>
+        {isSearchBarOpen ? ( // Only show the total results if the search bar is open
+          <span
+            style={{ display: "block", textAlign: "center", marginTop: "10px" }}
+          >
+            Total Results: {lastSearchResultCount}
+          </span>
+        ) : (
+          <div style={{ color: "white", marginBottom: "10px" }}>{deckName}</div>
+        )}
       </div>
 
-      {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
       <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
         {searchResults.slice(0, numResults).map((result, index) => {
           return (
@@ -145,8 +131,6 @@ const SearchBar = () => {
           );
         })}
 
-        {/* --------------------------------------------------------------(Search Bar - Load More Button)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-
         {searchResults.length > numResults && (
           <Button
             variant="contained"
@@ -157,12 +141,8 @@ const SearchBar = () => {
           </Button>
         )}
       </div>
-
-      {/* --------------------------------------------------------------(Search Bar MODAL data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
     </div>
   );
 };
-
-/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 export default SearchBar;
