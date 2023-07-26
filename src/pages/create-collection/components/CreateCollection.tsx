@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormControlLabel, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -47,7 +49,7 @@ export default function CreateCollection({
       selectedCard?.platforms?.[0]?.platform?.name
   );
   const [quantity, setQuantity] = useState("");
-  const [category, setCategory] = useState("MTG");
+  const [category, setCategory] = useState("");
   const [condition, setCondition] = useState("");
   // const [foil, setFoil] = useState(Boolean)
   // const [autographed, setAutographed] = useState(Boolean)
@@ -67,6 +69,24 @@ export default function CreateCollection({
   );
 
   const [dbItems, setDbItems] = useLocalStorage(DB_KEY, [] as any[]);
+
+  useEffect(() => {
+    const currentPath = "data"; // Replace this with your actual relative path
+    const categoryFolder = currentPath.substring(
+      currentPath.lastIndexOf("/") + 1
+    ); // Extract the last segment of the path
+
+    const categoryMapping = {
+      digimon: "Digimon",
+      mtg: "Magic",
+      FleshAndBlood: "Flesh & Blood",
+      funkopop: "Funko Pop",
+      pokemon: "Pokemon",
+      yugioh: "Yu-Gi-Oh",
+    };
+
+    setCategory(categoryMapping[categoryFolder] || "MTG");
+  }, [location.data]);
 
   const handleTheSubmit = (e: any) => {
     console.log(
@@ -329,7 +349,7 @@ export default function CreateCollection({
   );
 }
 function createCollectionItem(cardItem: any): Promise<Response> {
-  return fetch(`${BACKEND_URL}/collections`, {
+  return fetch(`${BACKEND_URL}/collections?username=orelso`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(cardItem),

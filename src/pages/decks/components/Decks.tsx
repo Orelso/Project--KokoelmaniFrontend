@@ -6,6 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Button } from "@mui/material";
 import React, { useState } from "react";
+import DeckSeachBar from "./DeckSearchBar/SearchBar";
 
 export default function Decks() {
   const [decks, setDecks] = useState([]);
@@ -99,6 +100,7 @@ export default function Decks() {
       >
         Add Pokemon Deck
       </Button>
+      <DeckSeachBar />
       {Object.keys(groupedDecks).map((type) =>
         groupedDecks[type].map((deck, deckIndex) => (
           <div key={deckIndex}>
