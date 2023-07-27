@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../../../constants";
+
 import {
   Avatar,
   Typography,
@@ -25,6 +30,13 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Button from "@mui/material/Button";
 
+type Collection = {
+  id: number;
+  name: string;
+  category: string; // Assuming collections have a category
+  image: string;
+};
+
 const ProfileImage = styled(Avatar)(({ theme }) => ({
   width: theme.spacing(15),
   height: theme.spacing(15),
@@ -43,31 +55,46 @@ const SmallImage = styled("img")(({ theme }) => ({
   marginRight: theme.spacing(1),
 }));
 
-const CategoryCard = ({ value, titleImage, totalValue }) => {
+const CategoryCard = ({
+  value,
+  titleImage,
+  totalValue,
+  collections = [],
+  category,
+}) => {
+  const filteredCollections = collections.filter(
+    (collection) => collection.category === category
+  );
+
   return (
     <Card
       variant="outlined"
       sx={{ marginBottom: 2, backgroundColor: "rgba(211, 211, 211, 0.5)" }}
     >
-      <CardContent sx={{ display: "flex", alignItems: "center" }}>
+      <CardContent
+        sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      >
         <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* Display the category title image */}
           <img
             src={titleImage}
             alt="category"
             style={{ width: "150px", height: "75px" }}
           />
+        </div>
+        {/* Create a horizontal flex container for the images */}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {/* Display the images from the collection */}
+          {collections.map((collection, index) => (
+            <img
+              key={index}
+              src={collection.image} // replace 'image' with correct property from your collection object
+              alt="collection"
+              style={{ width: "150px", height: "75px", margin: "0 5px" }} // added margin for spacing between images
+            />
+          ))}
           <Typography variant="body1">{value}</Typography>
           <Typography variant="body2">Total Value: {totalValue}</Typography>
-          <div style={{ display: "flex" }}>
-            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment*/}
-            {[...Array(5)].map((_, i) => (
-              <SmallImage
-                key={i}
-                src="https://static.moneymade.io/cdn-cgi/image/width=570,quality=100,format=auto/https://static.moneymade.io/1_7e8929bcee/1_7e8929bcee.png"
-              />
-            ))}
-          </div>
         </div>
       </CardContent>
     </Card>
@@ -91,6 +118,31 @@ const KeyValueRow = ({ label, value, icon }) => {
 };
 
 const ProfilePage = ({ name }) => {
+  const [collections, setCollections] = useState([]); // new state for collections
+
+  useEffect(() => {
+    const username = "orelso"; // The specified user
+
+    axios
+      .get(`${BACKEND_URL}/collections?username=${username}`)
+      .then((res) => {
+        setCollections(res.data.collections);
+      })
+      .catch(console.error);
+  }, []);
+
+  // New effect for fetching collections data
+  useEffect(() => {
+    const username = "orelso"; // The specified user
+
+    axios
+      .get(`${BACKEND_URL}/collections?username=${username}`)
+      .then((res) => {
+        setCollections(res.data);
+      })
+      .catch(console.error);
+  }, []);
+
   const profile = {
     image: "/DB.jpg",
     name: "Orelso",
@@ -185,31 +237,29 @@ const ProfilePage = ({ name }) => {
                 style={{
                   backgroundColor: "#56adfa",
                   fontSize: "10px",
-                  margin: "10px", // margin around the button
+                  margin: "10px",
                 }}
               >
                 Add Friend
               </Button>
-
               <Button
                 startIcon={<AddCircleIcon />}
                 color="primary"
                 style={{
                   backgroundColor: "#90EE90",
                   fontSize: "10px",
-                  margin: "10px", // margin around the button
+                  margin: "10px",
                 }}
               >
                 Follow
               </Button>
-
               <Button
                 startIcon={<AddCircleIcon />}
                 color="primary"
                 style={{
                   backgroundColor: "#d4e79f",
                   fontSize: "10px",
-                  margin: "10px", // margin around the button
+                  margin: "10px",
                 }}
               >
                 Message
@@ -276,7 +326,6 @@ const ProfilePage = ({ name }) => {
                 >
                   <SendIcon />
                 </IconButton>
-
                 <IconButton
                   color="primary"
                   aria-label="Instagram"
@@ -287,7 +336,6 @@ const ProfilePage = ({ name }) => {
                 >
                   <InstagramIcon />
                 </IconButton>
-
                 <IconButton
                   color="primary"
                   aria-label="TikTok"
@@ -298,7 +346,6 @@ const ProfilePage = ({ name }) => {
                 >
                   <MusicNoteIcon />
                 </IconButton>
-
                 <IconButton
                   color="primary"
                   aria-label="Twitter"
@@ -309,7 +356,6 @@ const ProfilePage = ({ name }) => {
                 >
                   <TwitterIcon />
                 </IconButton>
-
                 <IconButton
                   color="primary"
                   aria-label="Facebook"
@@ -325,7 +371,6 @@ const ProfilePage = ({ name }) => {
           </CardContent>
         </Card>
       </Grid>
-
       <Grid item xs={12} md={8}>
         <AppBar
           position="static"
@@ -336,17 +381,17 @@ const ProfilePage = ({ name }) => {
             <Tab label="Collectible" />
           </Tabs>
         </AppBar>
-
         {tabIndex === 0 && <CommentSection />}
-
         {tabIndex === 1 &&
           Object.entries(profile.categories).map(
-            ([key, { count, titleImage }]) => (
+            ([category, { count, titleImage }]) => (
               <CategoryCard
-                key={key}
+                key={category}
                 titleImage={titleImage}
                 value={count}
                 totalValue={`$${(count * 10000).toLocaleString()}`}
+                category={category} // Pass the category to filter collections by category
+                collections={collections} // Pass collections prop to CategoryCard
               />
             )
           )}

@@ -12,18 +12,19 @@ import { BACKEND_URL } from "../../../constants";
 export default function Collections() {
   // const [collections, setCollections] = useState<AnyCardCollection[]>([])
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [username, setUsername] = useState("");
 
-  // pull all data and store in collections state
   useEffect(() => {
-    fetch(`${BACKEND_URL}/collections`)
+    // You will need to fetch or determine the username somehow
+    const username = "orelso"; // Replace 'user1' with actual username
+
+    fetch(`${BACKEND_URL}/collections?username=${username}`)
       .then((res) => res.json())
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       .then((data) => {
-        console.log(data);
         setCollections(data);
-      }) // data => { console.log(data); setCollection(data)}
+      })
       .catch(console.error);
-  }, []); // [] tells the serever to run it once
+  }, []); // No dependencies
 
   const handleDelete = async (id: number) => {
     console.log("tete", collections);
