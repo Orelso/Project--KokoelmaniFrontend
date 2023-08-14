@@ -29,11 +29,12 @@ import { Tab, Tabs, AppBar } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Button from "@mui/material/Button";
+import { getEnabledCategories } from "trace_events";
 
 type Collection = {
   id: number;
   name: string;
-  category: string; // Assuming collections have a category
+  category: string;
   image: string;
 };
 
@@ -75,16 +76,13 @@ const CategoryCard = ({
         sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
       >
         <div>
-          {/* Display the category title image */}
           <img
             src={titleImage}
             alt="category"
             style={{ width: "150px", height: "75px" }}
           />
         </div>
-        {/* Create a horizontal flex container for the images */}
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {/* Display the images from the collection */}
           {collections.map((collection, index) => (
             <img
               key={index}
@@ -118,27 +116,18 @@ const KeyValueRow = ({ label, value, icon }) => {
 };
 
 const ProfilePage = ({ name }) => {
-  const [collections, setCollections] = useState([]); // new state for collections
+  const [collections, setCollections] = useState([]);
+  const [collectionsByCategory, setCollectionsByCategory] = useState(new Map());
 
   useEffect(() => {
-    const username = "orelso"; // The specified user
-
-    axios
-      .get(`${BACKEND_URL}/collections?username=${username}`)
-      .then((res) => {
-        setCollections(res.data.collections);
-      })
-      .catch(console.error);
-  }, []);
-
-  // New effect for fetching collections data
-  useEffect(() => {
-    const username = "orelso"; // The specified user
+    const username = "orelso";
 
     axios
       .get(`${BACKEND_URL}/collections?username=${username}`)
       .then((res) => {
         setCollections(res.data);
+        const updatedCollectionsByCategory = getCollectionsByCategory(res.data);
+        setCollectionsByCategory(updatedCollectionsByCategory);
       })
       .catch(console.error);
   }, []);
@@ -213,6 +202,21 @@ const ProfilePage = ({ name }) => {
       0
     );
   };
+
+  const getCollectionsByCategory = (allCollections) => {
+    const collectionsByCategory = new Map();
+
+    Object.keys(profile.categories).forEach((key) => {
+      collectionsByCategory.set(
+        key,
+        allCollections.filter((collection) => collection.category === key)
+      );
+    });
+    return collectionsByCategory;
+  };
+
+  // [key, [{caterory: 'pokemon', name: ...}, [{caterory: 'pokemon', name: ...}]]
+  console.log(collectionsByCategory);
 
   return (
     <Grid container spacing={2}>
@@ -384,14 +388,14 @@ const ProfilePage = ({ name }) => {
         {tabIndex === 0 && <CommentSection />}
         {tabIndex === 1 &&
           Object.entries(profile.categories).map(
-            ([category, { count, titleImage }]) => (
+            ([key, { count, titleImage }]) => (
               <CategoryCard
-                key={category}
+                key={key}
                 titleImage={titleImage}
                 value={count}
                 totalValue={`$${(count * 10000).toLocaleString()}`}
-                category={category} // Pass the category to filter collections by category
-                collections={collections} // Pass collections prop to CategoryCard
+                collections={collectionsByCategory.get(key)}
+                category={key}
               />
             )
           )}

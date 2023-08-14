@@ -1,39 +1,65 @@
-import { Button } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @next/next/no-img-element */
+import { Button, Modal } from "@mui/material";
 import React, { useState } from "react";
 import SearchBar from "./DeckSearchBar/SearchBar";
 
 export default function Decks() {
   const [decks, setDecks] = useState([]);
   const [currentDeckIndex, setCurrentDeckIndex] = useState(null);
+  const [hand, setHand] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const addDeck = (name, type) => {
     const newDeck = {
       name,
       type,
-      cards: {},
+      cards: [],
       searchResults: [],
       numResults: 6,
       lastSearchResultCount: 0,
     };
 
     setDecks((prevDecks) => {
-      setCurrentDeckIndex(prevDecks.length); // Set the currentDeckIndex to the index of the new deck
+      setCurrentDeckIndex(prevDecks.length);
       return [...prevDecks, newDeck];
     });
   };
 
   const addCardToDeck = (card, deckIndex) => {
     const newDecks = [...decks];
-    const newCards = { ...newDecks[deckIndex].cards };
     const cardIdentifier = card.id || card.cardnumber;
 
-    if (newCards[cardIdentifier]) {
-      newCards[cardIdentifier].count += 1;
+    const existingCardIndex = newDecks[deckIndex].cards.findIndex(
+      (c) => (c.id || c.cardnumber) === cardIdentifier
+    );
+
+    if (existingCardIndex > -1) {
+      newDecks[deckIndex].cards[existingCardIndex].count += 1;
     } else {
-      newCards[cardIdentifier] = { ...card, count: 1 };
+      newDecks[deckIndex].cards.push({ ...card, count: 1 });
     }
 
-    newDecks[deckIndex].cards = newCards;
+    setDecks(newDecks);
+  };
+
+  const removeCardFromDeck = (card, deckIndex) => {
+    const newDecks = [...decks];
+    const cardIdentifier = card.id || card.cardnumber;
+
+    const existingCardIndex = newDecks[deckIndex].cards.findIndex(
+      (c) => (c.id || c.cardnumber) === cardIdentifier
+    );
+
+    if (existingCardIndex > -1) {
+      if (newDecks[deckIndex].cards[existingCardIndex].count === 1) {
+        newDecks[deckIndex].cards.splice(existingCardIndex, 1);
+      } else {
+        newDecks[deckIndex].cards[existingCardIndex].count -= 1;
+      }
+    }
+
     setDecks(newDecks);
   };
 
@@ -47,6 +73,23 @@ export default function Decks() {
     const newDecks = [...decks];
     newDecks[deckIndex].searchResults = newSearchResults;
     setDecks(newDecks);
+  };
+
+  const shuffleDeck = (deckIndex) => {
+    setModalOpen(true);
+    const deckToShuffle = [...decks[deckIndex].cards];
+    let tempHand = [];
+
+    for (let i = 0; i < 7; i++) {
+      const randIndex = Math.floor(Math.random() * deckToShuffle.length);
+      tempHand.push(deckToShuffle.splice(randIndex, 1)[0]);
+    }
+
+    setHand(tempHand);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -98,12 +141,7 @@ export default function Decks() {
               style={{ color: "red" }}
             />
             <span style={{ marginLeft: "10px" }}>
-              (
-              {Object.values(deck.cards).reduce(
-                (acc, curr) => acc + curr.count,
-                0
-              )}
-              )
+              ({deck.cards.reduce((acc, curr) => acc + curr.count, 0)})
             </span>
             <Button
               onClick={() => setCurrentDeckIndex(deckIndex)}
@@ -111,88 +149,136 @@ export default function Decks() {
             >
               Edit {deck.name}
             </Button>
+            <Button onClick={() => shuffleDeck(deckIndex)}>Shuffle Deck</Button>
           </h2>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {Object.values(deck.cards).map((card, cardIndex) => (
+            {deck.cards.map((card, cardIndex) => (
               <div
                 key={cardIndex}
                 style={{
-                  marginRight: "10px", // Reduced margin
+                  marginRight: "10px",
                   position: "relative",
-                  width: "100px", // Half size
-                  height: "150px", // Half size
+                  width: "100px",
+                  height: "150px",
                 }}
               >
-                {[...Array(card.count)].map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      position: "absolute",
-                      top: `${i * 2.5}px`, // Half stack offset
-                      left: `${i * 2.5}px`, // Half stack offset
-                      zIndex: -i,
-                      border: "1px solid black",
-                      width: "100%", // Full size to fill container
-                      height: "100%", // Full size to fill container
-                    }}
-                  >
-                    <img
-                      src={
-                        card.image_uris?.small ||
-                        card.image_url ||
-                        card.images?.small ||
-                        card.card_images?.[0]?.image_url_small ||
-                        card.imageName ||
-                        card.background_image ||
-                        card.token_name ||
-                        (card.images &&
-                          card.images[0]?.path +
-                            "." +
-                            card.images[0].extension) ||
-                        card.resourceURI
-                      }
-                      alt={card.name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                      }}
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "2.5px", // Half offset
-                        right: "2.5px", // Half offset
-                        backgroundColor: "white",
-                        borderRadius: "50%",
-                        width: "10px", // Half size
-                        height: "10px", // Half size
-                        textAlign: "center",
-                        lineHeight: "10px", // Half line height
-                      }}
-                    >
-                      {card.count}
-                    </div>
-                  </div>
-                ))}
-                <div>Mana Cost: {card.cmc}</div>
+                <img
+                  src={
+                    card.image_uris?.small ||
+                    card.image_url ||
+                    card.images?.small ||
+                    card.card_images?.[0]?.image_url_small ||
+                    card.imageName ||
+                    card.background_image ||
+                    card.token_name ||
+                    (card.images && card.images[0]) ||
+                    "https://via.placeholder.com/150"
+                  }
+                  alt={card.name}
+                  style={{ width: "100%", height: "100%" }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "2.5px",
+                    right: "2.5px",
+                    backgroundColor: "white",
+                    borderRadius: "50%",
+                    width: "15px",
+                    height: "15px",
+                    textAlign: "center",
+                    lineHeight: "15px",
+                  }}
+                >
+                  {card.count}
+                </div>
+                <Button
+                  onClick={() => removeCardFromDeck(card, deckIndex)}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  Remove
+                </Button>
               </div>
             ))}
           </div>
+          <SearchBar
+            type={deck.type}
+            setSearchResults={(newSearchResults) =>
+              setSearchResults(deckIndex, newSearchResults)
+            }
+            numResults={deck.numResults}
+            setNumResults={(newNumResults) =>
+              setNumResults(deckIndex, newNumResults)
+            }
+            lastSearchResultCount={deck.lastSearchResultCount}
+            setLastSearchResultCount={(newCount) =>
+              setLastSearchResultCount(deckIndex, newCount)
+            }
+            addCardToDeck={(card) => addCardToDeck(card, deckIndex)}
+          />
         </div>
       ))}
-      {currentDeckIndex !== null && (
-        <SearchBar
-          addCardToDeck={(card) => addCardToDeck(card, currentDeckIndex)}
-          deckIndex={currentDeckIndex}
-          deckName={decks[currentDeckIndex].name}
-          searchResults={decks[currentDeckIndex].searchResults}
-          setSearchResults={(results) =>
-            setSearchResults(currentDeckIndex, results)
-          }
-          numResults={decks[currentDeckIndex].numResults}
-          lastSearchResultCount={decks[currentDeckIndex].lastSearchResultCount}
-        />
-      )}
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={{ padding: "20px", backgroundColor: "white" }}>
+          <h2>Hand</h2>
+          {hand.map((card, cardIndex) => (
+            <div
+              key={cardIndex}
+              style={{
+                marginRight: "-60px",
+                position: "relative",
+                width: "100px",
+                height: "150px",
+                zIndex: hand.length - cardIndex,
+              }}
+            >
+              <img
+                src={
+                  card.image_uris?.small ||
+                  card.image_url ||
+                  card.images?.small ||
+                  card.card_images?.[0]?.image_url_small ||
+                  card.imageName ||
+                  card.background_image ||
+                  card.token_name ||
+                  (card.images && card.images[0]) ||
+                  "https://via.placeholder.com/150"
+                }
+                alt={card.name}
+                style={{ width: "100%", height: "100%" }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: "2.5px",
+                  right: "2.5px",
+                  backgroundColor: "white",
+                  borderRadius: "50%",
+                  width: "15px",
+                  height: "15px",
+                  textAlign: "center",
+                  lineHeight: "15px",
+                }}
+              >
+                {card.count}
+              </div>
+            </div>
+          ))}
+          <Button onClick={handleCloseModal} style={{ marginTop: "20px" }}>
+            Close
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

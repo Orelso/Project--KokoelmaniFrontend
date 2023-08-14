@@ -31,7 +31,6 @@ export default function CreateCollection({
   selectedCard: AnyCard | undefined;
 }) {
   // const classes = useStyles();
-  const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const [newItem, setNewItem] = useState(
@@ -70,11 +69,13 @@ export default function CreateCollection({
 
   const [dbItems, setDbItems] = useLocalStorage(DB_KEY, [] as any[]);
 
+  const router = useRouter();
+
   useEffect(() => {
-    const currentPath = "data"; // Replace this with your actual relative path
+    const currentPath = router.asPath;
     const categoryFolder = currentPath.substring(
       currentPath.lastIndexOf("/") + 1
-    ); // Extract the last segment of the path
+    );
 
     const categoryMapping = {
       digimon: "Digimon",
@@ -86,7 +87,7 @@ export default function CreateCollection({
     };
 
     setCategory(categoryMapping[categoryFolder] || "MTG");
-  }, [location.data]);
+  }, [router.asPath]);
 
   const handleTheSubmit = (e: any) => {
     console.log(
