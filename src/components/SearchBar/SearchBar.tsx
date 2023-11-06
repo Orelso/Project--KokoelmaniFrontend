@@ -2,25 +2,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { Box, Button, IconButton, TextField, Modal } from "@mui/material";
+import { Box, IconButton, TextField, Modal } from "@mui/material";
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../../store";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import {
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
-  Typography,
 } from "@mui/material";
 import type { AnyCard, MTGCard } from "../../types";
-import CommentSection from "../CommentSection";
-import { Currency, CurrencyTab } from "../Currency";
-import CreateCollection from "../../pages/create-collection/components/CreateCollection";
-// import styles from "../styles/SearchBar.module.css"; className={styles.filter_card}
+
 import { BACKEND_URL } from "../../constants";
 import {
   MODIFIED_VALUES,
@@ -56,6 +51,7 @@ const SearchBar = () => {
   const [dislikes, setDislikes] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [lastSearchResultCount, setLastSearchResultCount] = useState(0);
+  const [cardTypeFilter, setCardTypeFilter] = useState(""); // New state for card type filter
 
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
   const handleModalOpen = () => {
@@ -85,8 +81,15 @@ const SearchBar = () => {
       .then((res) => res.json())
       .then((res) => {
         if (Array.isArray(res)) {
-          setSearchResults(res);
-          setLastSearchResultCount(res.length); // Set the last search result count here
+          let filteredResults = res;
+          // If a card type filter is set, apply it
+          if (cardTypeFilter) {
+            filteredResults = res.filter(
+              (card: AnyCard) => card.type === cardTypeFilter
+            );
+          }
+          setSearchResults(filteredResults);
+          setLastSearchResultCount(filteredResults.length); // Use the length of the filtered results
         } else {
           console.error("not an array type!", res);
         }
@@ -112,6 +115,30 @@ const SearchBar = () => {
     <div>
       <div>
         <div style={{ width: "15%", margin: "0 auto" }}>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={searchTerm}
+            onChange={handleOnChange}
+          />
+          {/* Add a new input/select for card type filter */}
+          <select
+            value={cardTypeFilter}
+            onChange={(e) => setCardTypeFilter(e.target.value)}
+            placeholder="Filter by type"
+          >
+            <option value="">All Types</option>
+            <option value="MTGCard">MTG</option>
+            <option value="Pokemon">Pokemon</option>
+            <option value="Yugioh">Yugioh</option>
+            <option value="Digimon">Digimon</option>
+            <option value="FunkoPop">Funko Pop</option>
+            <option value="FleshAndBlood">Flesh and Blood</option>
+            <option value="Game">Video Games</option>
+            {/* ... other card types as needed */}
+          </select>
+          <button onClick={handleSubmit}>Search</button>
+          {/* ... rendering of search results ... */}
           <TextField
             sx={{
               flex: 1,
