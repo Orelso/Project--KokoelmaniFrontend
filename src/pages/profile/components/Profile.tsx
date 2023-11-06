@@ -30,6 +30,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Button from "@mui/material/Button";
 import { getEnabledCategories } from "trace_events";
+import ProfileImage from "./ProfileImage";
+import CategoryImage from "./ProfileCategoryImage";
 
 type Collection = {
   id: number;
@@ -38,17 +40,17 @@ type Collection = {
   image: string;
 };
 
-const ProfileImage = styled(Avatar)(({ theme }) => ({
-  width: theme.spacing(15),
-  height: theme.spacing(15),
-  marginBottom: theme.spacing(2),
-}));
+// const ProfileImage = styled(Avatar)(({ theme }) => ({
+//   width: theme.spacing(15),
+//   height: theme.spacing(15),
+//   marginBottom: theme.spacing(2),
+// }));
 
-const CategoryImage = styled(Avatar)(({ theme }) => ({
-  width: theme.spacing(7),
-  height: theme.spacing(7),
-  marginRight: theme.spacing(2),
-}));
+// const CategoryImage = styled(Avatar)(({ theme }) => ({
+//   width: theme.spacing(7),
+//   height: theme.spacing(7),
+//   marginRight: theme.spacing(2),
+// }));
 
 const SmallImage = styled("img")(({ theme }) => ({
   width: theme.spacing(5),
@@ -143,47 +145,47 @@ const ProfilePage = ({ name }) => {
     itemsBought: 150,
     itemsTraded: 50,
     categories: {
-      pokemon: {
+      Pokemon: {
         count: 15,
         image: "url-to-pokemon-image",
         titleImage: "/CategoryLogos/pokemon.png",
       },
-      magicTheGathering: {
+      MTG: {
         count: 10,
         image: "url-to-magic-image",
         titleImage: "/CategoryLogos/magicTheGathering.png",
       },
-      funkoPop: {
+      FunkoPop: {
         count: 15,
         image: "url-to-funkoPop-image",
         titleImage: "/CategoryLogos/funkoPop.png",
       },
-      fleshAndBlood: {
+      "Flesh & Blood": {
         count: 20,
         image: "url-to-fleshAndBlood-image",
         titleImage: "/CategoryLogos/fleshAndBlood.png",
       },
-      marvelComics: {
+      "Comic Book": {
         count: 15,
         image: "url-to-marvelComics-image",
         titleImage: "/CategoryLogos/marvelComics.png",
       },
-      yugioh: {
+      "Yu-Gi-Oh": {
         count: 25,
         image: "url-to-yugioh-image",
         titleImage: "/CategoryLogos/yugioh.png",
       },
-      digimon: {
+      Digimon: {
         count: 10,
         image: "url-to-digimon-image",
         titleImage: "/CategoryLogos/digimon.png",
       },
-      nft: {
+      NFT: {
         count: 5,
         image: "url-to-nft-image",
         titleImage: "/CategoryLogos/nft.png",
       },
-      videogames: {
+      "Video Games": {
         count: 30,
         image: "url-to-videogames-image",
         titleImage: "/CategoryLogos/videogames.png",

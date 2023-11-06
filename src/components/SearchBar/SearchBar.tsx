@@ -30,6 +30,19 @@ import {
   startCase,
 } from "./searchBarUtils";
 import { SearchResult } from "./SearchResult";
+import LoadMoreButton from "./LoadMoreButton";
+import CardComponent from "./CardComponent"; // adjust the import path as necessary
+
+const boxStyle = {
+  display: "absolute", // This should likely be 'position': 'absolute'
+  flexDirection: "column",
+  alignItems: "center",
+  border: "20px solid white",
+  height: "100%",
+  backgroundColor: "white",
+  overflow: "hidden",
+};
+
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -94,6 +107,7 @@ const SearchBar = () => {
     setOpen(false);
   };
   /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
   return (
     <div>
       <div>
@@ -149,31 +163,17 @@ const SearchBar = () => {
 
         {/* --------------------------------------------------------------(Search Bar - Load More Button)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
 
-        {searchResults.length > numResults && (
-          <Button
-            variant="contained"
-            onClick={() => setNumResults(numResults + 6)}
-            style={{ backgroundColor: "red", color: "white" }}
-          >
-            Load More
-          </Button>
-        )}
+        <LoadMoreButton
+          searchResults={searchResults}
+          numResults={numResults}
+          setNumResults={setNumResults}
+        />
       </div>
 
       {/* --------------------------------------------------------------(Search Bar MODAL data shown)-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
       {selectedCard && (
         <Modal open={open} onClose={handleClose}>
-          <Box
-            sx={{
-              display: "absolute",
-              flexDirection: "column",
-              alignItems: "center",
-              border: "20px solid white",
-              height: "100%",
-              backgroundColor: "white",
-              overflow: "hidden",
-            }}
-          >
+          <Box sx={boxStyle}>
             {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
             <IconButton
               sx={{ position: "absolute", top: 0, right: 0 }}
@@ -182,138 +182,16 @@ const SearchBar = () => {
               <CloseIcon />
             </IconButton>
             {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-            <div style={{ display: "flex" }}>
-              <div style={{ flex: 1 }}>
-                <Typography component="div">
-                  <div>
-                    <h1 style={{ fontSize: "2rem" }}>{selectedCard.name}</h1>
-                    <h6>{selectedCard.set_name}</h6>
-                  </div>
-                </Typography>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <div style={{ display: "flex", justifyContent: "left" }}>
-                  <Typography component="div">
-                    <div style={{ display: "flex" }}>
-                      <div style={{ marginRight: "10px" }}>
-                        <button onClick={handleLike}>👍</button>
-                        <div>{likes}</div>
-                      </div>
-                      <div>
-                        <button onClick={handleDislike}>👎</button>
-                        <div>{dislikes}</div>
-                      </div>
-                    </div>
-                  </Typography>
-                </div>
-
-                <div style={{ display: "flex" }}>
-                  <div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt=""
-                      src={
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        selectedCard.image_uris?.border_crop ||
-                        selectedCard.image_url ||
-                        selectedCard.card_images?.[0]?.image_url ||
-                        selectedCard.imageName ||
-                        selectedCard.background_image ||
-                        selectedCard.images.large
-                      }
-                      width="200"
-                    />
-                  </div>
-                  <div>
-                    {/*  eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt=""
-                      src="https://images.squarespace-cdn.com/content/v1/55b6a6dce4b089e11621d3ed/1585087896250-R3GZ6OFWYQRZUJRCJU3D/produce_monthly.png"
-                      width="200"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div>Total Likes Rank: {likes - dislikes}</div>
-                </div>
-
-                {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-                <Button onClick={handleModalOpen}>
-                  <AddCircleOutlineRoundedIcon />
-                  Collection
-                </Button>
-                {openModal && (
-                  <Modal open={openModal} onClose={handleModalClose}>
-                    <CreateCollection selectedCard={selectedCard} />
-                  </Modal>
-                )}
-                <Button>
-                  <AddCircleOutlineRoundedIcon />
-                  Deck
-                </Button>
-                {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginRight: 40,
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    {/*eslint-disable-next-line react/no-unescaped-entities*/}
-                    <h3 style={{ marginRight: "20px" }}>Today's Average</h3>
-                    <span style={{ background: "orange" }}>10,000</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <h3 style={{ marginRight: "20px" }}>All Time high</h3>
-                    <span style={{ background: "lightgreen" }}>200,000</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <h3>All Time Low</h3>
-                    <span style={{ background: "red" }}>3</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      marginLeft: "10px",
-                    }}
-                  >
-                    <h3 style={{ fontSize: "0.8em" }}>
-                      <CurrencyTab
-                        defaultCurrency={Currency.USD}
-                        onChange={(event) => {
-                          console.log("TODO Currency changed", event);
-                        }}
-                      />
-                    </h3>
-                  </div>
-                </div>
-                <CommentSection />
-              </div>
-            </div>
+            <CardComponent
+              selectedCard={selectedCard}
+              likes={likes}
+              dislikes={dislikes}
+              handleLike={handleLike}
+              handleDislike={handleDislike}
+              handleModalOpen={handleModalOpen}
+              handleModalClose={handleModalClose}
+              openModal={openModal}
+            />
             {/* -------------------------------------------------------------------(Card/Item Data)------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
             <TableContainer
               sx={{

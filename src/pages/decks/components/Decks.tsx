@@ -244,17 +244,17 @@ export default function Decks() {
             >
               <img
                 src={
-                  card.image_uris?.small ||
-                  card.image_url ||
-                  card.images?.small ||
-                  card.card_images?.[0]?.image_url_small ||
-                  card.imageName ||
-                  card.background_image ||
-                  card.token_name ||
-                  (card.images && card.images[0]) ||
+                  card?.image_uris?.small ||
+                  card?.image_url ||
+                  card?.images?.small ||
+                  card?.card_images?.[0]?.image_url_small ||
+                  card?.imageName ||
+                  card?.background_image ||
+                  card?.token_name ||
+                  (card?.images && card?.images[0]) ||
                   "https://via.placeholder.com/150"
                 }
-                alt={card.name}
+                alt={card?.name}
                 style={{ width: "100%", height: "100%" }}
               />
               <div
@@ -270,7 +270,7 @@ export default function Decks() {
                   lineHeight: "15px",
                 }}
               >
-                {card.count}
+                {card?.count}
               </div>
             </div>
           ))}

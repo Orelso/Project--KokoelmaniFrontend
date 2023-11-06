@@ -81,7 +81,21 @@ export default function Footer() {
           {/* <p>The information presented on this site about Magic: The Gathering, both literal and graphical, is copyrighted by Wizards of the Coast (a subsidiary of Hasbro, Inc.), which includes, but is not limited to, card images, the mana symbols, and Oracle text.
 This website is not produced, endorsed, supported, or affiliated with Wizards of the Coast.</p> */}
           <Box textAlign="center" pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
-            Created By: Orelso Vitam &reg; {new Date().getFullYear()}
+            The information presented on this site, both literal and graphical,
+            about various brands and properties is copyrighted as listed below,
+            including but not limited to card images, characters, figures,
+            logos, mana symbols, Oracle text, and game graphics: <br></br>{" "}
+            Magic: The Gathering (MTG): Copyrighted by Wizards of the Coast (a
+            subsidiary of Hasbro, Inc.). Pokémon: Copyrighted by Nintendo, The
+            Pokémon Company, and Game Freak. Yu-Gi-Oh!: Copyrighted by Konami.
+            Digimon: Copyrighted by Toei Animation and Bandai. Funko Pop!:
+            Copyrighted by Funko, Inc. Flesh and Blood: Copyrighted by Legend
+            Story Studios. Video Games: Copyrighted by their respective owners.
+            Marvel: Copyrighted by Marvel Entertainment, LLC. This site is not
+            affiliated with or endorsed by the above-mentioned entities. Created
+          </Box>
+          <Box textAlign="center" pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
+            By: Orelso Vitam &reg; {new Date().getFullYear()}
           </Box>
         </Container>
       </Box>
